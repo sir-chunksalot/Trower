@@ -1,0 +1,189 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class TowerAdditions : MonoBehaviour
+{
+    [SerializeField] GameObject woodenTriangle;
+    [SerializeField] GameObject roofExtension;
+    TowerBuilder towerBuilder;
+    List<GameObject> addedFrills;
+    void Start()
+    {
+        towerBuilder = gameObject.GetComponent<TowerBuilder>();
+        towerBuilder.onTowerPlace += CreateAdditions;
+        addedFrills = new List<GameObject>();
+    }
+
+    private Vector3[] GetFloorLocations()
+    {
+        List<GameObject> placedFloors = towerBuilder.GetPlacedFloors();
+        Vector3[] floorLocations = new Vector3[placedFloors.Count];
+
+        int i = 0;
+        foreach (GameObject floors in placedFloors)
+        {
+            floorLocations[i] = floors.transform.position;
+            i++;
+        }
+
+        return floorLocations;
+    }
+
+    private void CreateAdditions(object sender, EventArgs e)
+    {
+        GameObject[] placedFloors = towerBuilder.GetPlacedFloors().ToArray();
+        int index = 0;
+        foreach (Vector3 floorPos in GetFloorLocations())
+        {
+
+            WoodenTriangle(floorPos, placedFloors[index]);
+            RoofExtensions(floorPos, placedFloors[index]);
+
+            index++;
+        }
+        foreach (Vector3 floorPos in GetFloorLocations())
+        {
+            foreach (GameObject additions in addedFrills)
+            {
+                if (additions == null)
+                {
+                    addedFrills.Remove(additions);
+                    break;
+                }
+                else if (additions.transform.position == floorPos)
+                {
+                    addedFrills.Remove(additions);
+                    Destroy(additions);
+                    break;
+                }
+                else if (additions.tag == "roofExtension" && Mathf.Abs(floorPos.y - additions.transform.position.y) < 2)
+                {
+                    Debug.Log("COYT");
+                    Destroy(additions);
+                    addedFrills.Remove(additions);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void RoofExtensions(Vector3 floorPos, GameObject currentFloor)
+    {
+        Vector3[] floorLocations = GetFloorLocations();
+
+        bool canPlace = false;
+        Vector3 spawnPos = new Vector3();
+        foreach (Vector3 pos in floorLocations)
+        {
+            if (floorPos.y == pos.y && floorPos.x == pos.x + 10)
+            {
+                canPlace = true;
+                spawnPos = new Vector3(floorPos.x - 5, floorPos.y + 3.07f, floorPos.z + .5f);
+            }
+            if (floorPos.y == pos.y && floorPos.x == pos.x - 10)
+            {
+                canPlace = true;
+                spawnPos = new Vector3(floorPos.x + 5, floorPos.y + 3.07f, floorPos.z + .5f);
+            }
+        }
+
+        foreach (GameObject frills in addedFrills)
+        {
+            if (frills != null && frills.transform.position == spawnPos)
+            {
+                canPlace = false;
+            }
+        }
+
+        if (canPlace)
+        {
+            GameObject newBuild = Instantiate(roofExtension, spawnPos, Quaternion.identity, currentFloor.transform);
+            GameObject newBuild2 = Instantiate(roofExtension, spawnPos - new Vector3(0, 6.14f), Quaternion.identity, currentFloor.transform);
+            newBuild2.GetComponent<SpriteRenderer>().flipY = true;
+            addedFrills.Add(newBuild);
+            addedFrills.Add(newBuild2);
+        }
+    }
+
+    private void WoodenTriangle(Vector3 floorPos, GameObject currentFloor)
+    {
+        Vector3[] floorLocations = GetFloorLocations();
+
+        float xDistance = towerBuilder.GetRoomBounds().x;
+        float yDistance = towerBuilder.GetRoomBounds().y;
+
+        Vector3 newTriangle = new Vector3(floorPos.x, floorPos.y - yDistance, floorPos.z);
+        bool canPlace = true;
+        bool nextToLeftWall = false;
+        bool nextToRightWall = false;
+
+        foreach (Vector3 pos in floorLocations)
+        {
+            if (newTriangle.x == pos.x)
+            {
+                if (newTriangle.y == pos.y) //triangle is in the same spot as another room
+                {
+                    canPlace = false;
+                }
+                if (newTriangle.y - yDistance == pos.y) //triangle is right above another room
+                {
+                    canPlace = false;
+                }
+            }
+
+            if (newTriangle.y == pos.y)
+            {
+                if (newTriangle.x - xDistance == pos.x)//only generates if its next to left wall
+                {
+                    nextToLeftWall = true;
+                    currentFloor = towerBuilder.GetFloor(new Vector3(pos.x, pos.y, pos.z));
+                }
+                if (newTriangle.x + xDistance == pos.x)//only generates if next to right wall
+                {
+                    nextToRightWall = true;
+                    currentFloor = towerBuilder.GetFloor(new Vector3(pos.x, pos.y, pos.z));
+                }
+            }
+        }
+
+        float firstFloorOffsetX = 0;
+        if (newTriangle.y == 0)
+        {
+            firstFloorOffsetX = 2;
+        }
+
+        if (canPlace && nextToLeftWall)
+        {
+            newTriangle = newTriangle - new Vector3(1 + firstFloorOffsetX, 0, -3);
+            if (!AlreadyThere(newTriangle))
+            {
+                GameObject newBuild = Instantiate(woodenTriangle, newTriangle, Quaternion.identity, currentFloor.transform);
+                newBuild.GetComponent<SpriteRenderer>().flipX = true;
+                addedFrills.Add(newBuild);
+            }
+        }
+        else if (canPlace && nextToRightWall)
+        {
+            newTriangle = newTriangle + new Vector3(1 + firstFloorOffsetX, 0, 3);
+            if (!AlreadyThere(newTriangle))
+            {
+                GameObject newBuild = Instantiate(woodenTriangle, newTriangle, Quaternion.identity, currentFloor.transform);
+                addedFrills.Add(newBuild);
+            }
+        }
+
+    }
+
+    private bool AlreadyThere(Vector3 pos)
+    {
+        foreach (GameObject frills in addedFrills)
+        {
+            if (frills != null && pos.x == frills.transform.position.x && pos.y == frills.transform.position.y)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+}

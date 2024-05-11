@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Enemy
+  - Wall
+  - Floor
+  - Ladder
+  - Web
+  - Entrance
+  - GameManager
+  - TrapRoom
+  - Mouse
+  - SpawnDoor
+  - RoomUnderDoor
+  - L_Ladder
+  - R_Ladder
+  - Resource
+  - EnemyWall
+  - EnemyFloor
+  - TopOfLadder
+  - roofExtension
+  - Undefined
+  - Vines
+  - BottomOfLadder
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Heroes
+  - Walls
+  - MouseHover
+  - Arrows
+  - TowerWalls
+  - Traps
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Hero
+    uniqueID: 1458228695
+    locked: 0
+  - name: Floor
+    uniqueID: 1966772407
+    locked: 0
