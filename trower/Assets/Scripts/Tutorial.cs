@@ -53,7 +53,7 @@ public class Tutorial : MonoBehaviour
         cam = Camera.main.GetComponent<CameraController>();
         enemy.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         killable = false;
-        cam.SetCameraPos(new Vector3(0, 11, -10));
+        //cam.SetCameraPos(new Vector3(0, 11, -10));
         hover.SetActive(true);
     }
 
@@ -174,7 +174,7 @@ public class Tutorial : MonoBehaviour
             {
                 audio3.Play();
                 Destroy(enemy);
-                cam.AddShake(.6f);
+                //cam.AddShake(.6f);
                 scoreText.text = (float.Parse(scoreText.text) + 1).ToString();
             }
 

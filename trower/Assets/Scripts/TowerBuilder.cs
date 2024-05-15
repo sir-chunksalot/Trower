@@ -477,7 +477,7 @@ public class TowerBuilder : MonoBehaviour
 
         if (targetFloor != null && Vector2.Distance(sellBombObject.transform.position, floorBombIsNearest) < reqMouseDistanceToPlace)
         {
-            cameraController.AddShake(1.8f);
+            //cameraController.AddShake(1.8f);
             if (targetFloor.transform.parent == null)
             {
                 return;
