@@ -1,4 +1,6 @@
 using Cinemachine;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -6,7 +8,46 @@ public class CameraController : MonoBehaviour
     //[SerializeField] Camera cam;
     //[SerializeField] float shakeAmount;
     //[SerializeField] float decreaseFactor;
+    [SerializeField] List<GameObject> vCams;
+    [SerializeField] List<float> times; //leave blank if you dont want them to transistion automatically
 
+
+    private void Start()
+    {
+        int count = 0;
+        foreach(float time in times)
+        {
+            if(time != 0)
+            {
+                StartCoroutine(AutoCameraTransistion(time, vCams[count]));
+            }
+            count++;
+        }
+    }
+    private IEnumerator AutoCameraTransistion(float time, GameObject cam)
+    {
+        yield return new WaitForSeconds(time);
+        ActivateCamera(cam);
+    }
+
+    private void ActivateCamera(GameObject cam)
+    {
+        cam.GetComponent<CinemachineVirtualCamera>().Priority = 1;
+        foreach (GameObject vcam in vCams)
+        {
+            if(vcam != cam)
+            {
+                vcam.GetComponent<CinemachineVirtualCamera>().Priority = 0;
+            }
+            
+        }
+    }
+
+    class CamTransistions
+    {
+        public float time;
+        public GameObject vCams;
+    }
     //private float shake;
     //private Vector3 cameraPos;
 
