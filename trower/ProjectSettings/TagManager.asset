@@ -25,6 +25,7 @@ TagManager:
   - Undefined
   - Vines
   - BottomOfLadder
+  - BackgroundElements
   layers:
   - Default
   - TransparentFX
@@ -38,7 +39,7 @@ TagManager:
   - Arrows
   - TowerWalls
   - Traps
-  - 
+  - BackgroundElements
   - 
   - 
   - 
