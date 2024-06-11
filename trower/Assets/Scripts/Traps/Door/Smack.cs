@@ -34,7 +34,7 @@ public class Smack : MonoBehaviour
             Debug.Log("CUM");
             if (e != null)
             {
-                e.gameObject.GetComponent<Hero>().Fall();
+                //e.gameObject.GetComponent<Hero>().Fall();
             }
         }
 

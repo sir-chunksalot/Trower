@@ -19,7 +19,7 @@ public class Fire : MonoBehaviour
         Debug.Log("collided fire" + collision.tag);
         if (collision.tag == "Enemy" && !delay)
         {
-            collision.gameObject.GetComponent<Hero>().ChangeHealth(-1, true);
+            //collision.gameObject.GetComponent<Hero>().ChangeHealth(-1, true);
             delay = true;
             if (gameObject.activeSelf)
             {

@@ -72,6 +72,8 @@ public class TowerAdditions : MonoBehaviour
     {
         Vector3[] floorLocations = GetFloorLocations();
 
+        float yOffSet = 3.07f;
+        float xOffSet = 5;
         bool canPlace = false;
         Vector3 spawnPos = new Vector3();
         foreach (Vector3 pos in floorLocations)
@@ -79,12 +81,12 @@ public class TowerAdditions : MonoBehaviour
             if (floorPos.y == pos.y && floorPos.x == pos.x + 10)
             {
                 canPlace = true;
-                spawnPos = new Vector3(floorPos.x - 5, floorPos.y + 3.07f, floorPos.z + .5f);
+                spawnPos = new Vector3(floorPos.x - xOffSet, floorPos.y + yOffSet, floorPos.z + .5f);
             }
             if (floorPos.y == pos.y && floorPos.x == pos.x - 10)
             {
                 canPlace = true;
-                spawnPos = new Vector3(floorPos.x + 5, floorPos.y + 3.07f, floorPos.z + .5f);
+                spawnPos = new Vector3(floorPos.x + xOffSet, floorPos.y + yOffSet, floorPos.z + .5f);
             }
         }
 
@@ -100,6 +102,8 @@ public class TowerAdditions : MonoBehaviour
         {
             GameObject newBuild = Instantiate(roofExtension, spawnPos, Quaternion.identity, currentFloor.transform);
             GameObject newBuild2 = Instantiate(roofExtension, spawnPos - new Vector3(0, 6.14f), Quaternion.identity, currentFloor.transform);
+            newBuild.GetComponent<SpriteRenderer>().color = currentFloor.GetComponentInChildren<SpriteRenderer>().color;
+            newBuild2.GetComponent<SpriteRenderer>().color = currentFloor.GetComponentInChildren<SpriteRenderer>().color;
             newBuild2.GetComponent<SpriteRenderer>().flipY = true;
             addedFrills.Add(newBuild);
             addedFrills.Add(newBuild2);
@@ -160,6 +164,7 @@ public class TowerAdditions : MonoBehaviour
             {
                 GameObject newBuild = Instantiate(woodenTriangle, newTriangle, Quaternion.identity, currentFloor.transform);
                 newBuild.GetComponent<SpriteRenderer>().flipX = true;
+                newBuild.GetComponent<SpriteRenderer>().color = currentFloor.GetComponentInChildren<SpriteRenderer>().color;
                 addedFrills.Add(newBuild);
             }
         }
@@ -169,6 +174,7 @@ public class TowerAdditions : MonoBehaviour
             if (!AlreadyThere(newTriangle))
             {
                 GameObject newBuild = Instantiate(woodenTriangle, newTriangle, Quaternion.identity, currentFloor.transform);
+                newBuild.GetComponent<SpriteRenderer>().color = currentFloor.GetComponentInChildren<SpriteRenderer>().color;
                 addedFrills.Add(newBuild);
             }
         }

@@ -3,44 +3,25 @@ using UnityEngine;
 public class Trap : MonoBehaviour
 {
     [SerializeField] GameObject trap;
-    [SerializeField] GameObject range;
-    [SerializeField] SpriteRenderer baseSprite;
-    [SerializeField] Animator idleAnim;
     [SerializeField] float yOffset;
     [SerializeField] bool hasAbility;
     [SerializeField] bool isLarge;
     [SerializeField] bool reloadTime;
     [SerializeField] GameObject cardHolster;
+    [SerializeField] bool active;
 
-    private void Awake()
-    {
-        DisableTrap();
-        gameObject.transform.position = gameObject.transform.position + (Vector3.up * yOffset);
-    }
-    public void DisableTrap()
+    bool canAttack;
+
+    public void DisableTrap() //for when placement happens
     {
         Debug.Log("danny");
-        range.SetActive(false);
+        active = false;
     }
-    public void EnableTrap()
+    public void EnableTrap()//for when placement happens
     {
         Debug.Log("gonzales");
-        range.SetActive(true);
+        active = true;
     }
-    public void Activate()
-    {
-        trap.SetActive(true);
-        baseSprite.enabled = false;
-        if (idleAnim != null) idleAnim.enabled = false;
-    }
-
-    public void Deactivate()
-    {
-        trap.SetActive(false);
-        baseSprite.enabled = true;
-        if (idleAnim != null) idleAnim.enabled = true;
-    }
-
     public void Rotate()
     {
         gameObject.transform.Rotate(0, 180, 0);
@@ -59,6 +40,33 @@ public class Trap : MonoBehaviour
     public float GetCost()
     {
         return cardHolster.GetComponent<CardHolsterGraphics>().GetCost();
+    }
+
+    public bool GetCanAttack()
+    {
+        return canAttack;
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if(collision.tag == "Mouse")
+        {
+            Debug.Log("MOUSECOLLIDED");
+            if (active)
+            {
+                canAttack = true;
+            }
+        }
+       
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Mouse")
+        {
+            Debug.Log("MOUSE LEFT");
+            canAttack = false;
+        }
     }
 
 }

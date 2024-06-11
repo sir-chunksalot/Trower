@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 
 public class TowerBuilder : MonoBehaviour
 {
-    [SerializeField] GameObject[] traps;
-    [SerializeField] GameObject[] floors;
+    [SerializeField] GameObject[] traps; //FOR TRAP TYPES
+    [SerializeField] GameObject[] floors; //FOR FLOOR TYPES
     [SerializeField] GameObject potentialFloor;
     [SerializeField] float opacity;
     [SerializeField] GameObject orbs;
@@ -28,11 +28,11 @@ public class TowerBuilder : MonoBehaviour
     GameObject sellBombObject;
     CameraController cameraController;
 
-    private List<GameObject> placedFloors = new List<GameObject>();
-    private List<GameObject> floorPapas = new List<GameObject>();
+    private List<GameObject> placedFloors = new List<GameObject>(); //LIST OF PLACED INDIVIDUAL FLOORS
+    private List<GameObject> floorPapas = new List<GameObject>(); //LIST OF PLACED GROUPED FLOOR TYPES
     //private List<GameObject> trapTypes = new List<GameObject>();
-    private List<GameObject> floorTypes = new List<GameObject>();
-    private List<GameObject> potentialFloors = new List<GameObject>();
+    private List<GameObject> floorTypes = new List<GameObject>();//assigns the floor types at runtime
+    private List<GameObject> potentialFloors = new List<GameObject>();//potential spots a floor could spawn (saved as instantiated gameobjects in valid spots, i did this for debugging)
     private List<GameObject> ladders = new List<GameObject>();
     List<Vector3> floorSpawnSpots = new List<Vector3>();
     Vector3 nextFloorPos;
@@ -140,7 +140,7 @@ public class TowerBuilder : MonoBehaviour
         }
     }
 
-    public void CurrentFloor(string floorName)
+    public void CurrentFloor(string floorName) //CALLED FIRST BY THE BUILD SELECT SCRIPT
     {
         NewPotentialFloors();
         placingFloor = true;
@@ -593,6 +593,11 @@ public class TowerBuilder : MonoBehaviour
         return placingFloor;
     }
 
+    public void AddPlacedFloor(GameObject floor) //used by other scripts whenever a floor is spawned in the gameworld without this scripts permission. its added to the list so other scripts can see it 
+    {
+        placedFloors.Add(floor);
+    }
+
     private IEnumerator GenerateNewWalls() //for some reason you have to wait a little bit or it breaks. dont ask me
     {
         yield return new WaitForSeconds(.01f);
@@ -604,6 +609,8 @@ public class TowerBuilder : MonoBehaviour
         yield return new WaitForSeconds(time);
         Destroy(target);
     }
+
+
     private void Cleanup()
     {
         DestroyPotentialFloors();

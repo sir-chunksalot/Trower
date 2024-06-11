@@ -19,7 +19,8 @@ public class CameraController : MonoBehaviour
         {
             if(time != 0)
             {
-                StartCoroutine(AutoCameraTransistion(time, vCams[count]));
+                //StartCoroutine(AutoCameraTransistion(time, vCams[count]));
+                //for testing uncomment later
             }
             count++;
         }
@@ -30,7 +31,7 @@ public class CameraController : MonoBehaviour
         ActivateCamera(cam);
     }
 
-    private void ActivateCamera(GameObject cam)
+    public void ActivateCamera(GameObject cam)
     {
         cam.GetComponent<CinemachineVirtualCamera>().Priority = 1;
         foreach (GameObject vcam in vCams)

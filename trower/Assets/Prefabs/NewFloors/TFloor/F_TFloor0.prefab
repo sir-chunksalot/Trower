@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 8361506290885205578}
   - component: {fileID: 9090257048786869226}
   m_Layer: 10
-  m_Name: Floor2
+  m_Name: Floor1
   m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,7 +116,7 @@ Transform:
   m_GameObject: {fileID: 101756897464196395}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: -3.68, z: 1}
+  m_LocalPosition: {x: 0, y: -3.78, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -168,7 +168,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 28.219536, y: 4.7400002}
+  m_Size: {x: 40.96, y: 5.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -210,8 +210,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 14.109768, y: 2.3700001}
-    newSize: {x: 28.219536, y: 4.7400002}
+    oldSize: {x: 20.48, y: 2.56}
+    newSize: {x: 40.96, y: 5.12}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -712,8 +712,8 @@ Transform:
   m_Children:
   - {fileID: 7028475802263316941}
   - {fileID: 7295615244322601685}
-  - {fileID: 8178442682697988027}
   - {fileID: 3645728470976942393}
+  - {fileID: 8178442682697988027}
   m_Father: {fileID: 6990494056295336074}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1001382221844012608
@@ -920,8 +920,8 @@ Transform:
   m_Children:
   - {fileID: 2093207505294935687}
   - {fileID: 3307486054207532006}
-  - {fileID: 2973600269270999977}
   - {fileID: 6701537946595169418}
+  - {fileID: 2973600269270999977}
   m_Father: {fileID: 1985259523724561259}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1590936740439931941
@@ -938,7 +938,7 @@ GameObject:
   - component: {fileID: 3924205056280307366}
   - component: {fileID: 4866673820098862195}
   m_Layer: 10
-  m_Name: Floor2
+  m_Name: Floor1
   m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -953,7 +953,7 @@ Transform:
   m_GameObject: {fileID: 1590936740439931941}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: -3.68, z: 1}
+  m_LocalPosition: {x: 0, y: -3.78, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1005,7 +1005,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 28.219536, y: 4.7400002}
+  m_Size: {x: 40.96, y: 5.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1047,8 +1047,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 14.109768, y: 2.3700001}
-    newSize: {x: 28.219536, y: 4.7400002}
+    oldSize: {x: 20.48, y: 2.56}
+    newSize: {x: 40.96, y: 5.12}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -1585,8 +1585,8 @@ Transform:
   m_Children:
   - {fileID: 4645221516712220953}
   - {fileID: 6210997629016477921}
-  - {fileID: 3916278410138252131}
   - {fileID: 2992495970839099901}
+  - {fileID: 3916278410138252131}
   m_Father: {fileID: 8900976377934182701}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2426866453736322795
@@ -1840,7 +1840,7 @@ GameObject:
   - component: {fileID: 5887396394732456640}
   - component: {fileID: 1212355757695809130}
   m_Layer: 7
-  m_Name: Floor2
+  m_Name: Floor1
   m_TagString: EnemyFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2415,7 +2415,7 @@ GameObject:
   - component: {fileID: 6470674671465581076}
   - component: {fileID: 3821272023683008864}
   m_Layer: 10
-  m_Name: Floor2
+  m_Name: Floor1
   m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2430,7 +2430,7 @@ Transform:
   m_GameObject: {fileID: 4190810108338832392}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: -3.68, z: 1}
+  m_LocalPosition: {x: 0, y: -3.78, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2482,7 +2482,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 28.219536, y: 4.7400002}
+  m_Size: {x: 40.96, y: 5.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -2524,8 +2524,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 14.109768, y: 2.3700001}
-    newSize: {x: 28.219536, y: 4.7400002}
+    oldSize: {x: 20.48, y: 2.56}
+    newSize: {x: 40.96, y: 5.12}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -3008,7 +3008,7 @@ GameObject:
   - component: {fileID: 1245758718721756630}
   - component: {fileID: 2379010465588220365}
   m_Layer: 7
-  m_Name: Floor1
+  m_Name: Floor2
   m_TagString: EnemyFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3586,7 +3586,7 @@ Transform:
   m_GameObject: {fileID: 5258244534853812327}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: -3.68, z: 1}
+  m_LocalPosition: {x: 0, y: -3.78, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3638,7 +3638,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 28.219536, y: 4.7400002}
+  m_Size: {x: 40.96, y: 5.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -3680,8 +3680,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 14.109768, y: 2.3700001}
-    newSize: {x: 28.219536, y: 4.7400002}
+    oldSize: {x: 20.48, y: 2.56}
+    newSize: {x: 40.96, y: 5.12}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -3830,7 +3830,7 @@ GameObject:
   - component: {fileID: 260050417584087280}
   - component: {fileID: 4584122666825458489}
   m_Layer: 10
-  m_Name: Floor1
+  m_Name: Floor2
   m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3845,7 +3845,7 @@ Transform:
   m_GameObject: {fileID: 5983704737274665185}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.68, z: 1}
+  m_LocalPosition: {x: 0, y: 3.78, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3897,7 +3897,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 28.219536, y: 4.7400002}
+  m_Size: {x: 40.96, y: 5.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -3939,8 +3939,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 14.109768, y: 2.3700001}
-    newSize: {x: 28.219536, y: 4.7400002}
+    oldSize: {x: 20.48, y: 2.56}
+    newSize: {x: 40.96, y: 5.12}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -5280,7 +5280,7 @@ GameObject:
   - component: {fileID: 212265585609793660}
   - component: {fileID: 6846848198095038067}
   m_Layer: 10
-  m_Name: Floor1
+  m_Name: Floor2
   m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5295,7 +5295,7 @@ Transform:
   m_GameObject: {fileID: 8048214664224574200}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.68, z: 1}
+  m_LocalPosition: {x: 0, y: 3.78, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5347,7 +5347,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 28.219536, y: 4.7400002}
+  m_Size: {x: 40.96, y: 5.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -5389,8 +5389,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 14.109768, y: 2.3700001}
-    newSize: {x: 28.219536, y: 4.7400002}
+    oldSize: {x: 20.48, y: 2.56}
+    newSize: {x: 40.96, y: 5.12}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -5939,7 +5939,7 @@ GameObject:
   - component: {fileID: 2522387340898197268}
   - component: {fileID: 2559274900827451559}
   m_Layer: 10
-  m_Name: Floor1
+  m_Name: Floor2
   m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5954,7 +5954,7 @@ Transform:
   m_GameObject: {fileID: 9075532704436196880}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.68, z: 1}
+  m_LocalPosition: {x: 0, y: 3.78, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6006,7 +6006,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 28.219536, y: 4.7400002}
+  m_Size: {x: 40.96, y: 5.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -6048,8 +6048,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 14.109768, y: 2.3700001}
-    newSize: {x: 28.219536, y: 4.7400002}
+    oldSize: {x: 20.48, y: 2.56}
+    newSize: {x: 40.96, y: 5.12}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -6127,7 +6127,7 @@ Transform:
   m_GameObject: {fileID: 9091871935818196039}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.68, z: 1}
+  m_LocalPosition: {x: 0, y: 3.78, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6179,7 +6179,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 28.219536, y: 4.7400002}
+  m_Size: {x: 40.96, y: 5.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -6221,8 +6221,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 14.109768, y: 2.3700001}
-    newSize: {x: 28.219536, y: 4.7400002}
+    oldSize: {x: 20.48, y: 2.56}
+    newSize: {x: 40.96, y: 5.12}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0

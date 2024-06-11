@@ -4,78 +4,78 @@ using UnityEngine;
 
 public class HeroSpawner : MonoBehaviour
 {
-    [SerializeField] private float startSpawnRate;
-    [SerializeField] private float spawnRateVariance;
-    [SerializeField] private float gracePeriod;
-    [SerializeField] private float increaseRate;
-    [SerializeField] GameObject[] heroes;
-    [SerializeField] GameObject[] heroSpawnList2;
-    [SerializeField] GameObject progressBarObject;
-    [SerializeField] GameObject particle;
+    //[SerializeField] private float startSpawnRate;
+    //[SerializeField] private float spawnRateVariance;
+    //[SerializeField] private float gracePeriod;
+    //[SerializeField] private float increaseRate;
+    //[SerializeField] GameObject[] heroes;
+    //[SerializeField] GameObject[] heroSpawnList2;
+    //[SerializeField] GameObject progressBarObject;
+    //[SerializeField] GameObject particle;
 
-    private float spawnRate;
+    //private float spawnRate;
 
-    public event EventHandler OnHeroDeath;
+    //public event EventHandler OnHeroDeath;
 
-    ProgressBar progressBar;
-    //Spawner spawner;
+    //ProgressBar progressBar;
+    ////Spawner spawner;
 
 
-    void Start()
-    {
-        spawnRate = startSpawnRate;
-        //spawner = gameObject.GetComponent<Spawner>();
+    //void Start()
+    //{
+    //    spawnRate = startSpawnRate;
+    //    //spawner = gameObject.GetComponent<Spawner>();
 
-        progressBar = progressBarObject.GetComponent<ProgressBar>();
-        //progressBar.OnWaveStart += SpawnWave;
+    //    progressBar = progressBarObject.GetComponent<ProgressBar>();
+    //    //progressBar.OnWaveStart += SpawnWave;
 
-        //StartCoroutine(GracePeriod());
+    //    //StartCoroutine(GracePeriod());
 
-    }
+    //}
 
-    public List<GameObject> WaveGenerate(int enemyCountLowerbound, int enemyCountUpperbound, float waveDifficulty)
-    {
-        int enemyCount = UnityEngine.Random.Range(enemyCountLowerbound, enemyCountUpperbound);
-        List<GameObject> validSpawns = new List<GameObject>();
-        foreach (GameObject hero in heroes) //seperates all the valid heroes from the invalids
-        {
-            if (hero.GetComponent<Hero>().GetDifficulty() >= waveDifficulty)
-            {
-                validSpawns.Add(hero);
-            }
-        }
-        List<GameObject> heroPool = new List<GameObject>();
+    //public List<GameObject> WaveGenerate(int enemyCountLowerbound, int enemyCountUpperbound, float waveDifficulty)
+    //{
+    //    int enemyCount = UnityEngine.Random.Range(enemyCountLowerbound, enemyCountUpperbound);
+    //    List<GameObject> validSpawns = new List<GameObject>();
+    //    foreach (GameObject hero in heroes) //seperates all the valid heroes from the invalids
+    //    {
+    //        if (hero.GetComponent<Hero>().GetDifficulty() >= waveDifficulty)
+    //        {
+    //            validSpawns.Add(hero);
+    //        }
+    //    }
+    //    List<GameObject> heroPool = new List<GameObject>();
 
-        foreach (GameObject hero in validSpawns) //adds the valid heroes to a spawn pool, weighting it more favorably towards those with a higher spawn weight
-        {
-            float spawnWeight = hero.GetComponent<Hero>().GetSpawnWeight();
-            for (int i = 0; i < spawnWeight; i++)
-            {
-                heroPool.Add(hero);
-            }
-        }
+    //    foreach (GameObject hero in validSpawns) //adds the valid heroes to a spawn pool, weighting it more favorably towards those with a higher spawn weight
+    //    {
+    //        float spawnWeight = hero.GetComponent<Hero>().GetSpawnWeight();
+    //        for (int i = 0; i < spawnWeight; i++)
+    //        {
+    //            heroPool.Add(hero);
+    //        }
+    //    }
 
-        int heroPoolSize = heroPool.Count;
-        List<GameObject> spawnList = new List<GameObject>();
-        for (int i = 0; i < enemyCount; i++) //the final hero spawn list is made with a random supply of the hero pool
-        {
-            int chosenHero = UnityEngine.Random.Range(0, heroPoolSize);
-            spawnList.Add(heroPool[chosenHero]);
-        }
+    //    int heroPoolSize = heroPool.Count;
+    //    List<GameObject> spawnList = new List<GameObject>();
+    //    for (int i = 0; i < enemyCount; i++) //the final hero spawn list is made with a random supply of the hero pool
+    //    {
+    //        int chosenHero = UnityEngine.Random.Range(0, heroPoolSize);
+    //        spawnList.Add(heroPool[chosenHero]);
+    //    }
 
-        return spawnList;
+    //    return spawnList;
 
-    }
+    //}
 
-    public void SpawnWave(List<GameObject> spawnList)
-    {
+    //public void SpawnWave(List<GameObject> spawnList)
+    //{
 
-    }
+    //}
 
-    public void HeroDied(GameObject hero)
-    {
-        OnHeroDeath?.Invoke(gameObject, EventArgs.Empty);
-    }
+    //public void HeroDied(GameObject hero)
+    //{
+    //    OnHeroDeath?.Invoke(gameObject, EventArgs.Empty);
+    //}
     //private IEnumerator SpawnHero(GameObject[] heroes, int amount, float reduceSpawnRatePercentage = 1)
     //{
     //    if (amount > 0)

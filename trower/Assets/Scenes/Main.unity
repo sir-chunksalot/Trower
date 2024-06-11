@@ -1656,6 +1656,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 737570450}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1737083321 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3859904488408052194, guid: 758bad80798c45543a998d351c0de2f4, type: 3}
+  m_PrefabInstance: {fileID: 9010479775139818471}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1737083322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1737083321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &1786674063
 GameObject:
   m_ObjectHideFlags: 0
@@ -7719,7 +7747,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 14.109768, y: 2.3700001}
+    oldSize: {x: 20.48, y: 2.56}
     newSize: {x: 28.219536, y: 4.7400002}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -8272,7 +8300,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 14.109768, y: 2.3700001}
+    oldSize: {x: 20.48, y: 2.56}
     newSize: {x: 28.219536, y: 4.7400002}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -8626,11 +8654,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7516569324054350313, guid: b956161c1176b504882b2f7db06d792f, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 14.109768
+      value: 20.48
       objectReference: {fileID: 0}
     - target: {fileID: 7516569324054350313, guid: b956161c1176b504882b2f7db06d792f, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 2.3700001
+      value: 2.56
       objectReference: {fileID: 0}
     - target: {fileID: 9170505062722287938, guid: b956161c1176b504882b2f7db06d792f, type: 3}
       propertyPath: m_Enabled
@@ -10089,7 +10117,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 14.109768, y: 2.3700001}
+    oldSize: {x: 20.48, y: 2.56}
     newSize: {x: 28.219536, y: 4.7400002}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -10539,7 +10567,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 14.109768, y: 2.3700001}
+    oldSize: {x: 20.48, y: 2.56}
     newSize: {x: 28.219536, y: 4.7400002}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -12521,7 +12549,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 14.109768, y: 2.3700001}
+    oldSize: {x: 20.48, y: 2.56}
     newSize: {x: 28.219536, y: 4.7400002}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -13210,7 +13238,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 14.109768, y: 2.3700001}
+    oldSize: {x: 20.48, y: 2.56}
     newSize: {x: 28.219536, y: 4.7400002}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -13771,7 +13799,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3859904488408052194, guid: 758bad80798c45543a998d351c0de2f4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1737083322}
   m_SourcePrefab: {fileID: 100100000, guid: 758bad80798c45543a998d351c0de2f4, type: 3}
 --- !u!114 &9010821128233027551
 MonoBehaviour:
@@ -13897,7 +13928,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 14.109768, y: 2.3700001}
+    oldSize: {x: 20.48, y: 2.56}
     newSize: {x: 28.219536, y: 4.7400002}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -14097,7 +14128,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 14.109768, y: 2.3700001}
+    oldSize: {x: 20.48, y: 2.56}
     newSize: {x: 28.219536, y: 4.7400002}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
