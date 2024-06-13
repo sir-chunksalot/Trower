@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,12 +7,19 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject devMenu;
+    [SerializeField] GameObject cooldownTimer;
+    [SerializeField] GameObject dialogueManager;
 
+    RectTransform cooldownTimerTransform;
+    TrapManager trapManager;
     TMP_Text resourceText;
     TMP_Text coinText;
 
     private void Awake()
     {
+        trapManager = this.gameObject.GetComponent<TrapManager>();
+        trapManager.onSelectedTrapChange += SelectedTrapChange;
+        cooldownTimerTransform = cooldownTimer.GetComponent<RectTransform>();
         //resourceText = resourceTextBox.GetComponent<TMP_Text>();
         //coinText = coinTextBox.GetComponent<TMP_Text>();
 
@@ -25,6 +33,35 @@ public class UIManager : MonoBehaviour
 
 
     }
+
+    public void RegenUIElements()
+    {
+        MoveCooldownTimer();
+    }
+
+    public void SelectedTrapChange(object sender, EventArgs e)
+    {
+        MoveCooldownTimer();
+    }
+
+    public GameObject GetDialogueManager()
+    {
+        return dialogueManager;
+    }
+
+    private void MoveCooldownTimer()
+    {
+        GameObject trap = trapManager.GetSelectedTrap();
+        Vector3 spawnPos = new Vector3(10000, 10000);
+        if (trap != null)
+        {
+            spawnPos = trap.transform.position;
+            spawnPos = new Vector2(spawnPos.x, spawnPos.y + 3);
+        }
+
+        cooldownTimerTransform.transform.position = Camera.main.WorldToScreenPoint(spawnPos);
+    }
+
 
     public void GainResoures(float count)
     {

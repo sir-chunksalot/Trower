@@ -489,12 +489,12 @@ public class TowerBuilder : MonoBehaviour
             }
             floorPapas.Remove(targetFloor.transform.parent.gameObject);
             Destroy(targetFloor.transform.parent.gameObject);
-            
+
 
             GameObject explody = Instantiate(explosionEffect, Vector3.zero, Quaternion.identity, UIparent.transform);
             explody.transform.position = explosionSpawnSpot * 25;
             onTowerSell?.Invoke(gameObject, EventArgs.Empty);
-            
+
             StartCoroutine(DestroyAfterTime(explody, 1.5f));
         }
         placingBomb = false;

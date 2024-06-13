@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HeroManager : MonoBehaviour
@@ -9,6 +8,7 @@ public class HeroManager : MonoBehaviour
     [SerializeField] Sprite[] bloodEffects;
     public void KillHero(GameObject hero)
     {
+        Debug.Log("hero is being killed :sob:");
         Vector3 spawnPos = hero.transform.position;
         Destroy(hero);
         GameObject blood = Instantiate(bloodAnim, spawnPos, Quaternion.identity, gameObject.transform);

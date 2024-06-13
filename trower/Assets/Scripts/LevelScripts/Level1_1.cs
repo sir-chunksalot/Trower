@@ -1,6 +1,5 @@
 using MoreMountains.Feedbacks;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,7 +15,8 @@ public class Level1_1 : MonoBehaviour
     [SerializeField] GameObject coffin;
     [SerializeField] GameObject VCAM1;
     [SerializeField] GameObject VCAM2;
-    [SerializeField] GameObject VCAM3;
+    [SerializeField] GameObject MainView;
+    [SerializeField] GameObject VCAMPanRight;
     [SerializeField] SpriteRenderer crack;
     [SerializeField] Sprite[] cracks;
     [SerializeField] GameObject flower;
@@ -35,6 +35,7 @@ public class Level1_1 : MonoBehaviour
     [SerializeField] GameObject arrow;
     [SerializeField] GameObject blackBG;
     [SerializeField] GameObject tvScreen;
+    [SerializeField] GameObject firstEnemy;
 
     //ui
     [SerializeField] GameObject doorsUI;
@@ -54,32 +55,50 @@ public class Level1_1 : MonoBehaviour
     [SerializeField] GameObject rubbleParticle1;
     [SerializeField] GameObject rubbleParticle2;
 
+    //tooltips
+    [SerializeField] GameObject dialogueManagerObj;
+    [SerializeField] GameObject trapTeacher;
+
+    //starterEnemies
+    [SerializeField] GameObject[] starterEnemies;
+
     CameraController camController;
     int shakeCount;
     bool gottaWait;
+    bool beenThereDoneThat;
     void Start()
     {
+        Debug.Log(gameObject + "snoop");
+        WaveManager waveManager = gameManager.GetComponent<WaveManager>();
+        Debug.Log(waveManager + "snoopy");
+        foreach (GameObject enemy in starterEnemies)
+        {
+            Debug.Log(enemy + " " + waveManager + " " + starterEnemies + "squad");
+            waveManager.AddEnemyToList(enemy);
+        }
+        camController = this.GetComponent<CameraController>();
 
-        camController = gameManager.GetComponent<CameraController>();
-
-        if(inIntroduction)
+        if (inIntroduction)
         {
             GoInside();
             camController.ActivateCamera(VCAM1);
-            
+
         }
         else
         {
             GoOutside();
-            camController.ActivateCamera(VCAM3);
-            
+            camController.ActivateCamera(MainView);
+
         }
     }
 
 
+
+
+
     public void Grow(InputAction.CallbackContext context)
     {
-        if(context.performed && inIntroduction)
+        if (context.performed && inIntroduction)
         {
             if (shakeCount <= 2 && !gottaWait)
             {
@@ -91,7 +110,7 @@ public class Level1_1 : MonoBehaviour
                 crack.sprite = cracks[shakeCount];
                 StartCoroutine(ShakeWait(.5f));
             }
-            if(shakeCount >= 2 && !gottaWait)
+            if (shakeCount >= 2 && !gottaWait)
             {
                 gottaWait = true;
                 flower.GetComponent<Animator>().enabled = true;
@@ -102,7 +121,7 @@ public class Level1_1 : MonoBehaviour
             flower.GetComponent<Animator>().SetFloat("ShakeCount", shakeCount);
         }
 
-        if(context.canceled && inIntroduction)
+        if (context.canceled && inIntroduction)
         {
             pressSpaceShadow.SetActive(false);
         }
@@ -155,7 +174,7 @@ public class Level1_1 : MonoBehaviour
         yield return new WaitForSeconds(time);
         superShakeEffect.PlayFeedbacks();
         StartCoroutine(DelayBeforeOtherEffects(time));
-        
+
     }
     private IEnumerator ShakeWait(float time)
     {
@@ -230,12 +249,14 @@ public class Level1_1 : MonoBehaviour
         doors.SetActive(false);
         flower.SetActive(false);
         blackBG.SetActive(false);
-        tvScreen.SetActive(false);
+        tvScreen.SetActive(true);
         lightsOut.SetActive(false);
         gameManager.GetComponent<TowerBuilder>().AddPlacedFloor(rightFloor);
 
 
         arrow2.SetActive(true);
+
+        StartCoroutine(ExtraInfoForSlowpokes());
 
     }
 
@@ -244,7 +265,7 @@ public class Level1_1 : MonoBehaviour
         pressSpaceUI.SetActive(true);
         flower.SetActive(true);
         blackBG.SetActive(true);
-        tvScreen.SetActive(true);
+        tvScreen.SetActive(false);
         doors.SetActive(true);
         shadow.SetActive(true);
         redTorches[0].SetActive(true);
@@ -252,6 +273,57 @@ public class Level1_1 : MonoBehaviour
         inside.SetActive(true);
         lightsOut.SetActive(true);
         arrow2.SetActive(false);
+    }
+
+    private IEnumerator ExtraInfoForSlowpokes()
+    {
+        yield return new WaitForSeconds(5);
+    }
+
+    public void OnSpacePressed(InputAction.CallbackContext context)
+    {
+        if (context.performed && !beenThereDoneThat)
+        {
+            beenThereDoneThat = true;
+            StartCoroutine(CheckIfGuyDied());
+        }
+    }
+
+    private IEnumerator CheckIfGuyDied()
+    {
+        yield return new WaitForSeconds(1);
+        if (firstEnemy == null)
+        {
+            Debug.Log("they killed him bois");
+            DialogueManager dialogueManager = dialogueManagerObj.GetComponent<DialogueManager>();
+            dialogueManager.DiscoverCursorSwitch(false);
+            trapTeacher.SetActive(false);
+            camController.ActivateCamera(VCAMPanRight, 5);
+            StartCoroutine(WaitForCam());
+        }
+        else
+        {
+            StartCoroutine(CheckIfGuyDied());
+            Debug.Log("we didnt get him :sob: BOIS");
+        }
+    }
+
+    private IEnumerator WaitForCam()
+    {
+        yield return new WaitForSeconds(7);
+        gameManager.GetComponent<WaveManager>().SwitchAttackPhase();
+        StartCoroutine(RunForestRun());
+
+    }
+
+    private IEnumerator RunForestRun()
+    {
+        yield return new WaitForSeconds(4);
+        foreach (GameObject enemy in starterEnemies)
+        {
+            enemy.GetComponent<Animator>().enabled = true;
+        }
+
     }
 
 }

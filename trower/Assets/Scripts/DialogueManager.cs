@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -10,7 +9,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] GameObject message;
     [SerializeField] GameObject messageAnim;
     private List<GameObject> dialogueBoxes;
-    private List<string> dialogueMessages;
+    private List<GameObject> dialogueMessages;
     private List<Vector2> messageOffset;
 
     private List<GameObject> activeDialogues;
@@ -19,12 +18,12 @@ public class DialogueManager : MonoBehaviour
     {
         dialogueBoxes = new List<GameObject>();
         activeDialogues = new List<GameObject>();
-        dialogueMessages = new List<string>();
+        dialogueMessages = new List<GameObject>();
         messageOffset = new List<Vector2>();
     }
     public void ReadMessage(GameObject box) //instantiates text
     {
-        if(activeDialogues.Count >= 1)
+        if (activeDialogues.Count >= 1)
         {
             return;
         }
@@ -56,19 +55,14 @@ public class DialogueManager : MonoBehaviour
 
 
         StartCoroutine(AnimWait(screenPos, index, messageAnimTransform.gameObject));
-
-        
-
-        string message = dialogueMessages[index];
-        Debug.Log("LATEATNIGHT  " + message);
     }
     private IEnumerator AnimWait(Vector3 pos, int index, GameObject anim)
     {
         yield return new WaitForSeconds(.1f);
         Destroy(anim);
-        RectTransform messageTransform = Instantiate(message, Vector3.zero, Quaternion.identity, dialogueBoxes[index].transform).GetComponent<RectTransform>();
+        RectTransform messageTransform = Instantiate(dialogueMessages[index], Vector3.zero, Quaternion.identity, dialogueBoxes[index].transform).GetComponent<RectTransform>();
 
-        
+
         Vector3 uiPos = new Vector3(pos.x, pos.y, pos.z);
 
         messageTransform.position = uiPos;
@@ -91,7 +85,7 @@ public class DialogueManager : MonoBehaviour
         activeDialogues.Clear();
     }
 
-    public void AddDialogueBox(GameObject box, string message, float offsetX, float offsetY) //called by new dialogue boxes to add them to the list
+    public void AddDialogueBox(GameObject box, GameObject message, float offsetX, float offsetY) //called by new dialogue boxes to add them to the list
     {
         Debug.Log("MARCELIEN" + box + dialogueBoxes);
         dialogueBoxes.Add(box); //dialogue box contains the location and size of the box (using collider and transform)
@@ -103,7 +97,7 @@ public class DialogueManager : MonoBehaviour
     public void DiscoverCursorSwitch(bool isDiscovering) //called by the dialogue boxes whenever you hover over the box
     {
         FakeMouse fakeMouse = fakeMouseOBJ.GetComponent<FakeMouse>();
-        if(isDiscovering)
+        if (isDiscovering)
         {
             fakeMouse.SwitchCursor("discover");
         }
@@ -111,7 +105,7 @@ public class DialogueManager : MonoBehaviour
         {
             fakeMouse.SwitchCursor("base");
         }
-        
+
     }
 
 }

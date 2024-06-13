@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4106333125104696514}
   - component: {fileID: 1363305110411394843}
   m_Layer: 5
-  m_Name: DialogueBox
+  m_Name: USESPACETOACTIVATETRAPS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

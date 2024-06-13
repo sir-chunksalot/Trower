@@ -10,14 +10,17 @@ public class CameraController : MonoBehaviour
     //[SerializeField] float decreaseFactor;
     [SerializeField] List<GameObject> vCams;
     [SerializeField] List<float> times; //leave blank if you dont want them to transistion automatically
-
+    [SerializeField] GameObject[] UIelements; //anything and everything you might want to turn off when camera pans
+    UIManager uiManager;
 
     private void Start()
     {
+        GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        uiManager = gameManager.GetComponent<UIManager>();
         int count = 0;
-        foreach(float time in times)
+        foreach (float time in times)
         {
-            if(time != 0)
+            if (time != 0)
             {
                 //StartCoroutine(AutoCameraTransistion(time, vCams[count]));
                 //for testing uncomment later
@@ -31,24 +34,36 @@ public class CameraController : MonoBehaviour
         ActivateCamera(cam);
     }
 
-    public void ActivateCamera(GameObject cam)
+    public void ActivateCamera(GameObject cam, float time = 0)
     {
         cam.GetComponent<CinemachineVirtualCamera>().Priority = 1;
         foreach (GameObject vcam in vCams)
         {
-            if(vcam != cam)
+            if (vcam != cam)
             {
                 vcam.GetComponent<CinemachineVirtualCamera>().Priority = 0;
             }
-            
+
         }
+
+        foreach (GameObject ui in UIelements)
+        {
+            ui.SetActive(false);
+        }
+        StartCoroutine(WaitForCameraPan(time));
     }
 
-    class CamTransistions
+    private IEnumerator WaitForCameraPan(float time)
     {
-        public float time;
-        public GameObject vCams;
+        yield return new WaitForSeconds(time);
+        foreach (GameObject ui in UIelements)
+        {
+            ui.SetActive(true);
+        }
+        uiManager.RegenUIElements();
+
     }
+
     //private float shake;
     //private Vector3 cameraPos;
 

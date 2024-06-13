@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -48,11 +46,11 @@ public class FakeMouse : MonoBehaviour
 
     public void SwitchCursor(string cursor)
     {
-        if(cursor == "base")
+        if (cursor == "base")
         {
             mouseCursor.texture = baseMouse;
         }
-        if(cursor == "discover")
+        if (cursor == "discover")
         {
             mouseCursor.texture = discoverMouse;
         }

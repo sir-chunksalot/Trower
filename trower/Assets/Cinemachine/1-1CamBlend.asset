@@ -25,7 +25,7 @@ MonoBehaviour:
         m_PostInfinity: 0
         m_RotationOrder: 0
   - m_From: CMVCAM
-    m_To: CMVCAM3
+    m_To: CMVCAM_MainView
     m_Blend:
       m_Style: 0
       m_Time: 2
@@ -35,11 +35,22 @@ MonoBehaviour:
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: CMVCAM3
+  - m_From: CMVCAM_MainView
     m_To: CMVCAM
     m_Blend:
       m_Style: 0
       m_Time: 2
+      m_CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - m_From: CMVCAM_MainView
+    m_To: CMVCAM_PanRight
+    m_Blend:
+      m_Style: 1
+      m_Time: 5
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []

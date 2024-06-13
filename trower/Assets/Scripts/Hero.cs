@@ -1,29 +1,85 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Hero : MonoBehaviour
 {
-    [SerializeField] GameObject GameManager;
+    [SerializeField] float speed;
+    WaveManager waveManager;
     HeroManager heroManager;
+    Rigidbody2D rb;
 
+    bool attackPhase;
+    bool facingRight;
+    bool isFalling;
     private void Start()
     {
-        heroManager = GameManager.GetComponent<HeroManager>();
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.gameObject.layer == 11) //trap layer
+        GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        heroManager = gameManager.GetComponent<HeroManager>();
+        waveManager = gameManager.GetComponent<WaveManager>();
+        waveManager.OnAttackPhaseStart += AttackPhase;
+        rb = gameObject.GetComponent<Rigidbody2D>();
+
+        if (gameObject.transform.position.x > 0)
         {
-            heroManager.KillHero(gameObject);
+            facingRight = true;
+        }
+        else
+        {
+            facingRight = false;
+        }
+    }
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if(collision.gameObject.layer == 11) //trap layer
+    //    {
+    //        heroManager.KillHero(gameObject);
+    //    }
+    //}
+
+    private void Update()
+    {
+        if (attackPhase)
+        {
+            Vector2 dir = new Vector2(1, 0) * speed;
+            if (facingRight)
+            {
+                dir *= -1;
+            }
+
+            rb.velocity = dir;
+
         }
     }
 
 
+    private void AttackPhase(object sender, EventArgs e)
+    {
+        attackPhase = true;
+        StartCoroutine(RandomDelay());
+    }
 
+    private IEnumerator RandomDelay()
+    {
+        float seconds = UnityEngine.Random.Range(1, 101);
+        seconds = seconds / 100;
+        if (seconds > .5f)
+        {
+            seconds -= .5f;
+        }
+        yield return new WaitForSeconds(seconds);
+        gameObject.GetComponent<Animator>().SetTrigger("AttackPhase");
+    }
 
+    public bool GetFallingStatus()
+    {
+        return isFalling;
+    }
 
+    private void OnDestroy()
+    {
+        waveManager.OnAttackPhaseStart -= AttackPhase;
+    }
 
 
 

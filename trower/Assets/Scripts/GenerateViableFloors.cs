@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -128,23 +126,24 @@ public class GenerateViableFloors : MonoBehaviour
     {
         List<GameObject> totalFloorConnections = new List<GameObject>();
         List<GameObject> newFloorConnections = new List<GameObject>();
-        foreach(RaycastHit2D hit in ShootRaycasts(pos))
+        foreach (RaycastHit2D hit in ShootRaycasts(pos))
         {
             totalFloorConnections.Add(hit.collider.transform.parent.transform.parent.transform.gameObject);
             newFloorConnections.Add(hit.collider.transform.parent.transform.parent.transform.gameObject);
         }
 
-        foreach(GameObject floors in totalFloorConnections)
+        foreach (GameObject floors in totalFloorConnections)
         {
             Debug.Log("VALID FLOORS: " + floors.name);
         }
-        
+
         return totalFloorConnections;
     }
 
     public bool GetHasConnection(Vector3 pos)
     {
-        if(GenValidFloors(pos).Count >= 1) { //if it has even a single connections, its valid
+        if (GenValidFloors(pos).Count >= 1)
+        { //if it has even a single connections, its valid
             return true;
         }
         return false;
