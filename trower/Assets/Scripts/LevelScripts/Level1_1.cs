@@ -40,6 +40,13 @@ public class Level1_1 : MonoBehaviour
     //ui
     [SerializeField] GameObject doorsUI;
     [SerializeField] GameObject highlightUI;
+    [SerializeField] GameObject dialogueTriggerSlowpokes1;
+    [SerializeField] GameObject dialogueTriggerSlowpokes2;
+    [SerializeField] GameObject extraArrowForSlowpokes1;
+    [SerializeField] GameObject extraArrowForSlowpokes2;
+    [SerializeField] GameObject extraArrowForSlowpokes3;
+    [SerializeField] GameObject extraArrowForSlowpokes4;
+    [SerializeField] GameObject dialogueTriggerSecondSpike;
 
     //torches
     [SerializeField] GameObject[] redTorches;
@@ -49,6 +56,7 @@ public class Level1_1 : MonoBehaviour
     //level
     [SerializeField] GameObject rightFloor;
     [SerializeField] GameObject arrow2;
+    [SerializeField] GameObject arrowSpear;
 
 
     //particle effects
@@ -63,19 +71,15 @@ public class Level1_1 : MonoBehaviour
     [SerializeField] GameObject[] starterEnemies;
 
     CameraController camController;
+    WaveManager waveManager;
     int shakeCount;
     bool gottaWait;
     bool beenThereDoneThat;
     void Start()
     {
         Debug.Log(gameObject + "snoop");
-        WaveManager waveManager = gameManager.GetComponent<WaveManager>();
+        waveManager = gameManager.GetComponent<WaveManager>();
         Debug.Log(waveManager + "snoopy");
-        foreach (GameObject enemy in starterEnemies)
-        {
-            Debug.Log(enemy + " " + waveManager + " " + starterEnemies + "squad");
-            waveManager.AddEnemyToList(enemy);
-        }
         camController = this.GetComponent<CameraController>();
 
         if (inIntroduction)
@@ -104,6 +108,7 @@ public class Level1_1 : MonoBehaviour
             {
                 pressSpaceShadow.SetActive(true);
                 growFlowerEffect.PlayFeedbacks();
+                coffin.GetComponent<Animator>().SetTrigger("Shake");
                 Debug.Log("shook");
                 shakeCount++;
                 flower.GetComponent<SpriteRenderer>().sprite = flowerGrowthStages[shakeCount];
@@ -129,12 +134,12 @@ public class Level1_1 : MonoBehaviour
 
     private IEnumerator PanDown(float time)
     {
-        camController.ActivateCamera(VCAM2);
+        //camController.ActivateCamera(VCAM2);
         yield return new WaitForSeconds(time);
         coffin.SetActive(true);
         shadow.SetActive(false);
         shakeCount = 0;
-        StartCoroutine(SecondShaking(3f));
+        //StartCoroutine(SecondShaking(3f));
     }
 
     private IEnumerator DelayBeforeOtherEffects(float time)
@@ -256,7 +261,8 @@ public class Level1_1 : MonoBehaviour
 
         arrow2.SetActive(true);
 
-        StartCoroutine(ExtraInfoForSlowpokes());
+        //StartCoroutine(ExtraInfoForSlowpokes());
+        //re enable later
 
     }
 
@@ -275,10 +281,19 @@ public class Level1_1 : MonoBehaviour
         arrow2.SetActive(false);
     }
 
-    private IEnumerator ExtraInfoForSlowpokes()
+    private void OnTriggerEnter2D(Collider2D collision) //WHEN ENEMY BREACHES DEFENSES
     {
-        yield return new WaitForSeconds(5);
+        if(collision.tag == "PrisonGuard")
+        {
+            if (firstEnemy == null)
+            {
+                dialogueTriggerSecondSpike.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+                waveManager.SwitchDefensePhase(false);
+                arrowSpear.SetActive(true);
+            }
+        }
     }
+
 
     public void OnSpacePressed(InputAction.CallbackContext context)
     {
@@ -297,7 +312,15 @@ public class Level1_1 : MonoBehaviour
             Debug.Log("they killed him bois");
             DialogueManager dialogueManager = dialogueManagerObj.GetComponent<DialogueManager>();
             dialogueManager.DiscoverCursorSwitch(false);
-            trapTeacher.SetActive(false);
+
+            arrow2.SetActive(false);
+            dialogueTriggerSlowpokes1.SetActive(false);
+            dialogueTriggerSlowpokes2.SetActive(false);
+            extraArrowForSlowpokes1.SetActive(false);
+            extraArrowForSlowpokes2.SetActive(false);
+            extraArrowForSlowpokes3.SetActive(false);
+            extraArrowForSlowpokes4.SetActive(false);
+
             camController.ActivateCamera(VCAMPanRight, 5);
             StartCoroutine(WaitForCam());
         }
@@ -311,7 +334,7 @@ public class Level1_1 : MonoBehaviour
     private IEnumerator WaitForCam()
     {
         yield return new WaitForSeconds(7);
-        gameManager.GetComponent<WaveManager>().SwitchAttackPhase();
+        waveManager.SwitchAttackPhase(true);
         StartCoroutine(RunForestRun());
 
     }
@@ -325,5 +348,67 @@ public class Level1_1 : MonoBehaviour
         }
 
     }
+
+    private IEnumerator ExtraInfoForSlowpokes()
+    {
+        yield return new WaitForSeconds(20);
+        if (firstEnemy != null)
+        {
+            Debug.Log("Manual read");
+            dialogueTriggerSlowpokes1.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+            StartCoroutine(ExtraInfoForSlowpokes2());
+        }
+    }
+
+    private IEnumerator ExtraInfoForSlowpokes2()
+    {
+        yield return new WaitForSeconds(12);
+        if(firstEnemy != null)
+        {
+            Debug.Log("manual read 2");
+            dialogueTriggerSlowpokes1.SetActive(false);
+            dialogueTriggerSlowpokes2.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+            StartCoroutine(ExtraInfoForSlowpokes3());
+        }
+
+    }
+
+    private IEnumerator ExtraInfoForSlowpokes3()
+    {
+        yield return new WaitForSeconds(12);
+        if (firstEnemy != null)
+        {
+            extraArrowForSlowpokes1.SetActive(true);
+            StartCoroutine(ExtraInfoForSlowpokes4());
+        }
+
+    }
+    private IEnumerator ExtraInfoForSlowpokes4()
+    {
+        yield return new WaitForSeconds(12);
+        if (firstEnemy != null)
+        {
+            extraArrowForSlowpokes2.SetActive(true);
+            StartCoroutine(ExtraInfoForSlowpokes5());
+        }
+    }
+    private IEnumerator ExtraInfoForSlowpokes5()
+    {
+        yield return new WaitForSeconds(12);
+        if (firstEnemy != null)
+        {
+            extraArrowForSlowpokes3.SetActive(true);
+            StartCoroutine(ExtraInfoForSlowpokes6());
+        }
+    }
+    private IEnumerator ExtraInfoForSlowpokes6()
+    {
+        yield return new WaitForSeconds(12);
+        if (firstEnemy != null)
+        {
+            extraArrowForSlowpokes4.SetActive(true);
+        }
+    }
+
 
 }

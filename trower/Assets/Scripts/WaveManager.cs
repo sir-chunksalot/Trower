@@ -11,12 +11,11 @@ public class WaveManager : MonoBehaviour
     [SerializeField] GameObject bar;
 
     public event EventHandler OnAttackPhaseStart;
-    private List<GameObject> enemies;
+    public event EventHandler OnDefensePhaseStart;
 
     private bool attackPhase;
     private void Awake()
     {
-        enemies = new List<GameObject>();
         MakeProgressBar();
     }
 
@@ -43,19 +42,50 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-    public void AddEnemyToList(GameObject enemy)
+    public void SwitchDefensePhase(bool flashy)
     {
-        enemies.Add(enemy);
+        attackPhase = false;
+        if (flashy)
+        {
+            TriggerDefensePhaseEffect();
+        }
+        
+        OnDefensePhaseStart?.Invoke(gameObject, EventArgs.Empty);
+
     }
 
 
-    public void SwitchAttackPhase()
+    private void TriggerDefensePhaseEffect()
+    {
+        //add defense phase effect
+    }
+
+    //
+    //
+    //
+    //
+    //
+    //attack phase
+    //
+    //
+    //
+    //
+
+    public void SwitchAttackPhase(bool flashy)
     {
         attackPhase = true;
         Debug.Log("AttackPhase begun");
-        TriggerAttackPhaseEffect();
+        if(flashy)
+        {
+            TriggerAttackPhaseEffect();
 
-        StartCoroutine(AttackPhase());
+            StartCoroutine(AttackPhase());
+        }
+        else
+        {
+            OnAttackPhaseStart?.Invoke(gameObject, EventArgs.Empty);
+        }
+
     }
 
     private IEnumerator AttackPhase()
@@ -72,4 +102,6 @@ public class WaveManager : MonoBehaviour
         AttackPhaseEffect.transform.position = spawnPos;
         AttackPhaseEffect.SetActive(!AttackPhaseEffect.activeSelf);
     }
+
+
 }

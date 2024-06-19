@@ -6,7 +6,6 @@ public class DialogueManager : MonoBehaviour
 {
     //text effect 
     [SerializeField] GameObject fakeMouseOBJ;
-    [SerializeField] GameObject message;
     [SerializeField] GameObject messageAnim;
     private List<GameObject> dialogueBoxes;
     private List<GameObject> dialogueMessages;
@@ -23,10 +22,6 @@ public class DialogueManager : MonoBehaviour
     }
     public void ReadMessage(GameObject box) //instantiates text
     {
-        if (activeDialogues.Count >= 1)
-        {
-            return;
-        }
         int index = -1;
         try
         {
@@ -75,14 +70,15 @@ public class DialogueManager : MonoBehaviour
 
 
 
-    public void EndMe() //called by instantiated dialogue box when cursor leaves it
+    public void EndMe(GameObject box) //called by instantiated dialogue box when cursor leaves it
     {
         Debug.Log("fart");
-        foreach (GameObject box in activeDialogues)
+        if(activeDialogues.Contains(box))
         {
-            Destroy(box);
+            activeDialogues.Remove(box);
         }
-        activeDialogues.Clear();
+        Destroy(box);
+
     }
 
     public void AddDialogueBox(GameObject box, GameObject message, float offsetX, float offsetY) //called by new dialogue boxes to add them to the list

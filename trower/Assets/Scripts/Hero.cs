@@ -12,14 +12,17 @@ public class Hero : MonoBehaviour
     bool attackPhase;
     bool facingRight;
     bool isFalling;
+    float currentSpeed;
     private void Start()
     {
         GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
         heroManager = gameManager.GetComponent<HeroManager>();
+        heroManager.AddHeroToList(gameObject);
         waveManager = gameManager.GetComponent<WaveManager>();
         waveManager.OnAttackPhaseStart += AttackPhase;
+        waveManager.OnDefensePhaseStart += DefensePhase;
         rb = gameObject.GetComponent<Rigidbody2D>();
-
+        currentSpeed = speed;
         if (gameObject.transform.position.x > 0)
         {
             facingRight = true;
@@ -41,7 +44,7 @@ public class Hero : MonoBehaviour
     {
         if (attackPhase)
         {
-            Vector2 dir = new Vector2(1, 0) * speed;
+            Vector2 dir = new Vector2(1, 0) * currentSpeed;
             if (facingRight)
             {
                 dir *= -1;
@@ -59,6 +62,14 @@ public class Hero : MonoBehaviour
         StartCoroutine(RandomDelay());
     }
 
+    private void DefensePhase(object sender, EventArgs e)
+    {
+        attackPhase = false;
+        currentSpeed = 0;
+        rb.velocity = Vector2.zero;
+        gameObject.GetComponent<Animator>().SetBool("AttackPhase", false);
+    }
+
     private IEnumerator RandomDelay()
     {
         float seconds = UnityEngine.Random.Range(1, 101);
@@ -68,7 +79,8 @@ public class Hero : MonoBehaviour
             seconds -= .5f;
         }
         yield return new WaitForSeconds(seconds);
-        gameObject.GetComponent<Animator>().SetTrigger("AttackPhase");
+        currentSpeed = speed;
+        gameObject.GetComponent<Animator>().SetBool("AttackPhase", true);
     }
 
     public bool GetFallingStatus()
@@ -79,6 +91,7 @@ public class Hero : MonoBehaviour
     private void OnDestroy()
     {
         waveManager.OnAttackPhaseStart -= AttackPhase;
+        waveManager.OnDefensePhaseStart -= DefensePhase;
     }
 
 

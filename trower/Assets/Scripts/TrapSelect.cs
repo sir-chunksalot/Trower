@@ -133,7 +133,7 @@ public class TrapSelect : MonoBehaviour
             else //if its just a regular trap, tell the towerbuilder script
             {
                 trapBuilder.EndPlacement();
-                trapBuilder.CurrentTrap(currentBuild.name, rotateTrap);
+                trapBuilder.CurrentTrap(currentBuild.name, rotateTrap); 
                 towerBuilder.EndPlacement();
             }
 

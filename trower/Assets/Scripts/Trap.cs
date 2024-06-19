@@ -35,7 +35,7 @@ public class Trap : MonoBehaviour
     private void TrapActivated(object sender, EventArgs e)
     {
         Debug.Log("tried to attack CRIMINAL");
-        if (canAttack)
+        if (canAttack && active)
         {
 
             spaceEffect.GetComponent<SpriteRenderer>().sprite = pressedSpace;
@@ -44,8 +44,12 @@ public class Trap : MonoBehaviour
     }
     private void TrapDeactivated(object sender, EventArgs e)
     {
-        Debug.Log("can attack CRIMINAL");
-        spaceEffect.GetComponent<SpriteRenderer>().sprite = pressSpace;
+        if(active)
+        {
+            Debug.Log("can attack CRIMINAL");
+            spaceEffect.GetComponent<SpriteRenderer>().sprite = pressSpace;
+        }
+
     }
 
     public void CooldownOn() //called by specific trap script, tells this script wether or not the trap is on or off 
@@ -135,20 +139,26 @@ public class Trap : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Mouse")
+        if (collision.tag == "Mouse" && active)
         {
             trapManager.SelectNewTrap(this.gameObject);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Mouse")
+        if (collision.tag == "Mouse" && active)
         {
             trapManager.DeselectTrap(this.gameObject);
             spaceEffect.SetActive(false);
             Debug.Log("MOUSE LEFT");
             canAttack = false;
         }
+    }
+
+    private void OnDestroy()
+    {
+        trapManager.onSpacePressed -= TrapActivated;
+        trapManager.onSpaceReleased -= TrapDeactivated;
     }
 
 }

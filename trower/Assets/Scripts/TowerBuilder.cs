@@ -223,6 +223,27 @@ public class TowerBuilder : MonoBehaviour
         return closest;
     }
 
+    public Vector3 ClosestTo(Vector2 target, List<Vector2> pos, bool validCheck)
+    {
+        bool valid = true;
+        Vector2 closest = new Vector3(100, 100);
+        foreach (Vector2 p in pos)
+        {
+            if ((target - p).magnitude < (target - closest).magnitude)
+            {
+                if (validCheck)
+                {
+                    valid = ValidFloorSpawn(p);
+                }
+                if (valid)
+                {
+                    closest = p;
+                }
+            }
+        }
+        return closest;
+    }
+
     private bool ValidFloorSpawn(Vector3 floorSpawn)
     {
         Vector3 spawnSpot = new Vector3(floorSpawn.x, floorSpawn.y, 0);

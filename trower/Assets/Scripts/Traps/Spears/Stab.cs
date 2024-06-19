@@ -5,7 +5,6 @@ using UnityEngine;
 public class Stab : MonoBehaviour
 {
     Collider2D col;
-    [SerializeField] GameObject gameManager;
     [SerializeField] GameObject dad;
     [SerializeField] float offsetX;
     [SerializeField] float offsetY;
@@ -18,6 +17,7 @@ public class Stab : MonoBehaviour
     private void Start()
     {
         trap = dad.GetComponent<Trap>();
+        GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
         gameManager.GetComponent<TrapManager>().onSpacePressed += SpearUp;
         heroManager = gameManager.GetComponent<HeroManager>();
         col = gameObject.GetComponent<BoxCollider2D>();

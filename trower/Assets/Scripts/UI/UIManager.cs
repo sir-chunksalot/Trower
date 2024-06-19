@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,6 +11,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject cooldownTimer;
     [SerializeField] GameObject dialogueManager;
 
+    List<GameObject> cards;
     RectTransform cooldownTimerTransform;
     TrapManager trapManager;
     TMP_Text resourceText;
@@ -17,6 +19,7 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
+        cards = new List<GameObject>();
         trapManager = this.gameObject.GetComponent<TrapManager>();
         trapManager.onSelectedTrapChange += SelectedTrapChange;
         cooldownTimerTransform = cooldownTimer.GetComponent<RectTransform>();
@@ -32,6 +35,25 @@ public class UIManager : MonoBehaviour
         //BuildingResources.SetResourceCount(100000);
 
 
+    }
+
+    public void UseTrap(string name) 
+    {
+        foreach(GameObject card in cards)
+        {
+            Debug.Log("zoro" + card.name + " " + name);
+            if(card.name == name)
+            {
+                Debug.Log("TRAP FOUND AND IS BEING USED");
+                card.GetComponent<CardHolsterGraphics>().UseTrap();
+                break;
+            }
+        }
+    }
+
+    public void AddCardToList(GameObject card)
+    {
+        cards.Add(card);
     }
 
     public void RegenUIElements()

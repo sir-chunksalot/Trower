@@ -3,7 +3,14 @@ using UnityEngine.UI;
 
 public class FakeMouse : MonoBehaviour
 {
-    //this script is located inside game manager, it simply controls the small mage hand that follows the mouse
+    /// <summary>
+    /// PUT A PIN IN THIS SCRIPT. ITS A GOOD IDEA AND THE CODE WORKS BUT THE ART AINT THERE YET. ONCE I HAVE A GOOD POINTER SPRITE I WILL COME BACK TO THIS
+    /// </summary>
+
+
+
+
+    //this script is located fake mouse UI object inside game manager UI
     [SerializeField] private GameObject fakeMouse;
     [SerializeField] Canvas parentCanvas;
     [SerializeField] RawImage mouseCursor;
@@ -15,8 +22,8 @@ public class FakeMouse : MonoBehaviour
 
     public void Start()
     {
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Confined;
+        //Cursor.visible = false;
     }
 
 

@@ -4,40 +4,54 @@ using UnityEngine.UI;
 
 public class CardHolsterGraphics : MonoBehaviour
 {
-    [SerializeField] Sprite baseSprite;
-    [SerializeField] Sprite sleepySprite;
-    [SerializeField] Image targetGraphic;
     [SerializeField] float cost;
     [SerializeField] GameObject costTextBox;
-    [SerializeField] float cooldown;
-    [SerializeField] Image progressBar;
-    float timeLeft;
-    bool isActive;
+    [SerializeField] Sprite[] chargeImages;
+    [SerializeField] Image chargeImage;
+    TrapSelect trapSelect;
+    private bool isActive;
+    int count;
     private void Start()
     {
         costTextBox.GetComponent<TMP_Text>().text = cost.ToString();
         isActive = true;
+        gameObject.GetComponentInParent<UIManager>().AddCardToList(gameObject);
+        trapSelect = gameObject.GetComponentInParent<TrapSelect>();
     }
 
     private void Update()
     {
-        if (timeLeft > 0)
+        Debug.Log("zoro " + count);
+    }
+    public void PurchaseTrap()
+    {
+        if(count <= 4)
         {
-            timeLeft -= Time.deltaTime;
-            progressBar.fillAmount = timeLeft / cooldown;
-        }
-        else
-        {
-            if (!isActive)
-            {
-                SetActiveStatus(true);
-            }
+            UpdateCount(1);
         }
     }
 
+    public void SelectTrap(string buttonName)
+    {
+        if(count > 0)
+        {
+            trapSelect.OnItemClicked(buttonName);
+        }
+
+    }
+    
+    public void UseTrap()
+    {
+        UpdateCount(-1);
+    }
+    private void UpdateCount(int charge)
+    {
+        count += charge;
+        chargeImage.sprite = chargeImages[count];
+    }
     public bool GetActiveStatus()
     {
-        return isActive;
+        return true;
     }
 
     public float GetCost()
@@ -47,16 +61,33 @@ public class CardHolsterGraphics : MonoBehaviour
 
     public void SetActiveStatus(bool active)
     {
-        isActive = active;
-        if (isActive)
-        {
-            targetGraphic.sprite = baseSprite;
-        }
-        else
-        {
-            targetGraphic.sprite = sleepySprite;
-            timeLeft = cooldown;
-        }
-
+        //isActive = active;
+        //if (isActive)
+        //{
+        //    targetGraphic.sprite = baseSprite;
+        //}
+        //else
+        //{
+        //    targetGraphic.sprite = sleepySprite;
+        //    timeLeft = cooldown;
+        //}
     }
+
+    //private void Update()
+    //{
+    //    if (timeLeft > 0)
+    //    {
+    //        timeLeft -= Time.deltaTime;
+    //        progressBar.fillAmount = timeLeft / cooldown;
+    //    }
+    //    else
+    //    {
+    //        if (!isActive)
+    //        {
+    //            SetActiveStatus(true);
+    //        }
+    //    }
+    //}
+
+
 }

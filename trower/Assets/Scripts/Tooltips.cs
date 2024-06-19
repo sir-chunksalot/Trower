@@ -17,6 +17,6 @@ public class Tooltips : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerExit(PointerEventData eventData)
     {
         dialogueManager.DiscoverCursorSwitch(false);
-        dialogueManager.EndMe();
+        dialogueManager.EndMe(gameObject.transform.parent.GetComponentsInChildren<Transform>()[1].gameObject);
     }
 }
