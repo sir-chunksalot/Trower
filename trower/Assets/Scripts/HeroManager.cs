@@ -20,9 +20,18 @@ public class HeroManager : MonoBehaviour
         Debug.Log("hero is being killed :sob:");
         Vector3 spawnPos = hero.transform.position;
         spawnPos = new Vector3(spawnPos.x, spawnPos.y, spawnPos.z + .1f); //puts it behind heroes 
-        Destroy(hero);
+        hero.GetComponent<BoxCollider2D>().enabled = false;
+        hero.GetComponent<SpriteRenderer>().enabled = false;
         GameObject blood = Instantiate(bloodAnim, spawnPos, Quaternion.identity, gameObject.transform);
         StartCoroutine(BloodAnim(blood, spawnPos));
+        StartCoroutine(DestroyObjectAfterTime(hero));
+    }
+
+    private IEnumerator DestroyObjectAfterTime(GameObject hero)
+    {
+        yield return new WaitForSeconds(1);
+        Debug.Log("Destroyed hero");
+        Destroy(hero);
     }
 
     private IEnumerator BloodAnim(GameObject bloodAnim, Vector3 spawnPos)
@@ -31,6 +40,7 @@ public class HeroManager : MonoBehaviour
         Destroy(bloodAnim);
         GameObject newBlood = Instantiate(bloodEffect, spawnPos, Quaternion.identity, gameObject.transform);
         newBlood.GetComponent<SpriteRenderer>().sprite = PickBloodEffect();
+        
     }
 
     private Sprite PickBloodEffect()
@@ -44,5 +54,6 @@ public class HeroManager : MonoBehaviour
     {
         heroes.Add(hero);
     }
+
 
 }

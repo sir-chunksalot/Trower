@@ -14,12 +14,19 @@ public class Trap : MonoBehaviour
     [SerializeField] bool active;
     [SerializeField] Sprite pressSpace;
     [SerializeField] Sprite pressedSpace;
+    [SerializeField] GameObject armedSprite;
 
     RectTransform cooldownTimerTransform;
     TrapManager trapManager;
+    WaveManager waveManager;
+    public event EventHandler onActivate;
     bool canAttack;
     bool onCooldown;
+    bool defensePhase;
+    bool attackPhase;
+    bool armed;
     float cooldownCount;
+    int objectID;
     Vector3 cooldownPos;
 
     private void Start()
@@ -30,17 +37,62 @@ public class Trap : MonoBehaviour
         trapManager.onSpacePressed += TrapActivated;
         trapManager.onSpaceReleased += TrapDeactivated;
         trapManager.AddTrapToList(this.gameObject);
+
+        waveManager = gameManager.GetComponent<WaveManager>();
+        waveManager.OnAttackPhaseStart += AttackPhase;
+        waveManager.OnDefensePhaseStart += DefensePhase;
+        defensePhase = !waveManager.GetIsAttackPhase();
+
+        objectID = gameObject.GetInstanceID();
+        Debug.Log("gameObject parent " + gameObject + "id" + objectID);
+    }
+
+    private void DefensePhase(object sender, EventArgs e)
+    {
+        defensePhase = true;
+        attackPhase = false;
+        StopAllCoroutines();
+    }
+    private void AttackPhase(object sender, EventArgs e)
+    {
+        defensePhase = false;
+        attackPhase = true;
+
+        if (cooldownCount > 0)
+        {
+            StartCoroutine(Cooldown());
+        }
+        if(armed)
+        {
+            onActivate?.Invoke(objectID, EventArgs.Empty);
+            armed = false;
+            armedSprite.SetActive(false);
+        }
+    }
+
+    public void ManualTrapActivate()
+    {
+        armedSprite.SetActive(false);
+        armed = false;
+        onActivate?.Invoke(objectID, EventArgs.Empty);
     }
 
     private void TrapActivated(object sender, EventArgs e)
     {
-        Debug.Log("tried to attack CRIMINAL");
-        if (canAttack && active)
-        {
-
-            spaceEffect.GetComponent<SpriteRenderer>().sprite = pressedSpace;
+        spaceEffect.GetComponent<SpriteRenderer>().sprite = pressedSpace;
+        if (!canAttack || !active || (!attackPhase && !defensePhase)) {
+            return;
         }
 
+        if (defensePhase && cooldownCount <= 0)
+        {
+            armed = !armed;
+            armedSprite.SetActive(armed);
+        }
+        else
+        {
+            onActivate?.Invoke(objectID, EventArgs.Empty);
+        }
     }
     private void TrapDeactivated(object sender, EventArgs e)
     {
@@ -78,6 +130,11 @@ public class Trap : MonoBehaviour
 
     }
 
+    public float GetYOffset()
+    {
+        return yOffset;
+    }
+
     public float GetCurrentCooldown()
     {
         return cooldownCount;
@@ -97,6 +154,7 @@ public class Trap : MonoBehaviour
     {
         Debug.Log("gonzales");
         active = true;
+        //gameObject.transform.position = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
     }
     public void Rotate()
     {
@@ -116,6 +174,11 @@ public class Trap : MonoBehaviour
     public float GetCost()
     {
         return cardHolster.GetComponent<CardHolsterGraphics>().GetCost();
+    }
+
+    public bool GetIsArmed()
+    {
+        return armed;
     }
 
     public bool GetCanAttack()
@@ -159,6 +222,8 @@ public class Trap : MonoBehaviour
     {
         trapManager.onSpacePressed -= TrapActivated;
         trapManager.onSpaceReleased -= TrapDeactivated;
+        waveManager.OnAttackPhaseStart -= AttackPhase;
+        waveManager.OnDefensePhaseStart -= DefensePhase;
     }
 
 }

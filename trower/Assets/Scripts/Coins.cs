@@ -16,8 +16,6 @@ public static class Coins
     public static void ChangeCoins(float count)
     {
         Debug.Log("INVOKING COIN");
-        if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<UIManager>().isActiveAndEnabled)
-        {
             coins += count;
             if (Mathf.Sign(count) == 1)
             {
@@ -29,7 +27,6 @@ public static class Coins
                 Debug.Log("INVOKING COIN");
                 onChangeCoin?.Invoke((count + "|"), EventArgs.Empty);
             }
-        }
     }
 
     public static void SetCoin(float count)

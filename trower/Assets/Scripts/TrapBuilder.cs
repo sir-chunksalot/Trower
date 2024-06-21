@@ -9,6 +9,7 @@ public class TrapBuilder : MonoBehaviour
     [SerializeField] GameObject particle;
     [SerializeField] float reqMouseDistanceToPlace;
     [SerializeField] float opacity;
+    [SerializeField] GameObject trapDaddy;
 
     public event EventHandler onTrapPlace;
     private GameObject currentTrap;
@@ -23,6 +24,8 @@ public class TrapBuilder : MonoBehaviour
     private bool isLarge;
     private Vector2 mousePos;
     private Vector3 closestRoom;
+    private float frontZ;
+    private float yOffSet;
     private void Start()
     {
         trapSpawnLocations = new List<Vector2>();
@@ -34,6 +37,18 @@ public class TrapBuilder : MonoBehaviour
         uiManager = gameObject.GetComponent<UIManager>();
         towerBuilder.onTowerPlace += NewRoom;
 
+        frontZ = Camera.main.transform.position.z + .1f;
+        OldTraps();
+    }
+
+
+    private void OldTraps()
+    {
+        GameObject trapDaddy = GameObject.FindGameObjectWithTag("TrapDaddy");
+        foreach(Transform kid in trapDaddy.transform)
+        {
+            UpdateValidTrapSpawns(kid.position, false);
+        }
     }
 
     private void FixedUpdate()
@@ -43,24 +58,24 @@ public class TrapBuilder : MonoBehaviour
 
         if (placingTrap)
         {
-            Debug.Log("PLACING");
+           
             if (isLarge)
             {
                 closestRoom = towerBuilder.ClosestTo(mousePos, towerBuilder.GetPlacedFloors().ToArray(), false);
             }
             else
             {
-                closestRoom = towerBuilder.ClosestTo(mousePos, totalSpawnLocations, false);
+                closestRoom = towerBuilder.ClosestTo(mousePos, trapSpawnLocations, false);
             }
 
             if (Vector2.Distance(closestRoom, mousePos) < reqMouseDistanceToPlace) {
-                currentTrap.transform.position = new Vector3(closestRoom.x, closestRoom.y, 5);
+                currentTrap.transform.position = new Vector3(closestRoom.x, closestRoom.y + yOffSet, frontZ);
             }
             else {
 
-                currentTrap.transform.position = mousePos;
+                currentTrap.transform.position = new Vector3(mousePos.x, mousePos.y, frontZ);
             }
-                
+            Debug.Log("PLACING" + closestRoom + " " + currentTrap.transform.position);
 
         }
     }
@@ -82,37 +97,37 @@ public class TrapBuilder : MonoBehaviour
         }
     }
 
-    private void UpdateValidTrapSpawns(Vector2 pos, bool newSpawn)
+    public void UpdateValidTrapSpawns(Vector2 pos, bool newSpawn)
     {
-        Vector2 closestTrap = towerBuilder.ClosestTo(mousePos, placedTrapsPos, false);
-        if (Vector2.Distance(pos, towerBuilder.GetDoorPos()) <= 5)
+        if (Vector2.Distance(pos, towerBuilder.GetDoorPos()) <= 7)
         {
             placedTrapsPos.Add(pos);
-            if (trapSpawnLocations.Contains(pos)) {
-                //trapSpawnLocations.Remove(pos);
-            }
-
         }
+        Vector2 closestTrap = towerBuilder.ClosestTo(pos, placedTrapsPos, false);
         if (newSpawn)
         {
             totalSpawnLocations.Add(pos);
             Debug.Log(pos + " " + "closestTrap" + closestTrap + "NIGHTONFIREW");
-            if (Vector2.Distance(pos, closestTrap) >= 5)
+            if (Mathf.Abs(Vector2.Distance(pos, closestTrap)) >= 4 && !trapSpawnLocations.Contains(pos)) //confirms the requested pos is no where near another trap
             {
-
+                Debug.Log("NEW POS PASSIOn" + pos);
                 trapSpawnLocations.Add(pos);
             }
         }
         else
         {
             placedTrapsPos.Add(pos);
-            if (trapSpawnLocations.Contains(pos))
-            {
-                //trapSpawnLocations.Remove(pos);
-            }
+            Debug.Log("removing valid trap spawn");
+            closestTrap = towerBuilder.ClosestTo(pos, placedTrapsPos, false);
+            trapSpawnLocations.Remove(closestTrap);
         }
     }
 
+    public bool GetPlacingTrap()
+    {
+        Debug.Log("get placing trap");
+        return placingTrap;
+    }
 
     public void Place(InputAction.CallbackContext context)
     {
@@ -130,10 +145,9 @@ public class TrapBuilder : MonoBehaviour
     private void PlaceBuild()
     {
         Vector3 nextTrapPos = towerBuilder.ClosestTo(mousePos, trapSpawnLocations, false);
-        Vector3 roomPos = currentTrap.transform.position;
-        nextTrapPos = new Vector3(nextTrapPos.x, nextTrapPos.y, 8);
+        nextTrapPos = new Vector3(nextTrapPos.x, nextTrapPos.y + yOffSet, 8);
 
-        if((Vector2)nextTrapPos != (Vector2)currentTrap.transform.position) {
+        if(mousePos == (Vector2)currentTrap.transform.position) {
             Debug.Log("80s!");
             EndPlacement();
             return;
@@ -141,7 +155,7 @@ public class TrapBuilder : MonoBehaviour
         if (placingTrap)
         {
             Debug.Log("90s!");
-            if (Vector2.Distance(nextTrapPos, mousePos) < reqMouseDistanceToPlace)
+            if (Vector2.Distance(nextTrapPos, new Vector2(mousePos.x, mousePos.y - yOffSet)) < reqMouseDistanceToPlace)
             {
                 float rotation = 0;
                 if (currentTrap.GetComponent<Trap>().GetRotation() == 1)
@@ -149,8 +163,8 @@ public class TrapBuilder : MonoBehaviour
                     rotation = 180;
                 }
                 uiManager.UseTrap(trapName);
-                GameObject newBuild = Instantiate(currentTrap, nextTrapPos, Quaternion.Euler(0, rotation, 0));
-                UpdateValidTrapSpawns(roomPos, false); 
+                GameObject newBuild = Instantiate(currentTrap, nextTrapPos, Quaternion.Euler(0, rotation, 0), trapDaddy.transform);
+                UpdateValidTrapSpawns(new Vector2(nextTrapPos.x, nextTrapPos.y - yOffSet), false); 
                 Trap trap = newBuild.GetComponent<Trap>();
 
                 if (trap.GetCost() <= Coins.GetCoins())
@@ -174,8 +188,6 @@ public class TrapBuilder : MonoBehaviour
             }
             EndPlacement();
         }
-
-
     }
     public void CurrentTrap(string newTrapName, bool rotation)
     {
@@ -190,6 +202,7 @@ public class TrapBuilder : MonoBehaviour
                 activeTrap = trap;
             }
         }
+        yOffSet = activeTrap.GetComponent<Trap>().GetYOffset();
         trapName = activeTrap.name;
         GameObject newTrap = Instantiate(activeTrap, new Vector3(mousePos.x, mousePos.y, 20), Quaternion.identity);
         newTrap.GetComponent<Trap>().DisableTrap();

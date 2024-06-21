@@ -7,13 +7,14 @@ public class WaveManager : MonoBehaviour
 {
     [SerializeField] GameObject[] waveList;
     [SerializeField] GameObject progressBar;
-    [SerializeField] GameObject AttackPhaseEffect;
+    [SerializeField] GameObject attackPhaseEffect;
     [SerializeField] GameObject bar;
 
     public event EventHandler OnAttackPhaseStart;
     public event EventHandler OnDefensePhaseStart;
 
     private bool attackPhase;
+    private bool defensePhase;
     private void Awake()
     {
         MakeProgressBar();
@@ -45,6 +46,7 @@ public class WaveManager : MonoBehaviour
     public void SwitchDefensePhase(bool flashy)
     {
         attackPhase = false;
+        defensePhase = true;
         if (flashy)
         {
             TriggerDefensePhaseEffect();
@@ -74,6 +76,7 @@ public class WaveManager : MonoBehaviour
     public void SwitchAttackPhase(bool flashy)
     {
         attackPhase = true;
+        defensePhase = false;
         Debug.Log("AttackPhase begun");
         if(flashy)
         {
@@ -92,6 +95,7 @@ public class WaveManager : MonoBehaviour
     {
         yield return new WaitForSeconds(4.2f);
         OnAttackPhaseStart?.Invoke(gameObject, EventArgs.Empty);
+        attackPhaseEffect.SetActive(false);
     }
 
     private void TriggerAttackPhaseEffect()
@@ -99,8 +103,17 @@ public class WaveManager : MonoBehaviour
         Debug.Log("attackc phase effect");
         Vector3 camPos = Camera.main.transform.position;
         Vector3 spawnPos = new Vector3(camPos.x - 10, camPos.y, camPos.z - -.1f);
-        AttackPhaseEffect.transform.position = spawnPos;
-        AttackPhaseEffect.SetActive(!AttackPhaseEffect.activeSelf);
+        attackPhaseEffect.transform.position = spawnPos;
+        attackPhaseEffect.SetActive(!attackPhaseEffect.activeSelf);
+    }
+
+    public bool GetIsAttackPhase()
+    {
+        return attackPhase;
+    }
+    public bool GetIsDefensePhase()
+    {
+        return defensePhase;
     }
 
 

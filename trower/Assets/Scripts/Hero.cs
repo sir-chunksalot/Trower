@@ -5,6 +5,7 @@ using UnityEngine;
 public class Hero : MonoBehaviour
 {
     [SerializeField] float speed;
+    [SerializeField] AudioSource bloodSpurt;
     WaveManager waveManager;
     HeroManager heroManager;
     Rigidbody2D rb;
@@ -88,6 +89,12 @@ public class Hero : MonoBehaviour
         return isFalling;
     }
 
+    public void KillMe()
+    {
+        bloodSpurt.Play();
+        Debug.Log("killed me");
+        heroManager.KillHero(gameObject);
+    }
     private void OnDestroy()
     {
         waveManager.OnAttackPhaseStart -= AttackPhase;

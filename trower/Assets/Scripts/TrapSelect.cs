@@ -66,7 +66,7 @@ public class TrapSelect : MonoBehaviour
         {
             Debug.Log("Grabbed Floor");
         }
-        else if (Coins.GetCoins() < currentBuild.GetComponent<CardHolsterGraphics>().GetCost() || currentBuild.GetComponent<CardHolsterGraphics>().GetActiveStatus() == false) return; //play a sound that signifies that you cant place that tower
+        else if (currentBuild.GetComponent<CardHolsterGraphics>().GetActiveStatus() == false) return; //play a sound that signifies that you cant place that tower
         //trapSprites[selectedTrap].image.color = selectedColor;
         Debug.Log(buttonName + "BUTTON WAS CLICKED");
 

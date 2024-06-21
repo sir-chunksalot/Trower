@@ -8,24 +8,24 @@ public class CardHolsterGraphics : MonoBehaviour
     [SerializeField] GameObject costTextBox;
     [SerializeField] Sprite[] chargeImages;
     [SerializeField] Image chargeImage;
+    [SerializeField] AudioSource selectTrap;
+    [SerializeField] AudioSource badClick;
+    [SerializeField] AudioSource place;
     TrapSelect trapSelect;
     private bool isActive;
     int count;
     private void Start()
     {
+        badClick = gameObject.GetComponent<AudioSource>();
         costTextBox.GetComponent<TMP_Text>().text = cost.ToString();
         isActive = true;
         gameObject.GetComponentInParent<UIManager>().AddCardToList(gameObject);
         trapSelect = gameObject.GetComponentInParent<TrapSelect>();
     }
 
-    private void Update()
-    {
-        Debug.Log("zoro " + count);
-    }
     public void PurchaseTrap()
     {
-        if(count <= 4)
+        if(count <= 3)
         {
             UpdateCount(1);
         }
@@ -33,17 +33,26 @@ public class CardHolsterGraphics : MonoBehaviour
 
     public void SelectTrap(string buttonName)
     {
-        if(count > 0)
+        Debug.Log("coins" + Coins.GetCoins() + "cost" + cost);
+        if (count > 0 && Coins.GetCoins() >= cost)
         {
             trapSelect.OnItemClicked(buttonName);
+            selectTrap.Play();
+        }
+        else
+        {
+            badClick.Play();
         }
 
     }
     
-    public void UseTrap()
+    public void UseTrap() //called whenever a trap is placed
     {
+        place.Play();
         UpdateCount(-1);
+
     }
+
     private void UpdateCount(int charge)
     {
         count += charge;

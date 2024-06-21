@@ -14,8 +14,6 @@ public class TrapManager : MonoBehaviour
     private GameObject selectedTrap;
     Trap trapScript;
     Image trapCooldownUI;
-
-
     private void Awake()
     {
         traps = new List<GameObject>();

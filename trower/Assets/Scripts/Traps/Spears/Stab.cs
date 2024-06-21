@@ -13,27 +13,28 @@ public class Stab : MonoBehaviour
     HeroManager heroManager;
     Trap trap;
     private bool up;
+    private int parentID;
 
     private void Start()
     {
         trap = dad.GetComponent<Trap>();
-        GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
-        gameManager.GetComponent<TrapManager>().onSpacePressed += SpearUp;
-        heroManager = gameManager.GetComponent<HeroManager>();
+        trap.onActivate += SpearUp;
         col = gameObject.GetComponent<BoxCollider2D>();
         col.enabled = false;
+        parentID = gameObject.transform.parent.gameObject.GetInstanceID();
+        Debug.Log("(stab) gameObject parent " + gameObject.transform.parent.gameObject + "id" + parentID);
     }
     public void SpearUp(object sender, EventArgs e) //this is to move spear collider up along with spears
     {
-        Debug.Log("COMPONENT");
-        if (trap.GetCanAttack())
-        {
-            StartCoroutine(ColDelay());
-            anim.SetBool("TrapActivated", true);
-            col.offset = new Vector3(offsetX, offsetY + 3);
-            Debug.Log("sanja piggu");
-
+        if((int)sender != parentID) {
+            return;
         }
+        Debug.Log("COMPONENT");
+        StartCoroutine(ColDelay());
+        anim.SetBool("TrapActivated", true);
+        col.offset = new Vector3(offsetX, offsetY + 3);
+        Debug.Log("sanja piggu");
+
     }
 
     private void FixedUpdate()
@@ -59,17 +60,18 @@ public class Stab : MonoBehaviour
         if (collision.gameObject.layer == 6) //hero  layer
         {
             Debug.Log("i forgor you sunflower");
+            Hero hero = collision.gameObject.GetComponent<Hero>();
             if (up)
             {
-                if (collision.gameObject.GetComponent<Hero>().GetFallingStatus())
+                if (hero.GetFallingStatus())
                 {
-                    heroManager.KillHero(collision.gameObject);
+                    hero.KillMe();
                 }
             }
             else
             {
                 Debug.Log("sunfloewr miss");
-                heroManager.KillHero(collision.gameObject);
+                hero.KillMe();
             }
         }
     }

@@ -47,6 +47,9 @@ public class Level1_1 : MonoBehaviour
     [SerializeField] GameObject extraArrowForSlowpokes3;
     [SerializeField] GameObject extraArrowForSlowpokes4;
     [SerializeField] GameObject dialogueTriggerSecondSpike;
+    [SerializeField] GameObject dialogueTriggerSecondSpike1;
+    [SerializeField] GameObject dialogueTriggerSecondSpike2;
+    [SerializeField] GameObject dialogueTriggerSecondSpike3;
 
     //torches
     [SerializeField] GameObject[] redTorches;
@@ -57,6 +60,10 @@ public class Level1_1 : MonoBehaviour
     [SerializeField] GameObject rightFloor;
     [SerializeField] GameObject arrow2;
     [SerializeField] GameObject arrowSpear;
+    [SerializeField] GameObject firstTrap;
+    [SerializeField] GameObject arrowContinue;
+    [SerializeField] GameObject card;
+    [SerializeField] GameObject cardHolder;
 
 
     //particle effects
@@ -66,21 +73,30 @@ public class Level1_1 : MonoBehaviour
     //tooltips
     [SerializeField] GameObject dialogueManagerObj;
     [SerializeField] GameObject trapTeacher;
+    [SerializeField] GameObject trapDaddy;
+
 
     //starterEnemies
     [SerializeField] GameObject[] starterEnemies;
 
+    CardHolsterGraphics cardHolster;
     CameraController camController;
     WaveManager waveManager;
+    TrapBuilder trapBuilder;
     int shakeCount;
     bool gottaWait;
     bool beenThereDoneThat;
+    bool checkForClick;
+    bool tryAndArm;
+    bool finalPhase;
     void Start()
     {
+        cardHolster = card.GetComponent<CardHolsterGraphics>();
         Debug.Log(gameObject + "snoop");
         waveManager = gameManager.GetComponent<WaveManager>();
         Debug.Log(waveManager + "snoopy");
         camController = this.GetComponent<CameraController>();
+        trapBuilder = gameManager.GetComponent<TrapBuilder>();
 
         if (inIntroduction)
         {
@@ -94,6 +110,8 @@ public class Level1_1 : MonoBehaviour
             camController.ActivateCamera(MainView);
 
         }
+
+        Coins.SetCoin(10000);
     }
 
 
@@ -285,12 +303,85 @@ public class Level1_1 : MonoBehaviour
     {
         if(collision.tag == "PrisonGuard")
         {
-            if (firstEnemy == null)
+            if (firstEnemy == null && !checkForClick) 
             {
+                cardHolder.SetActive(true);
+                cardHolster.PurchaseTrap();
                 dialogueTriggerSecondSpike.GetComponentInChildren<DialogueBox>().ManualReadMessage();
                 waveManager.SwitchDefensePhase(false);
                 arrowSpear.SetActive(true);
+                checkForClick = true;
             }
+        }
+    }
+
+    public void OnClick(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            if (checkForClick && !finalPhase)
+            {
+                StartCoroutine(WaitForClick());
+            }
+            else
+            {
+                Debug.Log("quepp");
+            }
+            if(finalPhase)
+            {
+                dialogueTriggerSecondSpike3.SetActive(false);
+                arrowContinue.SetActive(false);
+            }
+        }
+
+    }
+
+    private IEnumerator WaitForClick()
+    {
+        yield return new WaitForSeconds(.2f);
+        if (trapBuilder.GetPlacingTrap())
+        {
+            dialogueTriggerSecondSpike.SetActive(false);
+            dialogueTriggerSecondSpike2.SetActive(false);
+            dialogueTriggerSecondSpike1.SetActive(true);
+            dialogueTriggerSecondSpike1.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+
+        }
+        else if (trapDaddy.transform.childCount >= 1)
+        {
+            arrowSpear.SetActive(false);
+            dialogueTriggerSecondSpike1.SetActive(false);
+            dialogueTriggerSecondSpike.SetActive(false);
+            dialogueTriggerSecondSpike2.SetActive(true);
+            dialogueTriggerSecondSpike2.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+            StartCoroutine(CheckForArm(trapDaddy.transform.GetComponentsInChildren<Transform>()[1].gameObject)); ;
+        }
+        else
+        {
+            dialogueTriggerSecondSpike1.SetActive(false);
+            dialogueTriggerSecondSpike2.SetActive(false);
+            dialogueTriggerSecondSpike.SetActive(true);
+            dialogueTriggerSecondSpike.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+        }
+    }
+
+    private IEnumerator CheckForArm(GameObject trap)
+    {
+        yield return new WaitForSeconds(.2f);
+        if (trap.GetComponent<Trap>().GetIsArmed())
+        {
+            dialogueTriggerSecondSpike1.SetActive(false);
+            dialogueTriggerSecondSpike.SetActive(false);
+            dialogueTriggerSecondSpike2.SetActive(false);
+            dialogueTriggerSecondSpike3.SetActive(true);
+            dialogueTriggerSecondSpike3.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+            arrowContinue.SetActive(true);
+            finalPhase = true;
+            StopCoroutine(CheckForArm(trap));
+        }
+        else
+        {
+            StartCoroutine(CheckForArm(trap));
         }
     }
 
@@ -299,42 +390,42 @@ public class Level1_1 : MonoBehaviour
     {
         if (context.performed && !beenThereDoneThat)
         {
-            beenThereDoneThat = true;
-            StartCoroutine(CheckIfGuyDied());
+            if (firstTrap.GetComponent<Trap>().GetCanAttack())
+            {
+                beenThereDoneThat = true;
+                firstTrap.GetComponent<Trap>().ManualTrapActivate();
+                firstTrap.GetComponent<Trap>().DisableTrap();
+                Debug.Log("they killed him bois");
+                DialogueManager dialogueManager = dialogueManagerObj.GetComponent<DialogueManager>();
+                dialogueManager.DiscoverCursorSwitch(false);
+
+                arrow2.SetActive(false);
+                dialogueTriggerSlowpokes1.SetActive(false);
+                dialogueTriggerSlowpokes2.SetActive(false);
+                extraArrowForSlowpokes1.SetActive(false);
+                extraArrowForSlowpokes2.SetActive(false);
+                extraArrowForSlowpokes3.SetActive(false);
+                extraArrowForSlowpokes4.SetActive(false);
+                StartCoroutine(DelayBeforeCam());
+            }
+
         }
     }
 
-    private IEnumerator CheckIfGuyDied()
+    private IEnumerator DelayBeforeCam()
     {
         yield return new WaitForSeconds(1);
-        if (firstEnemy == null)
-        {
-            Debug.Log("they killed him bois");
-            DialogueManager dialogueManager = dialogueManagerObj.GetComponent<DialogueManager>();
-            dialogueManager.DiscoverCursorSwitch(false);
-
-            arrow2.SetActive(false);
-            dialogueTriggerSlowpokes1.SetActive(false);
-            dialogueTriggerSlowpokes2.SetActive(false);
-            extraArrowForSlowpokes1.SetActive(false);
-            extraArrowForSlowpokes2.SetActive(false);
-            extraArrowForSlowpokes3.SetActive(false);
-            extraArrowForSlowpokes4.SetActive(false);
-
+        
             camController.ActivateCamera(VCAMPanRight, 5);
             StartCoroutine(WaitForCam());
-        }
-        else
-        {
-            StartCoroutine(CheckIfGuyDied());
-            Debug.Log("we didnt get him :sob: BOIS");
-        }
+
     }
 
     private IEnumerator WaitForCam()
     {
         yield return new WaitForSeconds(7);
         waveManager.SwitchAttackPhase(true);
+        firstTrap.GetComponent<Trap>().EnableTrap();
         StartCoroutine(RunForestRun());
 
     }

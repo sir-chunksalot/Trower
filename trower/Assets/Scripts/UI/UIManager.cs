@@ -10,10 +10,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject devMenu;
     [SerializeField] GameObject cooldownTimer;
     [SerializeField] GameObject dialogueManager;
+    [SerializeField] GameObject buildPhaseUI;
 
     List<GameObject> cards;
     RectTransform cooldownTimerTransform;
     TrapManager trapManager;
+    WaveManager waveManager;
     TMP_Text resourceText;
     TMP_Text coinText;
 
@@ -21,6 +23,9 @@ public class UIManager : MonoBehaviour
     {
         cards = new List<GameObject>();
         trapManager = this.gameObject.GetComponent<TrapManager>();
+        waveManager = gameObject.GetComponent<WaveManager>();
+        waveManager.OnDefensePhaseStart += DefensePhase;
+        waveManager.OnAttackPhaseStart += AttackPhase;
         trapManager.onSelectedTrapChange += SelectedTrapChange;
         cooldownTimerTransform = cooldownTimer.GetComponent<RectTransform>();
         //resourceText = resourceTextBox.GetComponent<TMP_Text>();
@@ -37,7 +42,16 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void UseTrap(string name) 
+    private void AttackPhase(object sender, EventArgs e)
+    {
+        buildPhaseUI.SetActive(false);
+    }
+    private void DefensePhase(object sender, EventArgs e)
+    {
+        buildPhaseUI.SetActive(true);
+    }
+
+    public void UseTrap(string name) //this is an intermediary method so that when a trap is placed the charge goes down for the trap card 
     {
         foreach(GameObject card in cards)
         {
@@ -82,6 +96,13 @@ public class UIManager : MonoBehaviour
         }
 
         cooldownTimerTransform.transform.position = Camera.main.WorldToScreenPoint(spawnPos);
+    }
+
+
+    public void ContinueToAttackPhase()
+    {
+        waveManager.SwitchAttackPhase(true);
+        buildPhaseUI.SetActive(false);
     }
 
 
