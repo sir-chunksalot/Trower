@@ -64,8 +64,13 @@ public class CardHolsterGraphics : MonoBehaviour
             UpdateCount(0);
         }
     }
+    
+    public void ManualGainCharge()
+    {
+        UpdateCount(1);
+    }
 
-    public void PurchaseCharge()
+    private void PurchaseCharge()
     {
         Debug.Log("cash = " + Coins.GetCoins());
         if(count <= 3 && Coins.GetCoins() >= cost)

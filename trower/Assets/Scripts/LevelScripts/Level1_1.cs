@@ -238,7 +238,7 @@ public class Level1_1 : MonoBehaviour
     private IEnumerator TorchesEffect(float time)
     {
         yield return new WaitForSeconds(time);
-        //superDarkEffect.PlayFeedbacks();
+        //superDarkEffect.PlayFeedbacks();g
         lightsOut.GetComponent<Animator>().enabled = true;
         redTorches[0].GetComponent<Animator>().enabled = false;
         redTorches[1].GetComponent<Animator>().enabled = false;
@@ -311,7 +311,7 @@ public class Level1_1 : MonoBehaviour
         //re enable later
         dialogueTriggerHigh5.GetComponentInChildren<DialogueBox>().ManualReadMessage();
         cardHolster.MuteAudio(3, .2f);
-        cardHolster.PurchaseCharge();
+        cardHolster.ManualGainCharge();
         StartCoroutine(CheckForHover(true));
 
     }

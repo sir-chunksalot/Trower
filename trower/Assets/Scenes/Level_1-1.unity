@@ -4523,8 +4523,10 @@ MonoBehaviour:
     MMTweenDefinitionType: 0
     MMTweenCurve: 0
     Curve:
+      serializedVersion: 2
       m_Curve:
-      - time: 0
+      - serializedVersion: 3
+        time: 0
         value: 0
         inSlope: 0
         outSlope: 0
@@ -4532,7 +4534,8 @@ MonoBehaviour:
         weightedMode: 0
         inWeight: 0
         outWeight: 0
-      - time: 1
+      - serializedVersion: 3
+        time: 1
         value: 1
         inSlope: 0
         outSlope: 0
@@ -4548,8 +4551,10 @@ MonoBehaviour:
     MMTweenDefinitionType: 0
     MMTweenCurve: 0
     Curve:
+      serializedVersion: 2
       m_Curve:
-      - time: 0
+      - serializedVersion: 3
+        time: 0
         value: 0
         inSlope: 0
         outSlope: 0
@@ -4557,7 +4562,8 @@ MonoBehaviour:
         weightedMode: 0
         inWeight: 0
         outWeight: 0
-      - time: 1
+      - serializedVersion: 3
+        time: 1
         value: 1
         inSlope: 0
         outSlope: 0
@@ -4573,38 +4579,11 @@ MonoBehaviour:
     ChannelMode: 0
     Channel: 0
     MMChannelDefinition: {fileID: 0}
-    FlashColor:
-      r: 1
-      g: 1
-      b: 1
-      a: 1
+    FlashColor: {r: 1, g: 1, b: 1, a: 1}
     FlashDuration: 0.2
     FlashAlpha: 1
     FlashID: 0
   DebugTestButton: 0
-  _image: {fileID: 0}
-  _canvasGroup: {fileID: 0}
-  _flashing: 0
-  _targetAlpha: 0
-  _initialColor:
-    r: 0
-    g: 0
-    b: 0
-    a: 0
-  _delta: 0
-  _flashStartedTimestamp: 0
-  _direction: 1
-  _duration: 0
-  _timescaleMode: 0
-  _currentTween:
-    MMTweenDefinitionType: 0
-    MMTweenCurve: 0
-    Curve:
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    Initialized: 0
 --- !u!225 &437333247
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4838,8 +4817,10 @@ MonoBehaviour:
   RangeDistance: 5
   UseRangeFalloff: 0
   RangeFalloff:
+    serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 3
+      time: 0
       value: 1
       inSlope: 0
       outSlope: 0
@@ -4847,7 +4828,8 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0
       outWeight: 0
-    - time: 1
+    - serializedVersion: 3
+      time: 1
       value: 0
       inSlope: 0
       outSlope: 0
@@ -4872,72 +4854,110 @@ MonoBehaviour:
     OnPlay:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
     OnPause:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
     OnResume:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
     OnRevert:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
     OnComplete:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
     OnRestoreInitialValues:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
     OnSkipToTheEnd:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
-    <OnPlayIsNull>k__BackingField: 0
-    <OnPauseIsNull>k__BackingField: 0
-    <OnResumeIsNull>k__BackingField: 0
-    <OnRevertIsNull>k__BackingField: 0
-    <OnCompleteIsNull>k__BackingField: 0
-    <OnRestoreInitialValuesIsNull>k__BackingField: 0
-    <OnSkipToTheEndIsNull>k__BackingField: 0
   DebugActive: 0
-  <IsPlaying>k__BackingField: 0
-  <TimesPlayed>k__BackingField: 0
-  <InScriptDrivenPause>k__BackingField: 0
-  <ContainsLoop>k__BackingField: 0
-  <ShouldRevertOnNextPlay>k__BackingField: 0
-  _startTime: 0
-  _holdingMax: 0
-  _lastStartAt: -3.4028235e+38
-  _lastStartFrame: -1
-  _pauseFound: 0
-  _totalDuration: 0
-  _shouldStop: 0
-  _randomDurationMultiplier: 1
-  _lastOnEnableFrame: -1
   FeedbacksList:
   - rid: 1470005925435146241
-  - rid: 1470005925435146243
   KeepPlayModeChanges: 0
   PerformanceMode: 0
   StopFeedbacksOnDisable: 0
   PlayCount: 0
-  <SkippingToTheEnd>k__BackingField: 0
-  _cachedTotalDuration: 0.9
-  _initialized: 0
   references:
     version: 2
     RefIds:
     - rid: 1470005925435146241
       type: {class: MMF_CameraShake, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks}
-      data: {}
-    - rid: 7680763240334229505
-      type: {class: Camera Shake, ns: , asm: }
-      data: {}
+      data:
+        Active: 1
+        UniqueID: 0
+        Label: MMFeedback
+        ChannelMode: 0
+        Channel: 0
+        MMChannelDefinition: {fileID: 0}
+        Chance: 100
+        DisplayColor: {r: 0, g: 0, b: 0, a: 1}
+        Timing:
+          TimescaleMode: 0
+          ExcludeFromHoldingPauses: 0
+          ContributeToTotalDuration: 1
+          InitialDelay: 0
+          CooldownDuration: 0
+          InterruptsOnStop: 1
+          NumberOfRepeats: 0
+          RepeatForever: 0
+          DelayBetweenRepeats: 1
+          MMFeedbacksDirectionCondition: 0
+          PlayDirection: 0
+          ConstantIntensity: 0
+          UseIntensityInterval: 0
+          IntensityIntervalMin: 0
+          IntensityIntervalMax: 0
+          Sequence: {fileID: 0}
+          TrackID: 0
+          Quantized: 0
+          TargetBPM: 120
+        AutomatedTargetAcquisition:
+          Mode: 0
+          ChildIndex: 0
+        RandomizeOutput: 0
+        RandomMultiplier: {x: 0.8, y: 1}
+        RandomizeDuration: 0
+        RandomDurationMultiplier: {x: 0.5, y: 2}
+        UseRange: 0
+        RangeDistance: 5
+        UseRangeFalloff: 0
+        RangeFalloff:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        RemapRangeFalloff: {x: 0, y: 1}
+        Owner: {fileID: 471596252}
+        DebugActive: 0
+        RepeatUntilStopped: 0
+        CameraShakeProperties:
+          Duration: 0.1
+          Amplitude: 0.2
+          Frequency: 40
+          AmplitudeX: 0
+          AmplitudeY: 0
+          AmplitudeZ: 0
 --- !u!4 &471596253
 Transform:
   m_ObjectHideFlags: 0
@@ -6305,8 +6325,10 @@ MonoBehaviour:
   RangeDistance: 5
   UseRangeFalloff: 0
   RangeFalloff:
+    serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 3
+      time: 0
       value: 1
       inSlope: 0
       outSlope: 0
@@ -6314,7 +6336,8 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0
       outWeight: 0
-    - time: 1
+    - serializedVersion: 3
+      time: 1
       value: 0
       inSlope: 0
       outSlope: 0
@@ -6339,72 +6362,139 @@ MonoBehaviour:
     OnPlay:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
     OnPause:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
     OnResume:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
     OnRevert:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
     OnComplete:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
     OnRestoreInitialValues:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
     OnSkipToTheEnd:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
-    <OnPlayIsNull>k__BackingField: 0
-    <OnPauseIsNull>k__BackingField: 0
-    <OnResumeIsNull>k__BackingField: 0
-    <OnRevertIsNull>k__BackingField: 0
-    <OnCompleteIsNull>k__BackingField: 0
-    <OnRestoreInitialValuesIsNull>k__BackingField: 0
-    <OnSkipToTheEndIsNull>k__BackingField: 0
   DebugActive: 0
-  <IsPlaying>k__BackingField: 0
-  <TimesPlayed>k__BackingField: 0
-  <InScriptDrivenPause>k__BackingField: 0
-  <ContainsLoop>k__BackingField: 0
-  <ShouldRevertOnNextPlay>k__BackingField: 0
-  _startTime: 0
-  _holdingMax: 0
-  _lastStartAt: -3.4028235e+38
-  _lastStartFrame: -1
-  _pauseFound: 0
-  _totalDuration: 0
-  _shouldStop: 0
-  _randomDurationMultiplier: 1
-  _lastOnEnableFrame: -1
   FeedbacksList:
   - rid: 1470005605898125333
-  - rid: 1470005605898125334
   KeepPlayModeChanges: 0
   PerformanceMode: 0
   StopFeedbacksOnDisable: 0
   PlayCount: 0
-  <SkippingToTheEnd>k__BackingField: 0
-  _cachedTotalDuration: 6.95
-  _initialized: 0
   references:
     version: 2
     RefIds:
     - rid: 1470005605898125333
       type: {class: MMF_Fade, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks.MMTools}
-      data: {}
-    - rid: 253588179259490305
-      type: {class: Fade, ns: , asm: }
-      data: {}
+      data:
+        Active: 1
+        UniqueID: 0
+        Label: MMFeedback
+        ChannelMode: 0
+        Channel: 0
+        MMChannelDefinition: {fileID: 0}
+        Chance: 100
+        DisplayColor: {r: 0, g: 0, b: 0, a: 1}
+        Timing:
+          TimescaleMode: 0
+          ExcludeFromHoldingPauses: 0
+          ContributeToTotalDuration: 1
+          InitialDelay: 0
+          CooldownDuration: 0
+          InterruptsOnStop: 1
+          NumberOfRepeats: 0
+          RepeatForever: 0
+          DelayBetweenRepeats: 1
+          MMFeedbacksDirectionCondition: 0
+          PlayDirection: 0
+          ConstantIntensity: 0
+          UseIntensityInterval: 0
+          IntensityIntervalMin: 0
+          IntensityIntervalMax: 0
+          Sequence: {fileID: 0}
+          TrackID: 0
+          Quantized: 0
+          TargetBPM: 120
+        AutomatedTargetAcquisition:
+          Mode: 0
+          ChildIndex: 0
+        RandomizeOutput: 0
+        RandomMultiplier: {x: 0.8, y: 1}
+        RandomizeDuration: 0
+        RandomDurationMultiplier: {x: 0.5, y: 2}
+        UseRange: 0
+        RangeDistance: 5
+        UseRangeFalloff: 0
+        RangeFalloff:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        RemapRangeFalloff: {x: 0, y: 1}
+        Owner: {fileID: 618388157}
+        DebugActive: 0
+        FadeType: 0
+        ID: 0
+        Duration: 1
+        Curve:
+          MMTweenDefinitionType: 0
+          MMTweenCurve: 4
+          Curve:
+            serializedVersion: 2
+            m_Curve:
+            - serializedVersion: 3
+              time: 0
+              value: 0
+              inSlope: 0
+              outSlope: 0
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0
+            - serializedVersion: 3
+              time: 1
+              value: 1
+              inSlope: 0
+              outSlope: 0
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0
+            m_PreInfinity: 2
+            m_PostInfinity: 2
+            m_RotationOrder: 4
+          Initialized: 0
+        IgnoreTimeScale: 1
+        TargetAlpha: 0
+        PositionMode: 0
+        TargetTransform: {fileID: 0}
+        TargetPosition: {x: 0, y: 0, z: 0}
+        PositionOffset: {x: 0, y: 0, z: 0}
 --- !u!4 &618388158
 Transform:
   m_ObjectHideFlags: 0
@@ -6743,7 +6833,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 1
+  m_Priority: 0
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
@@ -9179,16 +9269,12 @@ MonoBehaviour:
   Shaking: 0
   ForwardDirection: 1
   TimescaleMode: 0
-  _listeningToEvents: 0
-  _shakeStartedTimestamp: -3.4028235e+38
-  _remappedTimeSinceStart: 0
-  _resetShakerValuesAfterShake: 0
-  _resetTargetValuesAfterShake: 0
-  _journey: 0
   RelativeOrthographicSize: 0
   ShakeOrthographicSize:
+    serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 3
+      time: 0
       value: 0
       inSlope: 0
       outSlope: 0
@@ -9196,7 +9282,8 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0
       outWeight: 0
-    - time: 0.5
+    - serializedVersion: 3
+      time: 0.5
       value: 1
       inSlope: 0
       outSlope: 0
@@ -9204,7 +9291,8 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0
       outWeight: 0
-    - time: 1
+    - serializedVersion: 3
+      time: 1
       value: 0
       inSlope: 0
       outSlope: 0
@@ -9217,17 +9305,6 @@ MonoBehaviour:
     m_RotationOrder: 4
   RemapOrthographicSizeZero: 5
   RemapOrthographicSizeOne: 10
-  _targetCamera: {fileID: 0}
-  _initialOrthographicSize: 0
-  _originalShakeDuration: 0
-  _originalRelativeOrthographicSize: 0
-  _originalShakeOrthographicSize:
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _originalRemapOrthographicSizeZero: 0
-  _originalRemapOrthographicSizeOne: 0
 --- !u!114 &785263181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9252,13 +9329,6 @@ MonoBehaviour:
   TestAmplitude: 2
   TestFrequency: 20
   TestShakeButton: 0
-  _timescaleMode: 0
-  _initialPosition: {x: 0, y: 0, z: 0}
-  _initialRotation: {x: 0, y: 0, z: 0, w: 0}
-  _perlin: {fileID: 0}
-  _virtualCamera: {fileID: 0}
-  _targetAmplitude: 0
-  _targetFrequency: 0
 --- !u!114 &785263182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11577,8 +11647,10 @@ MonoBehaviour:
     MMTweenDefinitionType: 0
     MMTweenCurve: 0
     Curve:
+      serializedVersion: 2
       m_Curve:
-      - time: 0
+      - serializedVersion: 3
+        time: 0
         value: 0
         inSlope: 0
         outSlope: 0
@@ -11586,7 +11658,8 @@ MonoBehaviour:
         weightedMode: 0
         inWeight: 0
         outWeight: 0
-      - time: 1
+      - serializedVersion: 3
+        time: 1
         value: 1
         inSlope: 0
         outSlope: 0
@@ -11605,23 +11678,6 @@ MonoBehaviour:
   FadeOut1SecondButton: 0
   DefaultFadeButton: 0
   ResetFaderButton: 0
-  _canvasGroup: {fileID: 0}
-  _image: {fileID: 0}
-  _initialAlpha: 0
-  _currentTargetAlpha: 0
-  _currentDuration: 0
-  _currentCurve:
-    MMTweenDefinitionType: 0
-    MMTweenCurve: 0
-    Curve:
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    Initialized: 0
-  _fading: 0
-  _fadeStartedAt: 0
-  _frameCountOne: 0
 --- !u!225 &1053461303
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -13695,8 +13751,10 @@ MonoBehaviour:
   RangeDistance: 5
   UseRangeFalloff: 0
   RangeFalloff:
+    serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 3
+      time: 0
       value: 1
       inSlope: 0
       outSlope: 0
@@ -13704,7 +13762,8 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0
       outWeight: 0
-    - time: 1
+    - serializedVersion: 3
+      time: 1
       value: 0
       inSlope: 0
       outSlope: 0
@@ -13729,72 +13788,144 @@ MonoBehaviour:
     OnPlay:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
     OnPause:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
     OnResume:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
     OnRevert:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
     OnComplete:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
     OnRestoreInitialValues:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
     OnSkipToTheEnd:
       m_PersistentCalls:
         m_Calls: []
-      m_CallsDirty: 1
-    <OnPlayIsNull>k__BackingField: 0
-    <OnPauseIsNull>k__BackingField: 0
-    <OnResumeIsNull>k__BackingField: 0
-    <OnRevertIsNull>k__BackingField: 0
-    <OnCompleteIsNull>k__BackingField: 0
-    <OnRestoreInitialValuesIsNull>k__BackingField: 0
-    <OnSkipToTheEndIsNull>k__BackingField: 0
   DebugActive: 0
-  <IsPlaying>k__BackingField: 0
-  <TimesPlayed>k__BackingField: 0
-  <InScriptDrivenPause>k__BackingField: 0
-  <ContainsLoop>k__BackingField: 0
-  <ShouldRevertOnNextPlay>k__BackingField: 0
-  _startTime: 0
-  _holdingMax: 0
-  _lastStartAt: -3.4028235e+38
-  _lastStartFrame: -1
-  _pauseFound: 0
-  _totalDuration: 0
-  _shouldStop: 0
-  _randomDurationMultiplier: 1
-  _lastOnEnableFrame: -1
   FeedbacksList:
   - rid: 1470005945423101961
-  - rid: 1470005945423101962
   KeepPlayModeChanges: 0
   PerformanceMode: 0
   StopFeedbacksOnDisable: 0
   PlayCount: 0
-  <SkippingToTheEnd>k__BackingField: 0
-  _cachedTotalDuration: 2.39
-  _initialized: 0
   references:
     version: 2
     RefIds:
     - rid: 1470005945423101961
       type: {class: MMF_CinemachineImpulse, ns: MoreMountains.FeedbacksForThirdParty, asm: MoreMountains.Feedbacks.Cinemachine}
-      data: {}
-    - rid: 6891901318563102721
-      type: {class: Cinemachine Impulse, ns: , asm: }
-      data: {}
+      data:
+        Active: 1
+        UniqueID: 0
+        Label: MMFeedback
+        ChannelMode: 0
+        Channel: 0
+        MMChannelDefinition: {fileID: 0}
+        Chance: 100
+        DisplayColor: {r: 0, g: 0, b: 0, a: 1}
+        Timing:
+          TimescaleMode: 0
+          ExcludeFromHoldingPauses: 0
+          ContributeToTotalDuration: 1
+          InitialDelay: 0
+          CooldownDuration: 0
+          InterruptsOnStop: 1
+          NumberOfRepeats: 0
+          RepeatForever: 0
+          DelayBetweenRepeats: 1
+          MMFeedbacksDirectionCondition: 0
+          PlayDirection: 0
+          ConstantIntensity: 0
+          UseIntensityInterval: 0
+          IntensityIntervalMin: 0
+          IntensityIntervalMax: 0
+          Sequence: {fileID: 0}
+          TrackID: 0
+          Quantized: 0
+          TargetBPM: 120
+        AutomatedTargetAcquisition:
+          Mode: 0
+          ChildIndex: 0
+        RandomizeOutput: 0
+        RandomMultiplier: {x: 0.8, y: 1}
+        RandomizeDuration: 0
+        RandomDurationMultiplier: {x: 0.5, y: 2}
+        UseRange: 0
+        RangeDistance: 5
+        UseRangeFalloff: 0
+        RangeFalloff:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        RemapRangeFalloff: {x: 0, y: 1}
+        Owner: {fileID: 1331670709}
+        DebugActive: 0
+        m_ImpulseDefinition:
+          m_ImpulseChannel: 1
+          m_ImpulseShape: 0
+          m_CustomImpulseShape:
+            serializedVersion: 2
+            m_Curve: []
+            m_PreInfinity: 2
+            m_PostInfinity: 2
+            m_RotationOrder: 4
+          m_ImpulseDuration: 0.2
+          m_ImpulseType: 3
+          m_DissipationRate: 0
+          m_RawSignal: {fileID: 0}
+          m_AmplitudeGain: 1
+          m_FrequencyGain: 1
+          m_RepeatMode: 0
+          m_Randomize: 1
+          m_TimeEnvelope:
+            m_AttackShape:
+              serializedVersion: 2
+              m_Curve: []
+              m_PreInfinity: 2
+              m_PostInfinity: 2
+              m_RotationOrder: 4
+            m_DecayShape:
+              serializedVersion: 2
+              m_Curve: []
+              m_PreInfinity: 2
+              m_PostInfinity: 2
+              m_RotationOrder: 4
+            m_AttackTime: 0
+            m_SustainTime: 0.2
+            m_DecayTime: 0.7
+            m_ScaleWithImpact: 1
+            m_HoldForever: 0
+          m_ImpactRadius: 100
+          m_DirectionMode: 0
+          m_DissipationMode: 2
+          m_DissipationDistance: 100
+          m_PropagationSpeed: 343
+        Velocity: {x: 0, y: 0, z: 0}
+        ClearImpulseOnStop: 0
 --- !u!4 &1331670710
 Transform:
   m_ObjectHideFlags: 0
