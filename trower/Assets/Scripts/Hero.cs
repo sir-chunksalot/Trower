@@ -56,19 +56,31 @@ public class Hero : MonoBehaviour
         }
     }
 
+    public void ChangeSpeed(float newSpeed)
+    {
+        speed = newSpeed;
+    }
 
-    private void AttackPhase(object sender, EventArgs e)
+    public void AttackPhase()
     {
         attackPhase = true;
         StartCoroutine(RandomDelay());
     }
-
-    private void DefensePhase(object sender, EventArgs e)
+    public void DefensePhase()
     {
         attackPhase = false;
         currentSpeed = 0;
         rb.velocity = Vector2.zero;
         gameObject.GetComponent<Animator>().SetBool("AttackPhase", false);
+    }
+    private void AttackPhase(object sender, EventArgs e)
+    {
+        AttackPhase();
+    }
+
+    private void DefensePhase(object sender, EventArgs e)
+    {
+        DefensePhase();
     }
 
     private IEnumerator RandomDelay()

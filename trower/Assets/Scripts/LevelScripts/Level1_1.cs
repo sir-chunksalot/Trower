@@ -1,4 +1,5 @@
-using MoreMountains.Feedbacks;
+//using MoreMountains.Feedbacks;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,13 +17,14 @@ public class Level1_1 : MonoBehaviour
     [SerializeField] GameObject VCAM1;
     [SerializeField] GameObject VCAM2;
     [SerializeField] GameObject MainView;
+    [SerializeField] GameObject MainView2;
     [SerializeField] GameObject VCAMPanRight;
     [SerializeField] SpriteRenderer crack;
     [SerializeField] Sprite[] cracks;
     [SerializeField] GameObject flower;
     [SerializeField] Sprite[] flowerGrowthStages;
-    [SerializeField] MMFeedbacks growFlowerEffect;
-    [SerializeField] MMFeedbacks superShakeEffect;
+    //[SerializeField] MMFeedbacks growFlowerEffect;
+    //[SerializeField] MMFeedbacks superShakeEffect;
     [SerializeField] GameObject lightsOut;
     [SerializeField] GameObject bigCrackleft;
     [SerializeField] GameObject bigCrackRight;
@@ -49,7 +51,13 @@ public class Level1_1 : MonoBehaviour
     [SerializeField] GameObject dialogueTriggerSecondSpike;
     [SerializeField] GameObject dialogueTriggerSecondSpike1;
     [SerializeField] GameObject dialogueTriggerSecondSpike2;
-    [SerializeField] GameObject dialogueTriggerSecondSpike3;
+    [SerializeField] GameObject dialogueTriggerHoverOverEnemy;
+    [SerializeField] GameObject dialogueTriggerHigh5;
+    [SerializeField] GameObject dialogueTriggerWhoops;
+    [SerializeField] GameObject dialogueTriggerkillThatGuyToo;
+    [SerializeField] GameObject dialogueTriggerTabSwitch;
+    [SerializeField] GameObject dialogueTriggerDefendEverywhere;
+    [SerializeField] GameObject dialogueTriggerAreYouSureAboutThat;
 
     //torches
     [SerializeField] GameObject[] redTorches;
@@ -57,13 +65,21 @@ public class Level1_1 : MonoBehaviour
     [SerializeField] Sprite emptyTorch;
 
     //level
+    [SerializeField] GameObject secondEnemy;
     [SerializeField] GameObject rightFloor;
     [SerializeField] GameObject arrow2;
     [SerializeField] GameObject arrowSpear;
+    [SerializeField] GameObject arrowSpear2;
+    [SerializeField] GameObject arrowBuild;
     [SerializeField] GameObject firstTrap;
     [SerializeField] GameObject arrowContinue;
     [SerializeField] GameObject card;
     [SerializeField] GameObject cardHolder;
+    [SerializeField] GameObject spearsPrefab;
+    [SerializeField] GameObject spaceEffect;
+    [SerializeField] Sprite goofyHeroFace;
+    [SerializeField] GameObject buildTab;
+
 
 
     //particle effects
@@ -83,21 +99,36 @@ public class Level1_1 : MonoBehaviour
     CameraController camController;
     WaveManager waveManager;
     TrapBuilder trapBuilder;
+    LevelManager levelManager;
+    UIManager uiManager;
     int shakeCount;
     bool gottaWait;
     bool beenThereDoneThat;
+    bool beenThereDoneThat2;
     bool checkForClick;
     bool tryAndArm;
-    bool finalPhase;
+    bool secondTrapPlaced;
+    bool defensePhase;
+    bool areYouSure;
+
+    private void Awake()
+    {
+        uiManager = gameManager.GetComponent<UIManager>();
+        uiManager.OnClickContinue += TryContinue;
+    }
     void Start()
     {
+        levelManager = gameManager.GetComponent<LevelManager>();
         cardHolster = card.GetComponent<CardHolsterGraphics>();
         Debug.Log(gameObject + "snoop");
         waveManager = gameManager.GetComponent<WaveManager>();
+        waveManager.OnDefensePhaseStart += InstructDefensePhase;
         Debug.Log(waveManager + "snoopy");
         camController = this.GetComponent<CameraController>();
         trapBuilder = gameManager.GetComponent<TrapBuilder>();
-
+        trapBuilder.onTrapPlace += DisableTrap;
+        trapBuilder.onTrapPlace += CheckPos;
+        
         if (inIntroduction)
         {
             GoInside();
@@ -110,8 +141,6 @@ public class Level1_1 : MonoBehaviour
             camController.ActivateCamera(MainView);
 
         }
-
-        Coins.SetCoin(10000);
     }
 
 
@@ -125,7 +154,7 @@ public class Level1_1 : MonoBehaviour
             if (shakeCount <= 2 && !gottaWait)
             {
                 pressSpaceShadow.SetActive(true);
-                growFlowerEffect.PlayFeedbacks();
+                //growFlowerEffect.PlayFeedbacks();
                 coffin.GetComponent<Animator>().SetTrigger("Shake");
                 Debug.Log("shook");
                 shakeCount++;
@@ -195,7 +224,7 @@ public class Level1_1 : MonoBehaviour
         shakeCount++;
         Debug.Log("fart");
         yield return new WaitForSeconds(time);
-        superShakeEffect.PlayFeedbacks();
+        //superShakeEffect.PlayFeedbacks();f
         StartCoroutine(DelayBeforeOtherEffects(time));
 
     }
@@ -274,16 +303,42 @@ public class Level1_1 : MonoBehaviour
         blackBG.SetActive(false);
         tvScreen.SetActive(true);
         lightsOut.SetActive(false);
-        gameManager.GetComponent<TowerBuilder>().AddPlacedFloor(rightFloor);
 
 
         arrow2.SetActive(true);
-
+        firstTrap.GetComponent<Trap>().DisableTrap();
         //StartCoroutine(ExtraInfoForSlowpokes());
         //re enable later
+        dialogueTriggerHigh5.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+        cardHolster.MuteAudio(3, .2f);
+        cardHolster.PurchaseCharge();
+        StartCoroutine(CheckForHover(true));
 
     }
 
+
+    private IEnumerator CheckForHover(bool first)
+    {
+        bool isFirst = first;
+        yield return new WaitForSeconds(.2f);
+        if (spaceEffect.activeInHierarchy)
+        {
+            dialogueTriggerHoverOverEnemy.SetActive(false);
+            dialogueTriggerHigh5.SetActive(true);
+        }
+        else
+        {
+            dialogueTriggerHigh5.SetActive(false);
+            if (isFirst)
+            {
+                isFirst = false;
+                dialogueTriggerHoverOverEnemy.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+            }
+            dialogueTriggerHoverOverEnemy.SetActive(true);
+
+        }
+        StartCoroutine(CheckForHover(isFirst));
+    }
     public void GoInside()
     {
         pressSpaceUI.SetActive(true);
@@ -299,27 +354,27 @@ public class Level1_1 : MonoBehaviour
         arrow2.SetActive(false);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) //WHEN ENEMY BREACHES DEFENSES
-    {
-        if(collision.tag == "PrisonGuard")
-        {
-            if (firstEnemy == null && !checkForClick) 
-            {
-                cardHolder.SetActive(true);
-                cardHolster.PurchaseTrap();
-                dialogueTriggerSecondSpike.GetComponentInChildren<DialogueBox>().ManualReadMessage();
-                waveManager.SwitchDefensePhase(false);
-                arrowSpear.SetActive(true);
-                checkForClick = true;
-            }
-        }
-    }
+    //private void OnTriggerEnter2D(Collider2D collision) //WHEN ENEMY BREACHES DEFENSES
+    //{
+    //    if(collision.tag == "PrisonGuard")
+    //    {
+    //        if (firstEnemy == null && !checkForClick) 
+    //        {
+    //            cardHolder.SetActive(true);
+    //            cardHolster.PurchaseTrap();
+    //            dialogueTriggerSecondSpike.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+    //            waveManager.SwitchDefensePhase(false);
+    //            arrowSpear.SetActive(true);
+    //            checkForClick = true;
+    //        }
+    //    }
+    //}
 
     public void OnClick(InputAction.CallbackContext context)
     {
         if(context.performed)
         {
-            if (checkForClick && !finalPhase)
+            if (checkForClick && !secondTrapPlaced)
             {
                 StartCoroutine(WaitForClick());
             }
@@ -327,13 +382,64 @@ public class Level1_1 : MonoBehaviour
             {
                 Debug.Log("quepp");
             }
-            if(finalPhase)
+
+            if(defensePhase)
             {
-                dialogueTriggerSecondSpike3.SetActive(false);
-                arrowContinue.SetActive(false);
+                if(arrowBuild.activeInHierarchy)
+                {
+                    StartCoroutine(CheckForBuildTab());
+                }
+                else
+                {
+                    dialogueTriggerDefendEverywhere.SetActive(false);
+                }
+
+                if(areYouSure)
+                {
+                    dialogueTriggerAreYouSureAboutThat.SetActive(false);
+                    defensePhase = false;
+                    dialogueTriggerDefendEverywhere.SetActive(false);
+                    arrowBuild.SetActive(false);
+                    uiManager.SetDenySwitch(false);
+                }
             }
         }
 
+    }
+
+    private IEnumerator CheckForBuildTab()
+    {
+        yield return new WaitForSeconds(.2f);
+        {
+            if(buildTab.GetComponent<RectTransform>().localPosition.y >= 0)
+            {
+                dialogueTriggerTabSwitch.SetActive(false);
+                arrowBuild.SetActive(false);
+                dialogueTriggerDefendEverywhere.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+            }
+        }
+    }
+
+    public void DisableTrap(object trap, EventArgs e)
+    {
+        if(trapDaddy.transform.childCount >= 1 && !secondTrapPlaced)
+        {
+            trapDaddy.GetComponentInChildren<Trap>().DisableTrap();
+            secondTrapPlaced = true;
+        }
+
+    }
+
+    public void CheckPos(object trap, EventArgs e)
+    {
+        if(defensePhase)
+        {
+            GameObject trapPos = (GameObject)trap;
+            if(trapPos.transform.position.x < 0)
+            {
+                uiManager.SetDenySwitch(false);
+            }
+        }
     }
 
     private IEnumerator WaitForClick()
@@ -341,93 +447,203 @@ public class Level1_1 : MonoBehaviour
         yield return new WaitForSeconds(.2f);
         if (trapBuilder.GetPlacingTrap())
         {
+            Debug.Log("TRAP placing trap");
+            dialogueTriggerWhoops.SetActive(false);
             dialogueTriggerSecondSpike.SetActive(false);
             dialogueTriggerSecondSpike2.SetActive(false);
             dialogueTriggerSecondSpike1.SetActive(true);
-            dialogueTriggerSecondSpike1.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+            arrowSpear.SetActive(false);
+            arrowSpear2.SetActive(true);
+            if (!dialogueTriggerSecondSpike1.GetComponentInChildren<DialogueBox>().GetHasBeenRead())
+            {
+                dialogueTriggerSecondSpike1.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+            }
+            StartCoroutine(WaitForClick());
 
         }
         else if (trapDaddy.transform.childCount >= 1)
         {
+            Debug.Log("TRAP PLACED");
             arrowSpear.SetActive(false);
             dialogueTriggerSecondSpike1.SetActive(false);
             dialogueTriggerSecondSpike.SetActive(false);
             dialogueTriggerSecondSpike2.SetActive(true);
-            dialogueTriggerSecondSpike2.GetComponentInChildren<DialogueBox>().ManualReadMessage();
-            StartCoroutine(CheckForArm(trapDaddy.transform.GetComponentsInChildren<Transform>()[1].gameObject)); ;
+            if(!dialogueTriggerSecondSpike2.GetComponentInChildren<DialogueBox>().GetHasBeenRead())
+            {
+                dialogueTriggerSecondSpike2.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+            }
+            trapDaddy.GetComponentInChildren<Trap>().DisableTrap();
+            secondTrapPlaced = true;
         }
         else
         {
+            Debug.Log("TRAP DEFAULT");
+            arrowSpear.SetActive(true);
+            arrowSpear2.SetActive(false);
             dialogueTriggerSecondSpike1.SetActive(false);
             dialogueTriggerSecondSpike2.SetActive(false);
             dialogueTriggerSecondSpike.SetActive(true);
-            dialogueTriggerSecondSpike.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+            if(!dialogueTriggerSecondSpike.GetComponentInChildren<DialogueBox>().GetHasBeenRead())
+            {
+                dialogueTriggerSecondSpike.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+            }
+            StartCoroutine(WaitForClick());
         }
     }
 
-    private IEnumerator CheckForArm(GameObject trap)
+    public void InstructDefensePhase(object sender, EventArgs e)
     {
-        yield return new WaitForSeconds(.2f);
-        if (trap.GetComponent<Trap>().GetIsArmed())
-        {
-            dialogueTriggerSecondSpike1.SetActive(false);
-            dialogueTriggerSecondSpike.SetActive(false);
-            dialogueTriggerSecondSpike2.SetActive(false);
-            dialogueTriggerSecondSpike3.SetActive(true);
-            dialogueTriggerSecondSpike3.GetComponentInChildren<DialogueBox>().ManualReadMessage();
-            arrowContinue.SetActive(true);
-            finalPhase = true;
-            StopCoroutine(CheckForArm(trap));
-        }
-        else
-        {
-            StartCoroutine(CheckForArm(trap));
-        }
+        camController.ActivateCamera(MainView2);
+        arrowBuild.SetActive(true);
+        StartCoroutine(WaitForInstruction());
+    }
+
+    private IEnumerator WaitForInstruction()
+    {
+        yield return new WaitForSeconds(1.5f);
+        dialogueTriggerTabSwitch.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+        defensePhase = true;
+        uiManager.SetDenySwitch(true);
     }
 
 
     public void OnSpacePressed(InputAction.CallbackContext context)
     {
-        if (context.performed && !beenThereDoneThat)
+        if (context.performed)
         {
-            if (firstTrap.GetComponent<Trap>().GetCanAttack())
+            if(!beenThereDoneThat)
             {
-                beenThereDoneThat = true;
-                firstTrap.GetComponent<Trap>().ManualTrapActivate();
-                firstTrap.GetComponent<Trap>().DisableTrap();
-                Debug.Log("they killed him bois");
-                DialogueManager dialogueManager = dialogueManagerObj.GetComponent<DialogueManager>();
-                dialogueManager.DiscoverCursorSwitch(false);
+                if (spaceEffect.activeInHierarchy)
+                {
+                    StopAllCoroutines();
+                    dialogueTriggerHigh5.SetActive(false);
+                    dialogueTriggerHoverOverEnemy.SetActive(false);
+                    beenThereDoneThat = true;
+                    firstTrap.GetComponent<Trap>().ManualTrapActivate();
+                    secondEnemy.GetComponent<Hero>().AttackPhase();
+                    secondEnemy.GetComponent<Hero>().ChangeSpeed(6);
+                    StartCoroutine(MakeHeroStop());
+                    StartCoroutine(WaitForJoke());
+                    //firstTrap.GetComponent<Trap>().DisableTrap();
+                    //Debug.Log("they killed him bois");
+                    //DialogueManager dialogueManager = dialogueManagerObj.GetComponent<DialogueManager>();
+                    //dialogueManager.DiscoverCursorSwitch(false);
 
-                arrow2.SetActive(false);
-                dialogueTriggerSlowpokes1.SetActive(false);
-                dialogueTriggerSlowpokes2.SetActive(false);
-                extraArrowForSlowpokes1.SetActive(false);
-                extraArrowForSlowpokes2.SetActive(false);
-                extraArrowForSlowpokes3.SetActive(false);
-                extraArrowForSlowpokes4.SetActive(false);
-                StartCoroutine(DelayBeforeCam());
+                    //arrow2.SetActive(false);
+                    //dialogueTriggerSlowpokes1.SetActive(false);
+                    //dialogueTriggerSlowpokes2.SetActive(false);
+                    //extraArrowForSlowpokes1.SetActive(false);
+                    //extraArrowForSlowpokes2.SetActive(false);
+                    //extraArrowForSlowpokes3.SetActive(false);
+                    //extraArrowForSlowpokes4.SetActive(false);
+                    //StartCoroutine(DelayBeforeCam());
+                }
             }
-
+            if(secondTrapPlaced && !beenThereDoneThat2 && trapDaddy.GetComponentInChildren<Trap>().GetSpaceEffect().activeInHierarchy)
+            {
+                trapDaddy.GetComponentInChildren<Trap>().ManualTrapActivate();
+                beenThereDoneThat2 = true;
+                StartCoroutine(CheckForSecondDeath());
+                
+            }
+           
         }
     }
 
-    private IEnumerator DelayBeforeCam()
+    private IEnumerator CheckForSecondDeath()
     {
-        yield return new WaitForSeconds(1);
-        
+        yield return new WaitForSeconds(2);
+        if (secondEnemy == null)
+        {
+            dialogueTriggerSecondSpike2.SetActive(false);
+            dialogueTriggerkillThatGuyToo.SetActive(false);
+            arrowSpear2.SetActive(false);
             camController.ActivateCamera(VCAMPanRight, 5);
             StartCoroutine(WaitForCam());
+        }
+        else
+        {
+            beenThereDoneThat2 = false;
+        }
+    }
+
+    private IEnumerator MakeHeroStop()
+    {
+        yield return new WaitForSeconds(4f);
+        secondEnemy.GetComponent<Hero>().DefensePhase();
+        secondEnemy.GetComponent<Animator>().enabled = false;
+        secondEnemy.GetComponent<SpriteRenderer>().sprite = goofyHeroFace;
+    }
+
+    private IEnumerator WaitForJoke()
+    {
+        yield return new WaitForSeconds(1.5f);
+        if(trapDaddy.transform.childCount < 1)
+        {
+            arrow2.SetActive(false);
+            dialogueTriggerWhoops.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+            StartCoroutine(InstructSecondSpear());
+        }
+        else
+        {
+            trapDaddy.GetComponentInChildren<Trap>().DisableTrap();
+            arrow2.SetActive(false);
+            dialogueTriggerkillThatGuyToo.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+            dialogueTriggerWhoops.SetActive(false);
+            secondTrapPlaced = true;
+            beenThereDoneThat2 = false;
+        }
 
     }
 
+    private void TryContinue(object sender, EventArgs e)
+    {
+        if(uiManager.GetDenySwitch())
+        {
+            dialogueTriggerAreYouSureAboutThat.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+            areYouSure = true;
+        }
+        else
+        {
+            defensePhase = false;
+        }
+
+    }
+
+    private IEnumerator InstructSecondSpear()
+    {
+        yield return new WaitForSeconds(2);
+        if(trapDaddy.transform.childCount < 1)
+        {
+            dialogueTriggerWhoops.SetActive(false);
+            dialogueTriggerSecondSpike.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+            arrowSpear.SetActive(true);
+            StartCoroutine(WaitForClick());
+        }
+        else
+        {
+            trapDaddy.GetComponentInChildren<Trap>().DisableTrap();
+            dialogueTriggerkillThatGuyToo.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+            dialogueTriggerWhoops.SetActive(false);
+            secondTrapPlaced = true;
+            beenThereDoneThat2 = false;
+        }
+    }
+    
     private IEnumerator WaitForCam()
     {
         yield return new WaitForSeconds(7);
         waveManager.SwitchAttackPhase(true);
-        firstTrap.GetComponent<Trap>().EnableTrap();
+        StartCoroutine(WaitABit());
         StartCoroutine(RunForestRun());
 
+    }
+
+    private IEnumerator WaitABit()
+    {
+        yield return new WaitForSeconds(4.2f);
+        firstTrap.GetComponent<Trap>().EnableTrap();
+        trapDaddy.GetComponentInChildren<Trap>().EnableTrap();
     }
 
     private IEnumerator RunForestRun()

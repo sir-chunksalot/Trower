@@ -9,4 +9,9 @@ public class DevTools : MonoBehaviour
         genViableFloors.Test();
     }
 
+    public void GainCoin(float coin)
+    {
+        Coins.ChangeCoins(coin);
+    }
+
 }

@@ -175,7 +175,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: YOU CAN ARM THE TRAP TOO, PRESS SPACE WHILE HOVERED.
+  m_text: pressing space activates  traps, spear that dork!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: be8715dd982b50a4b8af4cfdba549a67, type: 2}
   m_sharedMaterial: {fileID: -4021936366828355, guid: be8715dd982b50a4b8af4cfdba549a67, type: 2}

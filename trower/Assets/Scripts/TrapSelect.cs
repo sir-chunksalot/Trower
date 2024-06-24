@@ -20,12 +20,10 @@ public class TrapSelect : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("jakar +" + potentialTraps[0].name);
+        Debug.Log("jakarr +" + potentialTraps[0].name);
         canDoShit = true;
         towerBuilder = gameObject.GetComponent<TowerBuilder>();
         trapBuilder = gameObject.GetComponent<TrapBuilder>();
-        towerBuilder.onTowerPlace += DeselectAll;
-        trapBuilder.onTrapPlace += DeselectAll;
         buildNames = new List<string>();
 
 
@@ -36,23 +34,15 @@ public class TrapSelect : MonoBehaviour
         }
 
     }
-    public void DeselectAll(object sender, EventArgs e)
-    {
-        if (!canDoShit) return;
-        StartCoroutine(DontDoShit());
-    }
 
-    public void DeselectOne(string name)
+    public bool GetPlacing()
     {
-        int count = 0;
-        foreach (GameObject trap in potentialTraps)
+        Debug.Log("DOOFEN GET PLACING");
+        if(towerBuilder.GetIsPlacingFloor() || trapBuilder.GetPlacingTrap())
         {
-            count++;
-            if (trap.name + "(Clone)" + "(Clone)" == name) //scuffed but it works
-            {
-                trap.GetComponent<CardHolsterGraphics>().SetActiveStatus(false);
-            }
+            return true;
         }
+        return false;
     }
 
     public void OnItemClicked(string buttonName)
@@ -140,11 +130,4 @@ public class TrapSelect : MonoBehaviour
         }
     }
 
-    private IEnumerator DontDoShit() //this method, aptly named "Dont Do Shit", prevents this script from doing shit. i was having problems with the tower getting all fucky when people placed too fast, so here we go. perfect solution 
-    {
-        canDoShit = false;
-        yield return new WaitForSeconds(.2f);
-        canDoShit = true;
-
-    }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,11 @@ public class HeroManager : MonoBehaviour
     [SerializeField] GameObject bloodAnim;
     [SerializeField] GameObject bloodEffect;
     [SerializeField] Sprite[] bloodEffects;
+
+    public event EventHandler OnHeroDeath;
+
     List<GameObject> heroes;
+    int killCount;
 
     private void Awake()
     {
@@ -25,6 +30,8 @@ public class HeroManager : MonoBehaviour
         GameObject blood = Instantiate(bloodAnim, spawnPos, Quaternion.identity, gameObject.transform);
         StartCoroutine(BloodAnim(blood, spawnPos));
         StartCoroutine(DestroyObjectAfterTime(hero));
+        killCount++;
+        OnHeroDeath?.Invoke(gameObject, EventArgs.Empty);
     }
 
     private IEnumerator DestroyObjectAfterTime(GameObject hero)
@@ -46,13 +53,18 @@ public class HeroManager : MonoBehaviour
     private Sprite PickBloodEffect()
     {
         int count = bloodEffects.Length - 1;
-        int randomNum = Random.Range(0, count);
+        int randomNum = UnityEngine.Random.Range(0, count);
         return bloodEffects[randomNum];
     }
 
     public void AddHeroToList(GameObject hero)
     {
         heroes.Add(hero);
+    }
+
+    public int GetKillCount()
+    {
+        return killCount;
     }
 
 

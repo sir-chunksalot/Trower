@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,19 +12,49 @@ public class TrapManager : MonoBehaviour
     public event EventHandler onSpaceReleased;
     public event EventHandler onSelectedTrapChange;
     private List<GameObject> traps;
+    private List<Trap> trapScripts;
     private GameObject selectedTrap;
     Trap trapScript;
+    WaveManager waveManager;
     Image trapCooldownUI;
     private void Awake()
     {
+        waveManager = gameObject.GetComponent<WaveManager>();
+        waveManager.OnAttackPhaseStart += FindSelectedTrap;
         traps = new List<GameObject>();
+        trapScripts = new List<Trap>();
         trapCooldownUI = trapCooldown.GetComponent<Image>();
+    }
+
+    private void FindSelectedTrap(object sender, EventArgs e)
+    {
+        StartCoroutine(CheckForSelect());
+    }
+
+    private IEnumerator CheckForSelect()
+    {
+        yield return new WaitForSeconds(.5f);
+
+        if(selectedTrap == null) {
+            foreach (Trap trap in trapScripts)
+            {
+                Debug.Log("FARTPPselect trap loop" + trap);
+                if (trap.GetCanAttack())
+                {
+                    Debug.Log("select trap found" + trap);
+                    SelectNewTrap(trap);
+                    break;
+                }
+            }
+        }
+
     }
 
     private void FixedUpdate()
     {
         if (selectedTrap != null)
         {
+            Debug.Log("selectedd trap:" + selectedTrap);
             float currentCooldown = trapScript.GetCurrentCooldown();
             float totalCooldown = trapScript.GetTotalCooldown();
             trapCooldownUI.fillAmount = currentCooldown / totalCooldown;
@@ -31,9 +62,23 @@ public class TrapManager : MonoBehaviour
     }
 
 
-    public void AddTrapToList(GameObject trap)
+    public void AddTrapToList(GameObject trap, Trap trapScript)
     {
+        Debug.Log("selectballs" + trap + "scrypt" + trapScript);
         traps.Add(trap);
+        trapScripts.Add(trapScript);
+        Debug.Log("selectBalls2" + traps[0] + "scrpyt" + trapScripts[0]);
+    }
+    public void RemoveTrapFromList(GameObject trap, Trap trapScript)
+    {
+        Debug.Log("selectpenis" + trap + "scrypt" + trapScript);
+        if(traps == null || trapScripts == null) { return; }
+        if(traps.Contains(trap)) {
+            traps.Remove(trap);
+        }
+        if(trapScripts.Contains(trapScript)) {
+            trapScripts.Remove(trapScript);
+        }
     }
 
     public GameObject GetSelectedTrap()
@@ -41,10 +86,15 @@ public class TrapManager : MonoBehaviour
         return selectedTrap;
     }
 
-    public void SelectNewTrap(GameObject trap)
+
+    public void SelectNewTrap(Trap trap)
     {
-        selectedTrap = trap;
-        trapScript = selectedTrap.GetComponent<Trap>();
+        Debug.Log("select new trap");
+        selectedTrap = trap.gameObject;
+        trapScript = trap;
+        float currentCooldown = trapScript.GetCurrentCooldown();
+        float totalCooldown = trapScript.GetTotalCooldown();
+        trapCooldownUI.fillAmount = currentCooldown / totalCooldown;
         onSelectedTrapChange?.Invoke(gameObject, EventArgs.Empty);
     }
 

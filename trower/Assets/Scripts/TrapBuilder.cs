@@ -149,6 +149,7 @@ public class TrapBuilder : MonoBehaviour
 
         if(mousePos == (Vector2)currentTrap.transform.position) {
             Debug.Log("80s!");
+            uiManager.UseTrap(trapName, false);
             EndPlacement();
             return;
         }
@@ -162,29 +163,22 @@ public class TrapBuilder : MonoBehaviour
                 {
                     rotation = 180;
                 }
-                uiManager.UseTrap(trapName);
+                uiManager.UseTrap(trapName, true);
                 GameObject newBuild = Instantiate(currentTrap, nextTrapPos, Quaternion.Euler(0, rotation, 0), trapDaddy.transform);
+                Debug.Log("BEW BUILD!" + newBuild);
                 UpdateValidTrapSpawns(new Vector2(nextTrapPos.x, nextTrapPos.y - yOffSet), false); 
                 Trap trap = newBuild.GetComponent<Trap>();
 
-                if (trap.GetCost() <= Coins.GetCoins())
-                {
-                    towerBuilder.SetAlpha(newBuild, 1);
-                    trap.EnableTrap();
-                    Coins.ChangeCoins(-1 * trap.GetCost());
-
-                    Vector3 particleSpawnPos = newBuild.transform.position;
-                    particle.gameObject.transform.position = new Vector3(particleSpawnPos.x, particleSpawnPos.y, particleSpawnPos.z - 2);
-                    particle.GetComponent<ParticleSystem>().Clear();
-                    particle.GetComponent<ParticleSystem>().Play();
-
-                    trapSelect.DeselectOne(trap.name);
-                }
-                else
-                {
-                    Destroy(newBuild);
-                }
-
+                towerBuilder.SetAlpha(newBuild, 1);
+                trap.EnableTrap();
+                Vector3 particleSpawnPos = newBuild.transform.position;
+                particle.gameObject.transform.position = new Vector3(particleSpawnPos.x, particleSpawnPos.y, particleSpawnPos.z - 2);
+                particle.GetComponent<ParticleSystem>().Clear();
+                particle.GetComponent<ParticleSystem>().Play();
+            }
+            else
+            {
+                uiManager.UseTrap(trapName, false);
             }
             EndPlacement();
         }
@@ -219,6 +213,7 @@ public class TrapBuilder : MonoBehaviour
 
     public void EndPlacement()
     {
+        Debug.Log("bew end");
         placingTrap = false;
         trapName = "";
         Destroy(currentTrap);

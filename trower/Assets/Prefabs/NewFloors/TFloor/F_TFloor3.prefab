@@ -471,7 +471,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 2693897466946762028}
-  bottomFloorSprite: {fileID: 0}
+  bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
 --- !u!50 &2483825592766456078
 Rigidbody2D:
   serializedVersion: 4
@@ -1851,7 +1851,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 7562426008640822019}
-  bottomFloorSprite: {fileID: 0}
+  bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
 --- !u!50 &6791418372772920184
 Rigidbody2D:
   serializedVersion: 4
@@ -2024,7 +2024,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 8524582496043254055}
-  bottomFloorSprite: {fileID: 0}
+  bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
 --- !u!50 &4224213693678433199
 Rigidbody2D:
   serializedVersion: 4
@@ -3118,7 +3118,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 4.16, y: 10}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -3161,7 +3161,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 2.08, y: 5}
-    newSize: {x: 0.16, y: 0.16}
+    newSize: {x: 4.16, y: 10}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -3182,7 +3182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 5591112291502135473}
-  bottomFloorSprite: {fileID: 0}
+  bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
 --- !u!50 &4314685326620664615
 Rigidbody2D:
   serializedVersion: 4
@@ -3368,7 +3368,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 4.16, y: 10}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -3411,7 +3411,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 2.08, y: 5}
-    newSize: {x: 0.16, y: 0.16}
+    newSize: {x: 4.16, y: 10}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -3432,7 +3432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 7500834545502475382}
-  bottomFloorSprite: {fileID: 0}
+  bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
 --- !u!50 &801542055067999334
 Rigidbody2D:
   serializedVersion: 4
@@ -4641,7 +4641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 3548351683465819189}
-  bottomFloorSprite: {fileID: 0}
+  bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
 --- !u!50 &6797960747246155087
 Rigidbody2D:
   serializedVersion: 4
@@ -4936,7 +4936,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 5753309350613415041}
-  bottomFloorSprite: {fileID: 0}
+  bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
 --- !u!50 &3758968511730303519
 Rigidbody2D:
   serializedVersion: 4
@@ -5648,7 +5648,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 360746810700604361}
-  bottomFloorSprite: {fileID: 0}
+  bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
 --- !u!50 &1087471301979084832
 Rigidbody2D:
   serializedVersion: 4

@@ -15,7 +15,6 @@ public class TowerBuilder : MonoBehaviour
     [SerializeField] float sideMapBounds;
     [SerializeField] float topMapBounds;
     [SerializeField] float reqMouseDistanceToPlace;
-    [SerializeField] GameObject initialFloor;
     [SerializeField] GameObject door;
     [SerializeField] GameObject sellBomb;
     [SerializeField] GameObject explosionEffect;
@@ -27,6 +26,7 @@ public class TowerBuilder : MonoBehaviour
     GameObject currentFloor;
     GameObject sellBombObject;
     CameraController cameraController;
+    UIManager uiManager;
 
     private List<GameObject> placedFloors = new List<GameObject>(); //LIST OF PLACED INDIVIDUAL FLOORS
     private List<GameObject> floorPapas = new List<GameObject>(); //LIST OF PLACED GROUPED FLOOR TYPES
@@ -39,6 +39,7 @@ public class TowerBuilder : MonoBehaviour
     Vector3 highestPoint;
     Vector2 mousePos;
 
+    private string floorName;
     private bool goingUp;
     private bool placingFloor;
     private bool placingBomb;
@@ -47,13 +48,22 @@ public class TowerBuilder : MonoBehaviour
 
     private void Start()
     {
+        uiManager = gameObject.GetComponent<UIManager>();
         sellBombObject = Instantiate(sellBomb, Vector2.zero, Quaternion.identity);
         SetAlpha(sellBombObject, 0);
         ladderType = 2;
-        placedFloors.Add(initialFloor);
-        floorSpawnSpots.Add(initialFloor.transform.position);
         cameraController = Camera.main.GetComponent<CameraController>();
         StartCoroutine(GenerateNewWalls());
+
+        GameObject oldFloorsDad = GameObject.FindGameObjectWithTag("BuildDaddy");
+        foreach(Floor floor in oldFloorsDad.GetComponentsInChildren<Floor>())
+        {
+            if(floor.gameObject.tag == "Build")
+            {
+                AddPlacedFloor(floor.gameObject);
+                floorSpawnSpots.Add(floor.gameObject.transform.position);
+            }
+        }
     }
 
     public void Place(InputAction.CallbackContext context) //called when mouse is released
@@ -98,7 +108,7 @@ public class TowerBuilder : MonoBehaviour
         }
 
 
-        if (Vector2.Distance(nextFloorPos, mousePos) < reqMouseDistanceToPlace && 0 <= Coins.GetMaterial() - cost)
+        if (Vector2.Distance(nextFloorPos, mousePos) < reqMouseDistanceToPlace)
         {
             Vector3 particleSpawnPos = Vector3.zero;
 
@@ -112,12 +122,11 @@ public class TowerBuilder : MonoBehaviour
 
                 Debug.Log("goose");
                 int count = 0;
-
-                Coins.ChangeMaterial(-cost);
                 foreach (Transform child in build.GetComponentInChildren<Transform>())
                 {
                     count++;
                     Debug.Log("HELLOW BABY");
+                    uiManager.UseTrap(floorName, true);
                     GameObject newBuild = Instantiate(child.gameObject, nextFloorPos, Quaternion.identity, papa.transform);
                     newBuild.transform.position += child.transform.position - build.transform.position;
                     newBuild.transform.position = new Vector3(newBuild.transform.position.x, newBuild.transform.position.y, 10);
@@ -129,6 +138,10 @@ public class TowerBuilder : MonoBehaviour
                     particleSpawnPos = newBuild.transform.position;
                 }
             }
+            else
+            {
+                uiManager.UseTrap(floorName, false);
+            }
 
             particle.gameObject.transform.position = new Vector3(particleSpawnPos.x, particleSpawnPos.y, particleSpawnPos.z - 2);
             particle.GetComponent<ParticleSystem>().Clear();
@@ -136,6 +149,7 @@ public class TowerBuilder : MonoBehaviour
         }
         else
         {
+            uiManager.UseTrap(floorName, false);
             Debug.Log("Mission Failed. We'll get em' next time (failed to build structure)");
         }
     }
@@ -158,6 +172,7 @@ public class TowerBuilder : MonoBehaviour
         }
 
         GameObject activeFloor = floorTypes[0];
+
         foreach (GameObject floor in floorTypes)
         {
             Debug.Log(floor.name + " " + floorName);
@@ -166,7 +181,8 @@ public class TowerBuilder : MonoBehaviour
                 activeFloor = floor;
             }
         }
-
+        this.floorName = floorName.Substring(0, floorName.Length - 7);
+        Debug.Log("DOOFEN activefloorname" + floorName);
         int index = floorTypes.IndexOf(activeFloor);
         Debug.Log("LUFFY: " + index + " " + activeFloor + " " + ladderType + " " + goingUp);
 
@@ -601,7 +617,7 @@ public class TowerBuilder : MonoBehaviour
 
     public Vector3 GetInitialFloorPos()
     {
-        return initialFloor.transform.position;
+        return placedFloors[0].transform.position;
     }
 
     public Vector2 GetRoomBounds()

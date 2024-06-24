@@ -11,9 +11,11 @@ public class LevelManager : MonoBehaviour
         levelCount = 1;
     }
 
-    public void ChangeLevel()
+    public void ChangeLevel(int level)
     {
-        SceneManager.LoadScene(levelCount - 1);
+        levelCount = level;
+        SceneManager.LoadScene(level);
+
     }
     void Update()
     {

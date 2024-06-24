@@ -7,7 +7,7 @@ public class DialogueBox : MonoBehaviour
     [SerializeField] float offsetY;
     [SerializeField] float offsetX;
     [SerializeField] bool canClick;
-
+    private bool hasBeenRead;
     DialogueManager dialogueManager;
     void Start()
     {
@@ -27,6 +27,12 @@ public class DialogueBox : MonoBehaviour
     public void ManualReadMessage()
     {
         dialogueManager.ReadMessage(gameObject.transform.parent.gameObject);
+        hasBeenRead = true;
+    }
+
+    public bool GetHasBeenRead()
+    {
+        return hasBeenRead;
     }
 
 

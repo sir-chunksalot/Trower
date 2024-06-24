@@ -28,6 +28,9 @@ TagManager:
   - BackgroundElements
   - PrisonGuard
   - TrapDaddy
+  - BuildPhase
+  - Build
+  - BuildDaddy
   layers:
   - Default
   - TransparentFX

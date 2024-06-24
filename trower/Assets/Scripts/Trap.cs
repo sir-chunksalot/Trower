@@ -20,8 +20,8 @@ public class Trap : MonoBehaviour
     TrapManager trapManager;
     WaveManager waveManager;
     public event EventHandler onActivate;
+    public event EventHandler onCooldownOver;
     bool canAttack;
-    bool onCooldown;
     bool defensePhase;
     bool attackPhase;
     bool armed;
@@ -36,7 +36,7 @@ public class Trap : MonoBehaviour
         trapManager = gameManager.GetComponent<TrapManager>();
         trapManager.onSpacePressed += TrapActivated;
         trapManager.onSpaceReleased += TrapDeactivated;
-        trapManager.AddTrapToList(this.gameObject);
+        trapManager.AddTrapToList(gameObject, this);
 
         waveManager = gameManager.GetComponent<WaveManager>();
         waveManager.OnAttackPhaseStart += AttackPhase;
@@ -116,12 +116,13 @@ public class Trap : MonoBehaviour
 
     private IEnumerator Cooldown()
     {
+        if(defensePhase) { yield break; }
         yield return new WaitForSeconds(.01f);
         cooldownCount -= .01f;
         Debug.Log(cooldownCount + "COOLDOWN");
         if (cooldownCount <= 0)
         {
-            onCooldown = false;
+            onCooldownOver?.Invoke(objectID, EventArgs.Empty);
         }
         else
         {
@@ -152,7 +153,8 @@ public class Trap : MonoBehaviour
     }
     public void EnableTrap()//for when placement happens
     {
-        Debug.Log("gonzales");
+        Debug.Log("gonzales" + trapManager);
+
         active = true;
         //gameObject.transform.position = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
     }
@@ -186,44 +188,58 @@ public class Trap : MonoBehaviour
         return canAttack;
     }
 
+    public GameObject GetSpaceEffect()
+    {
+        return spaceEffect;
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.tag == "Mouse")
         {
             Debug.Log("MOUSECOLLIDED");
+            spaceEffect.SetActive(true);
             if (active)
             {
-                spaceEffect.SetActive(true);
                 canAttack = true;
             }
         }
 
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision) //assigns this trap as the active trap so the cooldown element can move posisitons 
     {
         if (collision.tag == "Mouse" && active)
         {
-            trapManager.SelectNewTrap(this.gameObject);
+            trapManager.SelectNewTrap(this);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Mouse" && active)
+        if (collision.tag == "Mouse")
         {
-            trapManager.DeselectTrap(this.gameObject);
+            if(active)
+            {
+                trapManager.DeselectTrap(this.gameObject);
+                canAttack = false;
+            }
             spaceEffect.SetActive(false);
             Debug.Log("MOUSE LEFT");
-            canAttack = false;
+
         }
     }
 
     private void OnDestroy()
     {
+        Debug.Log("BEW BYE!");
+        if(trapManager == null) { return;}
         trapManager.onSpacePressed -= TrapActivated;
         trapManager.onSpaceReleased -= TrapDeactivated;
         waveManager.OnAttackPhaseStart -= AttackPhase;
         waveManager.OnDefensePhaseStart -= DefensePhase;
+        Debug.Log("fartBalls" + gameObject + this);
+        trapManager.RemoveTrapFromList(gameObject, this);
+
     }
 
 }

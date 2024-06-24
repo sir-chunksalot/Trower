@@ -3,21 +3,37 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject coinTextBox;
     [SerializeField] GameObject devMenu;
     [SerializeField] GameObject cooldownTimer;
     [SerializeField] GameObject dialogueManager;
     [SerializeField] GameObject buildPhaseUI;
+    [SerializeField] GameObject buildTabObj;
+    [SerializeField] Sprite chainedBuildTab;
+    [SerializeField] Sprite buildTab;
+    [SerializeField] AudioSource denySound;
 
+    //tabs
+    [SerializeField] GameObject buildCards;
+    [SerializeField] GameObject trapCards;
+    RectTransform buildCardsTransform;
+    RectTransform trapCardsTransform;
     List<GameObject> cards;
     RectTransform cooldownTimerTransform;
     TrapManager trapManager;
     WaveManager waveManager;
+    Image buildImage;
     TMP_Text resourceText;
     TMP_Text coinText;
+
+    public event EventHandler OnClickContinue;
+
+    private bool denySwitch; //used for tutorials
 
     private void Awake()
     {
@@ -28,6 +44,13 @@ public class UIManager : MonoBehaviour
         waveManager.OnAttackPhaseStart += AttackPhase;
         trapManager.onSelectedTrapChange += SelectedTrapChange;
         cooldownTimerTransform = cooldownTimer.GetComponent<RectTransform>();
+        buildCardsTransform = buildCards.GetComponent<RectTransform>();
+        trapCardsTransform = trapCards.GetComponent<RectTransform>();
+        buildImage = buildTabObj.GetComponent<Image>();
+        Coins.onChangeCoin += GainCoin;
+        coinText = coinTextBox.GetComponent<TMP_Text>();
+
+        GainCoin(gameObject, EventArgs.Empty);
         //resourceText = resourceTextBox.GetComponent<TMP_Text>();
         //coinText = coinTextBox.GetComponent<TMP_Text>();
 
@@ -44,14 +67,56 @@ public class UIManager : MonoBehaviour
 
     private void AttackPhase(object sender, EventArgs e)
     {
+        Debug.Log("UI attack phase");
+        MoveTabs(true);
         buildPhaseUI.SetActive(false);
+        buildImage.sprite = chainedBuildTab;
+        RegenUIElements();
+        foreach (GameObject card in cards)
+        {
+            card.GetComponent<CardHolsterGraphics>().AttackPhase();
+        }
     }
     private void DefensePhase(object sender, EventArgs e)
     {
+        Debug.Log("UI defense phase");
+        buildImage.sprite = buildTab;
         buildPhaseUI.SetActive(true);
+        foreach (GameObject card in cards)
+        {
+            card.GetComponent<CardHolsterGraphics>().DefensePhase();
+        }
     }
 
-    public void UseTrap(string name) //this is an intermediary method so that when a trap is placed the charge goes down for the trap card 
+    private void MoveTabs(bool forceTrap)
+    {
+        if (trapCardsTransform.localPosition.y < 0 || forceTrap) //build is out of view
+        {
+            trapCardsTransform.localPosition = new Vector3(0, 0, 0);
+            buildCardsTransform.localPosition = new Vector3(0, -500, 0);
+        }
+        else
+        {
+            trapCardsTransform.localPosition = new Vector3(0, -500, 0);
+            buildCardsTransform.localPosition = new Vector3(0, 0, 0);
+
+        }
+    }
+
+    public void SwitchTabs()
+    {
+        if(buildImage.sprite == buildTab)
+        {
+            MoveTabs(false);
+        }
+        else
+        {
+            denySound.Play();
+        }
+
+    }
+
+    public void UseTrap(string name, bool success) //this is an intermediary method so that when a trap is placed the charge goes down for the trap card 
     {
         foreach(GameObject card in cards)
         {
@@ -59,7 +124,7 @@ public class UIManager : MonoBehaviour
             if(card.name == name)
             {
                 Debug.Log("TRAP FOUND AND IS BEING USED");
-                card.GetComponent<CardHolsterGraphics>().UseTrap();
+                card.GetComponent<CardHolsterGraphics>().UseTrap(success);
                 break;
             }
         }
@@ -98,22 +163,30 @@ public class UIManager : MonoBehaviour
         cooldownTimerTransform.transform.position = Camera.main.WorldToScreenPoint(spawnPos);
     }
 
+    public void SetDenySwitch(bool value) //used by tutorial sections 
+    {
+        denySwitch = value;
+    }
+
+    public bool GetDenySwitch()
+    {
+        return denySwitch;
+    }
 
     public void ContinueToAttackPhase()
     {
-        waveManager.SwitchAttackPhase(true);
-        buildPhaseUI.SetActive(false);
+        OnClickContinue?.Invoke(gameObject, EventArgs.Empty);
+        if(!denySwitch)
+        {
+            waveManager.SwitchAttackPhase(true);
+            buildPhaseUI.SetActive(false);
+        }
     }
 
 
-    public void GainResoures(float count)
+    public void GainCoin(object coin, EventArgs e)
     {
-        Coins.ChangeMaterial(count);
-    }
-
-    public void GainCoin(float count)
-    {
-        Coins.ChangeCoins(count);
+        coinText.text = Coins.GetCoins().ToString();
     }
 
     public void SecretDevTools()

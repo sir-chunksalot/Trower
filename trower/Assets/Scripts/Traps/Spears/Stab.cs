@@ -14,44 +14,42 @@ public class Stab : MonoBehaviour
     Trap trap;
     private bool up;
     private int parentID;
+    private bool reset;
 
     private void Start()
     {
         trap = dad.GetComponent<Trap>();
         trap.onActivate += SpearUp;
+        trap.onCooldownOver += SpearDown;
         col = gameObject.GetComponent<BoxCollider2D>();
         col.enabled = false;
         parentID = gameObject.transform.parent.gameObject.GetInstanceID();
         Debug.Log("(stab) gameObject parent " + gameObject.transform.parent.gameObject + "id" + parentID);
+        reset = true;
     }
     public void SpearUp(object sender, EventArgs e) //this is to move spear collider up along with spears
     {
-        if((int)sender != parentID) {
-            return;
-        }
+        if((int)sender != parentID) { return; } 
+        if(!reset) { return; }
         Debug.Log("COMPONENT");
         StartCoroutine(ColDelay());
         anim.SetBool("TrapActivated", true);
         col.offset = new Vector3(offsetX, offsetY + 3);
         Debug.Log("sanja piggu");
-
+        reset = false;
     }
-
-    private void FixedUpdate()
+    public void SpearDown(object sender, EventArgs e)
     {
-        if (up && trap.GetCurrentCooldown() <= 0)
+        if ((int)sender != parentID)
         {
-            SpearDown();
+            return;
         }
-    }
-
-    public void SpearDown()
-    {
         Debug.Log("trap deactivated");
         up = false;
         col.enabled = false;
         anim.SetBool("TrapActivated", false);
         col.offset = new Vector3(offsetX, offsetY - 3);
+        reset = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
