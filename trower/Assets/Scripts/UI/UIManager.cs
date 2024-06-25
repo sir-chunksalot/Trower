@@ -152,6 +152,8 @@ public class UIManager : MonoBehaviour
 
     private void MoveCooldownTimer()
     {
+        if (cooldownTimer == null) { return; }
+
         GameObject trap = trapManager.GetSelectedTrap();
         Vector3 spawnPos = new Vector3(10000, 10000);
         if (trap != null)
@@ -159,7 +161,6 @@ public class UIManager : MonoBehaviour
             spawnPos = trap.transform.position;
             spawnPos = new Vector2(spawnPos.x, spawnPos.y + 3);
         }
-
         cooldownTimerTransform.transform.position = Camera.main.WorldToScreenPoint(spawnPos);
     }
 

@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 8784161584012959078}
   - component: {fileID: 790109352602381926}
   - component: {fileID: 6509369676346886586}
+  - component: {fileID: 1441418815411942351}
   m_Layer: 5
-  m_Name: Circle
+  m_Name: BuildPhase
   m_TagString: BuildPhase
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,3 +76,27 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1441418815411942351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7029955637450584364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73ca319d54f72a548bdc7a5b4378841b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prisonGuardSprite: {fileID: 21300000, guid: 13d93f45e2251bb448cf6f884402d4dd, type: 3}
+  prisonGuard:
+    canSpawn: 1
+    spawnRate: {x: 0.27290708, y: 0.49}
+    groupSize: {x: 1, y: 2}
+    cooldown: {x: 0, y: 0}
+  archerSprite: {fileID: 21300000, guid: e278b96f004e57c47b16ccd3ba9f0556, type: 3}
+  archer:
+    canSpawn: 0
+    spawnRate: {x: 0, y: 0}
+    groupSize: {x: 0, y: 0}
+    cooldown: {x: 0, y: 0}

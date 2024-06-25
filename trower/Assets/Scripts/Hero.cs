@@ -11,7 +11,7 @@ public class Hero : MonoBehaviour
     Rigidbody2D rb;
 
     bool attackPhase;
-    bool facingRight;
+    bool facingLeft;
     bool isFalling;
     float currentSpeed;
     private void Start()
@@ -26,11 +26,12 @@ public class Hero : MonoBehaviour
         currentSpeed = speed;
         if (gameObject.transform.position.x > 0)
         {
-            facingRight = true;
+            facingLeft = true;
         }
         else
         {
-            facingRight = false;
+            facingLeft = false;
+            gameObject.GetComponent<SpriteRenderer>().flipX = true;
         }
     }
     //private void OnTriggerEnter2D(Collider2D collision)
@@ -46,7 +47,7 @@ public class Hero : MonoBehaviour
         if (attackPhase)
         {
             Vector2 dir = new Vector2(1, 0) * currentSpeed;
-            if (facingRight)
+            if (facingLeft)
             {
                 dir *= -1;
             }

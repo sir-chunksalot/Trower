@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class WaveManager : MonoBehaviour
 {
     [SerializeField] GameObject[] waveList;
-    [SerializeField] int[] requiredKills;
     [SerializeField] GameObject progressBar;
     [SerializeField] GameObject progresssFillObj;
     [SerializeField] GameObject waveFlag;
@@ -15,10 +15,14 @@ public class WaveManager : MonoBehaviour
     [SerializeField] GameObject defensePhaseEffect;
     [SerializeField] GameObject bar;
 
+    private List<Wave> waves;
+    private Wave activeWave;
+
     private HeroManager heroManager;
 
     public event EventHandler OnAttackPhaseStart;
     public event EventHandler OnDefensePhaseStart;
+    public event EventHandler OnNewWave;
 
     private Image progressFill;
 
@@ -31,37 +35,29 @@ public class WaveManager : MonoBehaviour
     private float waveFlagIncrement;
     private float fillAmount;
     private float waveFlagHeight;
+    private int reqKills;
+    private bool finalWave;
     private void Awake()
     {
+        waves = new List<Wave>();
         MakeProgressBar();
         heroManager = gameObject.GetComponent<HeroManager>();
         heroManager.OnHeroDeath += EnemyDied;
 
-        if (requiredKills.Length < waveList.Length - 1)
-        {
-            int[] reqKills = new int[waveList.Length - 1];
-            int count = 0;
-            foreach(int kills in requiredKills)
-            {
-                reqKills[count] = kills;
-                count++;
-            }
-            int extra = (waveList.Length - 1) - requiredKills.Length;
-            for(int i = 0; i < extra; i++)
-            {
-                reqKills[count] = 10;
-                count++;
-            }
-            requiredKills = reqKills;
-        }
-        Debug.Log("req kills" + requiredKills.Length);
 
-        progressbarIncrement = (1.0f / requiredKills[0]) / (waveList.Length - 1);
+        reqKills = Random.Range(GetCurrentWave().requiredKills.x, GetCurrentWave().requiredKills.y);
+
+        progressbarIncrement = (1.0f / reqKills) / (waveList.Length - 1);
         float topOfProgressBar = 700;
-        waveFlagHeight = -350;
-        waveFlagIncrement = ((topOfProgressBar / requiredKills[0]) / (waveList.Length - 1));
+        //waveFlagHeight = -350;
+        //waveFlagIncrement = ((topOfProgressBar / reqKills) / (waveList.Length - 1));
         progressFill = progresssFillObj.GetComponent<Image>();
-        Debug.Log("progressbar" + waveFlagIncrement + "top" + topOfProgressBar + "req" + (topOfProgressBar / requiredKills[0]) + " help" + 350 + "bro" + waveList[waveList.Length - 1]);
+        Debug.Log("progressbar" + waveFlagIncrement + "top" + topOfProgressBar + "req" + (topOfProgressBar / reqKills) + " help" + 350 + "bro" + waveList[waveList.Length - 1]);
+    }
+
+    public Wave GetCurrentWave()
+    {
+        return activeWave;
     }
 
     private void MakeProgressBar()
@@ -74,27 +70,43 @@ public class WaveManager : MonoBehaviour
         foreach (GameObject wave in waveList)
         {
             GameObject newWave = Instantiate(wave, progressBar.transform);
+            waves.Add(newWave.GetComponent<Wave>());
             RectTransform barRect = newWave.GetComponent<RectTransform>();
             barRect.position = new Vector3(barRect.position.x, (split * count) + yOffSet, barRect.position.z);
             count++;
         }
+
+        activeWave = waves[0];
     }
 
     private void StageSwitch(int stage)
     {
-        GameObject wave = waveList[stage];
-        if (wave.tag == "BuildPhase")
-        {
+        Wave wave = waves[stage];
+
+        activeWave = wave;
+        reqKills = Random.Range(GetCurrentWave().requiredKills.x, GetCurrentWave().requiredKills.y);
+
+        Debug.Log("adam12 req kills " + reqKills + "active wave" + activeWave);
+        if (wave.buildPhase) {
             SwitchDefensePhase(true);
+            Debug.Log("adam12 defense phase switch");
         }
-        else if(wave.tag == "Horde")
-        {
+        else if(wave.tag == "Horde")  {
             //spawnhorde
         }
-        else if(wave.tag == "End")
-        {
+        else if(wave.tag == "End") {
             //end
         }
+        else //regular wave
+        {
+            OnNewWave?.Invoke(gameObject, EventArgs.Empty);
+        }
+
+        if (stage + 2 >= waves.Count) {
+            finalWave = true;
+        }
+
+        
     }
 
     public void SwitchDefensePhase(bool flashy)
@@ -128,18 +140,19 @@ public class WaveManager : MonoBehaviour
 
     public void EnemyDied(object sender, EventArgs e)
     {
+        Debug.Log("current wave " + activeWave + "req kills" + activeWave.requiredKills + "req kills for wave manager " + reqKills);
         enemiesKilled++;
         fillAmount += progressbarIncrement;
-        waveFlagHeight += waveFlagIncrement;
+       // waveFlagHeight += waveFlagIncrement;
         progressFill.fillAmount = fillAmount;
-        waveFlag.transform.localPosition = new Vector3(waveFlag.transform.localPosition.x, waveFlagHeight, waveFlag.transform.localPosition.z);
-        if (enemiesKilled >= requiredKills[waveCount])
+       // waveFlag.transform.localPosition = new Vector3(waveFlag.transform.localPosition.x, waveFlagHeight, waveFlag.transform.localPosition.z);
+        if (enemiesKilled >= reqKills)
         {
-            if(waveCount < waveList.Length -2)
+            if(!finalWave)
             {
                 waveCount++;
-                progressbarIncrement = (1 / requiredKills[waveCount]) / (waveList.Length - 1);
-                waveFlagIncrement = (700 / requiredKills[waveCount]) / (waveList.Length - 1);
+                progressbarIncrement = (1 / reqKills) / (waveList.Length - 1);
+               // waveFlagIncrement = (700 / reqKills) / (waveList.Length - 1);
                 enemiesKilled = 0;
                 StageSwitch(waveCount);
             }
@@ -165,6 +178,7 @@ public class WaveManager : MonoBehaviour
         else
         {
             OnAttackPhaseStart?.Invoke(gameObject, EventArgs.Empty);
+            OnNewWave?.Invoke(gameObject, EventArgs.Empty);
         }
 
     }
@@ -173,6 +187,7 @@ public class WaveManager : MonoBehaviour
     {
         yield return new WaitForSeconds(4.2f);
         OnAttackPhaseStart?.Invoke(gameObject, EventArgs.Empty);
+        OnNewWave?.Invoke(gameObject, EventArgs.Empty);
         attackPhaseEffect.SetActive(false);
     }
 
