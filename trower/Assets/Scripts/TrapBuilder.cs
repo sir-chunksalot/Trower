@@ -45,9 +45,12 @@ public class TrapBuilder : MonoBehaviour
     private void OldTraps()
     {
         GameObject trapDaddy = GameObject.FindGameObjectWithTag("TrapDaddy");
-        foreach(Transform kid in trapDaddy.transform)
+        if(trapDaddy != null)
         {
-            UpdateValidTrapSpawns(kid.position, false);
+            foreach (Transform kid in trapDaddy.transform)
+            {
+                UpdateValidTrapSpawns(kid.position, false);
+            }
         }
     }
 

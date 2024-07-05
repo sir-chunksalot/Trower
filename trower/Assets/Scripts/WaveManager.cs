@@ -23,6 +23,7 @@ public class WaveManager : MonoBehaviour
     public event EventHandler OnAttackPhaseStart;
     public event EventHandler OnDefensePhaseStart;
     public event EventHandler OnNewWave;
+    public event EventHandler OnFinalWave;
 
     private Image progressFill;
 
@@ -44,7 +45,6 @@ public class WaveManager : MonoBehaviour
         heroManager = gameObject.GetComponent<HeroManager>();
         heroManager.OnHeroDeath += EnemyDied;
 
-
         reqKills = Random.Range(GetCurrentWave().requiredKills.x, GetCurrentWave().requiredKills.y);
 
         progressbarIncrement = (1.0f / reqKills) / (waveList.Length - 1);
@@ -53,6 +53,13 @@ public class WaveManager : MonoBehaviour
         //waveFlagIncrement = ((topOfProgressBar / reqKills) / (waveList.Length - 1));
         progressFill = progresssFillObj.GetComponent<Image>();
         Debug.Log("progressbar" + waveFlagIncrement + "top" + topOfProgressBar + "req" + (topOfProgressBar / reqKills) + " help" + 350 + "bro" + waveList[waveList.Length - 1]);
+
+        
+    }
+
+    private void Start()
+    {
+        OnNewWave?.Invoke(gameObject, EventArgs.Empty);
     }
 
     public Wave GetCurrentWave()
@@ -81,12 +88,20 @@ public class WaveManager : MonoBehaviour
 
     private void StageSwitch(int stage)
     {
+        if(waves.Count <= stage)
+        {
+            return;
+        }
         Wave wave = waves[stage];
-
         activeWave = wave;
         reqKills = Random.Range(GetCurrentWave().requiredKills.x, GetCurrentWave().requiredKills.y);
 
-        Debug.Log("adam12 req kills " + reqKills + "active wave" + activeWave);
+
+        progressbarIncrement = (1.0f / reqKills) / (waveList.Length - 1 );
+        // waveFlagIncrement = (700 / reqKills) / (waveList.Length - 1);
+        enemiesKilled = 0;
+
+        Debug.Log("nick12 req kills " + reqKills + "active wave" + activeWave +  " divide by 0?"+ (waveList.Length - 1));
         if (wave.buildPhase) {
             SwitchDefensePhase(true);
             Debug.Log("adam12 defense phase switch");
@@ -99,14 +114,13 @@ public class WaveManager : MonoBehaviour
         }
         else //regular wave
         {
-            OnNewWave?.Invoke(gameObject, EventArgs.Empty);
+            
         }
-
-        if (stage + 2 >= waves.Count) {
+        if(wave.finalWave) {
             finalWave = true;
+            OnFinalWave?.Invoke(gameObject, EventArgs.Empty);
         }
-
-        
+        OnNewWave?.Invoke(gameObject, EventArgs.Empty);
     }
 
     public void SwitchDefensePhase(bool flashy)
@@ -140,29 +154,29 @@ public class WaveManager : MonoBehaviour
 
     public void EnemyDied(object sender, EventArgs e)
     {
-        Debug.Log("current wave " + activeWave + "req kills" + activeWave.requiredKills + "req kills for wave manager " + reqKills);
+        FillProgress();
+    }
+
+    private void FillProgress()
+    {
+        if (finalWave)
+        {
+            return;
+        }
+        Debug.Log("current wave " + activeWave + "req kills" + activeWave.requiredKills + "req kills for wave manager " + reqKills + "progress bar increment" + progressbarIncrement);
         enemiesKilled++;
         fillAmount += progressbarIncrement;
-       // waveFlagHeight += waveFlagIncrement;
+        // waveFlagHeight += waveFlagIncrement;
         progressFill.fillAmount = fillAmount;
-       // waveFlag.transform.localPosition = new Vector3(waveFlag.transform.localPosition.x, waveFlagHeight, waveFlag.transform.localPosition.z);
+        // waveFlag.transform.localPosition = new Vector3(waveFlag.transform.localPosition.x, waveFlagHeight, waveFlag.transform.localPosition.z);
         if (enemiesKilled >= reqKills)
         {
-            if(!finalWave)
-            {
-                waveCount++;
-                progressbarIncrement = (1 / reqKills) / (waveList.Length - 1);
-               // waveFlagIncrement = (700 / reqKills) / (waveList.Length - 1);
-                enemiesKilled = 0;
-                StageSwitch(waveCount);
-            }
-            else
-            {
-                //finish level
-            }
-
+            waveCount++;
+            StageSwitch(waveCount);
         }
     }
+
+
 
     public void SwitchAttackPhase(bool flashy)
     {

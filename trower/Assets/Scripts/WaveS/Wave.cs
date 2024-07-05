@@ -7,8 +7,12 @@ public class Wave : MonoBehaviour
 {
 	[SerializeField]
 	public bool buildPhase;
+	[SerializeField]
+	public bool finalWave;
 	[MinMaxSlider(0.0f, 999)]
-	public Vector2Int requiredKills; 
+	public Vector2Int requiredKills;
+	[SerializeField]
+	public float earnedCoins;
 
 
 	public Hero GetHero(string name)

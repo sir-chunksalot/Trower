@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Level1_1 : MonoBehaviour
 {
@@ -58,7 +59,7 @@ public class Level1_1 : MonoBehaviour
     [SerializeField] GameObject dialogueTriggerTabSwitch;
     [SerializeField] GameObject dialogueTriggerDefendEverywhere;
     [SerializeField] GameObject dialogueTriggerAreYouSureAboutThat;
-
+    [SerializeField] GameObject cooldown;
     //torches
     [SerializeField] GameObject[] redTorches;
     [SerializeField] GameObject[] greenTorches;
@@ -105,6 +106,7 @@ public class Level1_1 : MonoBehaviour
     bool gottaWait;
     bool beenThereDoneThat;
     bool beenThereDoneThat2;
+    bool beenThereDoneThat3;
     bool checkForClick;
     bool tryAndArm;
     bool secondTrapPlaced;
@@ -126,7 +128,7 @@ public class Level1_1 : MonoBehaviour
         Debug.Log(waveManager + "snoopy");
         camController = this.GetComponent<CameraController>();
         trapBuilder = gameManager.GetComponent<TrapBuilder>();
-        trapBuilder.onTrapPlace += DisableTrap;
+        //trapBuilder.onTrapPlace += DisableTrap;
         trapBuilder.onTrapPlace += CheckPos;
         
         if (inIntroduction)
@@ -401,6 +403,7 @@ public class Level1_1 : MonoBehaviour
                     dialogueTriggerDefendEverywhere.SetActive(false);
                     arrowBuild.SetActive(false);
                     uiManager.SetDenySwitch(false);
+                    dialogueTriggerTabSwitch.SetActive(false);
                 }
             }
         }
@@ -420,15 +423,15 @@ public class Level1_1 : MonoBehaviour
         }
     }
 
-    public void DisableTrap(object trap, EventArgs e)
-    {
-        if(trapDaddy.transform.childCount >= 1 && !secondTrapPlaced)
-        {
-            trapDaddy.GetComponentInChildren<Trap>().DisableTrap();
-            secondTrapPlaced = true;
-        }
+    //public void DisableTrap(object trap, EventArgs e)
+    //{
+    //    if(trapDaddy.transform.childCount >= 1 && !secondTrapPlaced)
+    //    {
+    //        trapDaddy.GetComponentInChildren<Trap>().DisableTrap();
+    //        secondTrapPlaced = true;
+    //    }
 
-    }
+    //}
 
     public void CheckPos(object trap, EventArgs e)
     {
@@ -494,14 +497,17 @@ public class Level1_1 : MonoBehaviour
     public void InstructDefensePhase(object sender, EventArgs e)
     {
         camController.ActivateCamera(MainView2);
+        cooldown.GetComponent<Image>().enabled = false;
         arrowBuild.SetActive(true);
         StartCoroutine(WaitForInstruction());
     }
 
     private IEnumerator WaitForInstruction()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2.5f);
+       // cooldown.SetActive(true);
         dialogueTriggerTabSwitch.GetComponentInChildren<DialogueBox>().ManualReadMessage();
+        cooldown.GetComponent<Image>().enabled = true;
         defensePhase = true;
         uiManager.SetDenySwitch(true);
     }
@@ -553,12 +559,14 @@ public class Level1_1 : MonoBehaviour
     private IEnumerator CheckForSecondDeath()
     {
         yield return new WaitForSeconds(2);
-        if (secondEnemy == null)
+        if (secondEnemy == null && !beenThereDoneThat3)
         {
+            beenThereDoneThat3 = true;
             dialogueTriggerSecondSpike2.SetActive(false);
             dialogueTriggerkillThatGuyToo.SetActive(false);
             arrowSpear2.SetActive(false);
             camController.ActivateCamera(VCAMPanRight, 5);
+
             StartCoroutine(WaitForCam());
         }
         else
@@ -633,6 +641,7 @@ public class Level1_1 : MonoBehaviour
     private IEnumerator WaitForCam()
     {
         yield return new WaitForSeconds(7);
+        cooldown.SetActive(true);
         waveManager.SwitchAttackPhase(true);
         StartCoroutine(WaitABit());
         StartCoroutine(RunForestRun());

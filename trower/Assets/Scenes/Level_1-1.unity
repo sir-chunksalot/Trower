@@ -123,6 +123,42 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &23790078
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 23790079}
+  m_Layer: 5
+  m_Name: SellCash
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &23790079
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23790078}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1524326581}
+  m_Father: {fileID: 6755124755808214478}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &24555449
 GameObject:
   m_ObjectHideFlags: 0
@@ -1553,7 +1589,12 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PrisonGuard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8047761438625529104, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: bloodSpurt
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 9093476384404646528, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2458,7 +2499,12 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PrisonGuard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8047761438625529104, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: bloodSpurt
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 9093476384404646528, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -4243,11 +4289,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 382509340}
   m_CullTransparentMesh: 1
---- !u!224 &384631837 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4055930796395891662, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-  m_PrefabInstance: {fileID: 6755124755808214477}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &390863139
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4304,7 +4345,12 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PrisonGuard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8047761438625529104, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: bloodSpurt
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 9093476384404646528, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -5230,38 +5276,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &509550005
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 509550006}
-  m_Layer: 0
-  m_Name: SpawnSpots
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &509550006
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 509550005}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 514566196}
-  m_Father: {fileID: 8098028496468091215}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &514529393
 GameObject:
   m_ObjectHideFlags: 0
@@ -5346,39 +5360,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &514566195
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 514566196}
-  m_Layer: 0
-  m_Name: Spots
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &514566196
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 514566195}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 523025868}
-  - {fileID: 893728071}
-  m_Father: {fileID: 509550006}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &514847747
 GameObject:
   m_ObjectHideFlags: 3
@@ -5474,37 +5455,6 @@ MonoBehaviour:
   m_YawDamping: 0
   m_RollDamping: 0
   m_AngularDamping: 0
---- !u!1 &523025867
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 523025868}
-  m_Layer: 0
-  m_Name: Left
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &523025868
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 523025867}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -35.83, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 514566196}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &529746346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5695,7 +5645,12 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PrisonGuard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8047761438625529104, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: bloodSpurt
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 9093476384404646528, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -6192,38 +6147,6 @@ Transform:
   - {fileID: 124214320}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &599686055
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 599686056}
-  m_Layer: 0
-  m_Name: BloodDaddy
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &599686056
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 599686055}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1252466887}
-  m_Father: {fileID: 8098028496468091215}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &601435791
 GameObject:
   m_ObjectHideFlags: 0
@@ -6394,6 +6317,7 @@ MonoBehaviour:
   dialogueTriggerTabSwitch: {fileID: 251815481}
   dialogueTriggerDefendEverywhere: {fileID: 58052018}
   dialogueTriggerAreYouSureAboutThat: {fileID: 854107753}
+  cooldown: {fileID: 8483750680817060511}
   redTorches:
   - {fileID: 1122748485}
   - {fileID: 730377677}
@@ -7228,7 +7152,6 @@ GameObject:
   - component: {fileID: 647061070}
   - component: {fileID: 647061069}
   - component: {fileID: 647061074}
-  - component: {fileID: 647061075}
   m_Layer: 6
   m_Name: PrisonGuare (2)
   m_TagString: PrisonGuard
@@ -7249,7 +7172,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  bloodSpurt: {fileID: 647061075}
 --- !u!61 &647061070
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7410,102 +7332,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!82 &647061075
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 647061068}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 60c23e104a9eac64992d8f051cd79844, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &648733593
 GameObject:
   m_ObjectHideFlags: 0
@@ -7556,7 +7382,6 @@ GameObject:
   - component: {fileID: 661420665}
   - component: {fileID: 661420664}
   - component: {fileID: 661420669}
-  - component: {fileID: 661420670}
   m_Layer: 6
   m_Name: PrisonGuare (3)
   m_TagString: PrisonGuard
@@ -7577,7 +7402,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  bloodSpurt: {fileID: 661420670}
 --- !u!61 &661420665
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7738,102 +7562,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!82 &661420670
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 661420663}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 60c23e104a9eac64992d8f051cd79844, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &668203113
 GameObject:
   m_ObjectHideFlags: 0
@@ -8038,7 +7766,6 @@ GameObject:
   - component: {fileID: 682150475}
   - component: {fileID: 682150474}
   - component: {fileID: 682150479}
-  - component: {fileID: 682150480}
   m_Layer: 6
   m_Name: PrisonGuare (5)
   m_TagString: PrisonGuard
@@ -8059,7 +7786,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  bloodSpurt: {fileID: 682150480}
 --- !u!61 &682150475
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8220,102 +7946,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!82 &682150480
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 682150473}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 60c23e104a9eac64992d8f051cd79844, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &688343188
 GameObject:
   m_ObjectHideFlags: 0
@@ -10050,7 +9680,12 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PrisonGuard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8047761438625529104, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: bloodSpurt
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 9093476384404646528, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -10259,43 +9894,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &866937755
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 866937756}
-  m_Layer: 5
-  m_Name: WaveHolder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &866937756
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 866937755}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8784161585670622083}
-  - {fileID: 3639214184470790552}
-  m_Father: {fileID: 384631837}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &877950772 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8738953227998212610, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
@@ -10385,37 +9983,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &893728070
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 893728071}
-  m_Layer: 0
-  m_Name: Right
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &893728071
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 893728070}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 41.12, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 514566196}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &893736174
 GameObject:
   m_ObjectHideFlags: 0
@@ -10510,7 +10077,12 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PrisonGuard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8047761438625529104, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: bloodSpurt
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 9093476384404646528, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -12888,7 +12460,12 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PrisonGuard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8047761438625529104, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: bloodSpurt
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 9093476384404646528, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -13171,37 +12748,6 @@ RectTransform:
   m_AnchoredPosition: {x: 625, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &1252466886
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1252466887}
-  m_Layer: 0
-  m_Name: Blood
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1252466887
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252466886}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 599686056}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1257750344
 GameObject:
   m_ObjectHideFlags: 0
@@ -14504,7 +14050,12 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PrisonGuard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8047761438625529104, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: bloodSpurt
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 9093476384404646528, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -14607,7 +14158,6 @@ GameObject:
   - component: {fileID: 1379823221}
   - component: {fileID: 1379823220}
   - component: {fileID: 1379823225}
-  - component: {fileID: 1379823226}
   m_Layer: 6
   m_Name: PrisonGuare (1)
   m_TagString: PrisonGuard
@@ -14628,7 +14178,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  bloodSpurt: {fileID: 1379823226}
 --- !u!61 &1379823221
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -14789,102 +14338,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!82 &1379823226
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1379823219}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 60c23e104a9eac64992d8f051cd79844, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &1384506798
 GameObject:
   m_ObjectHideFlags: 3
@@ -15016,11 +14469,6 @@ RectTransform:
   m_AnchoredPosition: {x: 625, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &1433675346 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2861797885313676722, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-  m_PrefabInstance: {fileID: 6755124755808214477}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1460003242
 GameObject:
   m_ObjectHideFlags: 0
@@ -15572,6 +15020,81 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &1524326580
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1524326581}
+  - component: {fileID: 1524326583}
+  - component: {fileID: 1524326582}
+  m_Layer: 5
+  m_Name: Graphic
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1524326581
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524326580}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 23790079}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 107.4, y: 58.63}
+  m_SizeDelta: {x: 174, y: 125}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1524326582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524326580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: a59b160273957154cb1cfb7633a1514c, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1524326583
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524326580}
+  m_CullTransparentMesh: 1
 --- !u!1 &1552202357
 GameObject:
   m_ObjectHideFlags: 0
@@ -15938,11 +15461,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 1.5}
   m_EdgeRadius: 0
---- !u!1 &1601745528 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3368856308110183074, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-  m_PrefabInstance: {fileID: 6755124755808214477}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1634925940
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15999,7 +15517,12 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PrisonGuard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8047761438625529104, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: bloodSpurt
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 9093476384404646528, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -16312,7 +15835,12 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PrisonGuard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8047761438625529104, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: bloodSpurt
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 9093476384404646528, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -17394,11 +16922,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1886700693 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9027982241263771032, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-  m_PrefabInstance: {fileID: 6755124755808214477}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1897736164
 GameObject:
   m_ObjectHideFlags: 0
@@ -19319,7 +18842,12 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PrisonGuard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8047761438625529104, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: bloodSpurt
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 9093476384404646528, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -19338,7 +18866,6 @@ GameObject:
   - component: {fileID: 2094040507}
   - component: {fileID: 2094040506}
   - component: {fileID: 2094040511}
-  - component: {fileID: 2094040512}
   m_Layer: 6
   m_Name: PrisonGuare (4)
   m_TagString: PrisonGuard
@@ -19359,7 +18886,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  bloodSpurt: {fileID: 2094040512}
 --- !u!61 &2094040507
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -19520,102 +19046,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!82 &2094040512
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2094040505}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 60c23e104a9eac64992d8f051cd79844, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &2113669379
 GameObject:
   m_ObjectHideFlags: 0
@@ -19825,7 +19255,12 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PrisonGuard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8047761438625529104, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: bloodSpurt
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 9093476384404646528, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -19921,14 +19356,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
---- !u!222 &790109354164107395
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7029955635886237641}
-  m_CullTransparentMesh: 1
 --- !u!61 &905086727078062913
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20054,14 +19481,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f40cd9b796ef94197791d16ef4f17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!222 &1096592449874533891
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4334084168182274577}
-  m_CullTransparentMesh: 1
 --- !u!4 &1148627324789203941
 Transform:
   m_ObjectHideFlags: 0
@@ -20143,40 +19562,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 2960572487586931017}
   bottomFloorSprite: {fileID: 0}
---- !u!114 &1441418817037100330
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7029955635886237641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73ca319d54f72a548bdc7a5b4378841b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buildPhase: 1
-  requiredKills: {x: 29, y: 29}
-  prisonGuardSprite: {fileID: 21300000, guid: 13d93f45e2251bb448cf6f884402d4dd, type: 3}
-  prisonGuard:
-    canSpawn: 1
-    spawnRate: {x: 0.27290708, y: 0.49}
-    groupSize: {x: 1, y: 2}
-    cooldown: {x: 0, y: 0}
-    delay: {x: 0, y: 8.381966}
-  knightSprite: {fileID: 1232669640, guid: 279b347605c6dc54585dad7193194edd, type: 3}
-  knight:
-    canSpawn: 0
-    spawnRate: {x: 0, y: 0}
-    groupSize: {x: 0, y: 0}
-    cooldown: {x: 0, y: 0}
-    delay: {x: 0, y: 0}
-  archerSprite: {fileID: 21300000, guid: e278b96f004e57c47b16ccd3ba9f0556, type: 3}
-  ranger:
-    canSpawn: 0
-    spawnRate: {x: 0, y: 0}
-    groupSize: {x: 0, y: 0}
-    cooldown: {x: 0, y: 0}
 --- !u!1 &1495352577164826181
 GameObject:
   m_ObjectHideFlags: 0
@@ -20495,40 +19880,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8240373991336026243, guid: 6095f862638a74d4b822b3b7624a9473, type: 3}
   m_PrefabInstance: {fileID: 2421439445155017727}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2807874685694851841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4334084168182274577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73ca319d54f72a548bdc7a5b4378841b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buildPhase: 0
-  requiredKills: {x: 14, y: 14}
-  prisonGuardSprite: {fileID: 21300000, guid: 13d93f45e2251bb448cf6f884402d4dd, type: 3}
-  prisonGuard:
-    canSpawn: 0
-    spawnRate: {x: 0, y: 0}
-    groupSize: {x: 0, y: 0}
-    cooldown: {x: 0, y: 0}
-    delay: {x: 0, y: 0}
-  knightSprite: {fileID: 1232669640, guid: 279b347605c6dc54585dad7193194edd, type: 3}
-  knight:
-    canSpawn: 0
-    spawnRate: {x: 0, y: 0}
-    groupSize: {x: 0, y: 0}
-    cooldown: {x: 0, y: 0}
-    delay: {x: 0, y: 0}
-  archerSprite: {fileID: 21300000, guid: e278b96f004e57c47b16ccd3ba9f0556, type: 3}
-  ranger:
-    canSpawn: 0
-    spawnRate: {x: 0, y: 0}
-    groupSize: {x: 0, y: 0}
-    cooldown: {x: 0, y: 0}
 --- !u!224 &2915315394558740287
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20709,25 +20060,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5469683160146654552}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
---- !u!224 &3639214184470790552
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4334084168182274577}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 866937756}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 120, y: 120}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!50 &3657807718427610951
 Rigidbody2D:
   serializedVersion: 4
@@ -20815,25 +20147,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 1.5}
   m_EdgeRadius: 0
---- !u!1 &4334084168182274577
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3639214184470790552}
-  - component: {fileID: 1096592449874533891}
-  - component: {fileID: 4561013180668381249}
-  - component: {fileID: 2807874685694851841}
-  m_Layer: 5
-  m_Name: Square
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!4 &4355562348173296855
 Transform:
   m_ObjectHideFlags: 0
@@ -20849,36 +20162,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4561013180668381249
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4334084168182274577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.36862746, g: 0.36862746, b: 0.36862746, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 744e350efd98d27459e1f2807defad7e, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!61 &4618809271604518945
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -21346,7 +20629,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: PrisonGuard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8047761438625529104, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: bloodSpurt
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 9093476384404646528, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -21381,7 +20669,6 @@ GameObject:
   - component: {fileID: 905086727078062913}
   - component: {fileID: 8047761439601710640}
   - component: {fileID: 5350226765624689899}
-  - component: {fileID: 9093476385699135904}
   m_Layer: 6
   m_Name: PrisonGuard (2)
   m_TagString: PrisonGuard
@@ -21450,36 +20737,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 4.2}
   m_EdgeRadius: 0
---- !u!114 &6509369677941383007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7029955635886237641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8ed80f4418ea8c0418f700f9e923ab2f, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!212 &6607643892901193125
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -21540,101 +20797,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 165600174946645370, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: coinTextBox
-      value: 
-      objectReference: {fileID: 1601745528}
-    - target: {fileID: 365000424751666089, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: cost
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 533399581096170083, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: initialFloor
-      value: 
-      objectReference: {fileID: 1635590568471346942}
-    - target: {fileID: 637232189067529645, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 8098028496468091202}
-    - target: {fileID: 637232189067529645, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: DevTools, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 945420813485531178, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -343.2
-      objectReference: {fileID: 0}
     - target: {fileID: 2534211132783207821, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3449893285329662491, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: m_FillAmount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3535202803095317245, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: heroDaddy
-      value: 
-      objectReference: {fileID: 1433675346}
-    - target: {fileID: 3535202803095317245, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: bloodDaddy
-      value: 
-      objectReference: {fileID: 1252466886}
-    - target: {fileID: 3535202803095317245, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: heroTypes.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3535202803095317245, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: spawnSpots.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3535202803095317245, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: heroTypes.Array.data[0]
-      value: 
-      objectReference: {fileID: 6215878957425261870, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
-    - target: {fileID: 3535202803095317245, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: spawnSpots.Array.data[0]
-      value: 
-      objectReference: {fileID: 523025867}
-    - target: {fileID: 3535202803095317245, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: spawnSpots.Array.data[1]
-      value: 
-      objectReference: {fileID: 893728070}
-    - target: {fileID: 3844470893613184570, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 8098028496468091202}
-    - target: {fileID: 3844470893613184570, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: DevTools, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 3880461739417402415, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 8098028496468091202}
-    - target: {fileID: 3880461739417402415, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: DevTools, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4567693808667386942, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    - target: {fileID: 5903216514004037264, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 8098028496468091202}
-    - target: {fileID: 5903216514004037264, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: DevTools, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 5997483513699012392, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 8098028496468091202}
-    - target: {fileID: 5997483513699012392, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: DevTools, Assembly-CSharp
+    - target: {fileID: 5233919779256855948, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6482091635249231417, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21676,10 +20849,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7595219190147051792, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8073612816371708498, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
       propertyPath: m_ActionEvents.Array.data[4].m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
@@ -21692,67 +20861,17 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 618388156}
-    - target: {fileID: 8602316411795097209, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: waveFlag
-      value: 
-      objectReference: {fileID: 1886700693}
-    - target: {fileID: 8602316411795097209, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: progresssFillObj
-      value: 
-      objectReference: {fileID: 6755124755808214478}
-    - target: {fileID: 8602316411795097209, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: waveList.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8602316411795097209, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: waveList.Array.data[0]
-      value: 
-      objectReference: {fileID: 4334084168182274577}
-    - target: {fileID: 8602316411795097209, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: waveList.Array.data[1]
-      value: 
-      objectReference: {fileID: 7029955635886237641}
-    - target: {fileID: 8602316411795097209, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: waveList.Array.data[2]
-      value: 
-      objectReference: {fileID: 4334084168182274577}
-    - target: {fileID: 8602316411795097209, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: waveList.Array.data[3]
-      value: 
-      objectReference: {fileID: 4334084168744337765, guid: 4a221ac28bb59d146b23976f545f9619, type: 3}
-    - target: {fileID: 8602316411795097209, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: waveList.Array.data[4]
-      value: 
-      objectReference: {fileID: 4334084168744337765, guid: 4a221ac28bb59d146b23976f545f9619, type: 3}
-    - target: {fileID: 8602316411795097209, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: requiredKills.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8602316411795097209, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: requiredKills.Array.data[0]
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8699734110303112674, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: m_Name
-      value: ProgressFill
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 6482091635249231417, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 599686056}
-    - targetCorrespondingSourceObject: {fileID: 6482091635249231417, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 509550006}
-    - targetCorrespondingSourceObject: {fileID: 4055930796395891662, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      insertIndex: 0
-      addedObject: {fileID: 866937756}
+    - targetCorrespondingSourceObject: {fileID: 687760400074008897, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 23790079}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
---- !u!1 &6755124755808214478 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8699734110303112674, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
+--- !u!224 &6755124755808214478 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 687760400074008897, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
   m_PrefabInstance: {fileID: 6755124755808214477}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6824536816556020389
@@ -21898,25 +21017,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
---- !u!1 &7029955635886237641
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8784161585670622083}
-  - component: {fileID: 790109354164107395}
-  - component: {fileID: 6509369677941383007}
-  - component: {fileID: 1441418817037100330}
-  m_Layer: 5
-  m_Name: BuildPhase
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!114 &7159449317165486623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22204,26 +21304,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  bloodSpurt: {fileID: 9093476385699135904}
 --- !u!1 &8098028496468091198 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4567693808667386942, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-  m_PrefabInstance: {fileID: 6755124755808214477}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8098028496468091202 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 501793869944572823, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-  m_PrefabInstance: {fileID: 6755124755808214477}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8098028496468091198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2d562c6588986441a47903b31d4e677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &8098028496468091215 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6482091635249231417, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
   m_PrefabInstance: {fileID: 6755124755808214477}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &8483750680817060511 stripped
@@ -22274,25 +21357,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &8784161585670622083
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7029955635886237641}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 866937756}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 120, y: 120}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!61 &8915128293415156461
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -22338,102 +21402,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 8.5, y: 1.6}
   m_EdgeRadius: 0
---- !u!82 &9093476385699135904
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6215878958479562254}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 60c23e104a9eac64992d8f051cd79844, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!224 &9112120880112804358
 RectTransform:
   m_ObjectHideFlags: 0

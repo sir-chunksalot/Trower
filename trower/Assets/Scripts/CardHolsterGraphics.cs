@@ -1,9 +1,10 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CardHolsterGraphics : MonoBehaviour
+public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] float cost;
     [SerializeField] bool isTrap;
@@ -17,6 +18,7 @@ public class CardHolsterGraphics : MonoBehaviour
     [SerializeField] AudioSource badClick;
     [SerializeField] AudioSource place;
     [SerializeField] AudioSource buy;
+    [SerializeField] GameObject lockedCard;
     private Sprite[] activeSprite;
     TrapSelect trapSelect;
     private bool attackPhase;
@@ -37,6 +39,16 @@ public class CardHolsterGraphics : MonoBehaviour
     private void Start()
     {
         gameObject.GetComponentInParent<UIManager>().AddCardToList(gameObject);
+    }
+
+    public void LockCard()
+    {
+        lockedCard.SetActive(true);
+    }
+
+    public void UnlockCard()
+    {
+        lockedCard.SetActive(false);
     }
 
     public void AttackPhase()
@@ -70,7 +82,7 @@ public class CardHolsterGraphics : MonoBehaviour
         UpdateCount(1);
     }
 
-    private void PurchaseCharge()
+    public void PurchaseCharge()
     {
         Debug.Log("cash = " + Coins.GetCoins());
         if(count <= 3 && Coins.GetCoins() >= cost)
@@ -86,26 +98,49 @@ public class CardHolsterGraphics : MonoBehaviour
         }
     }
 
+    public void SellCharge()
+    {
+        if(count >= 1)
+        {
+            Coins.ChangeCoins(cost);
+            badClick.Play();
+            UpdateCount(-1);
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            Debug.Log("Right button pressed.");
+        }
+        else
+        {
+            Debug.Log("Right was not pressed");
+        }
+           
+    }
+
 
     public void SelectTrap(string buttonName) //called by the button component in this card parent 
     {
         Debug.Log("DOOFEN coins" + Coins.GetCoins() + "cost" + cost);
-        if(trapSelect.GetPlacing()) {
+        if(trapSelect.GetPlacing()) { //if player is  already placing, do not do anything
             return; 
         }
-        if (isTrap && count > 0)
+        if (isTrap && count > 0) //during any phase when a trap card has charge
         {
             trapSelect.OnItemClicked(buttonName);
             selectTrap.Play();
         }
-        else if (Coins.GetCoins() >= cost && !attackPhase)
+        else if (Coins.GetCoins() >= cost && !attackPhase) //bought and tried placing during defense phase
         {
             Debug.Log("DOOFEN tried to buy");
             PurchaseCharge();
             trapSelect.OnItemClicked(buttonName);
             selectTrap.Play();
         }
-        else
+        else //player has no money and no charge, L no buy for you
         {
             badClick.Play();
                 Debug.Log("cant use effect");
@@ -134,11 +169,19 @@ public class CardHolsterGraphics : MonoBehaviour
         }
         else
         {
-            badClick.Play();
-            Coins.ChangeCoins(cost);
-            if (isTrap) { 
-                UpdateCount(-1); 
+            if(attackPhase && isTrap) { //when a card cant be placed but its the attack phase, dont refund them, dont take away the charge
+                badClick.Play();
             }
+            else //when a card cant be placed for whatever reason, play bad sound, refund them, and take away the charge
+            {
+                badClick.Play();
+                Coins.ChangeCoins(cost);
+                if (isTrap)
+                {
+                    UpdateCount(-1);
+                }
+            }
+
         }
         
 
@@ -153,6 +196,11 @@ public class CardHolsterGraphics : MonoBehaviour
     public bool GetActiveStatus()
     {
         return true;
+    }
+
+    public bool GetIsTrap()
+    {
+        return isTrap;
     }
 
     public float GetCost()

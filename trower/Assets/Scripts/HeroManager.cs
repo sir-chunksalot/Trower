@@ -16,6 +16,7 @@ public class HeroManager : MonoBehaviour
     WaveManager waveManager;
     public event EventHandler OnHeroDeath;
 
+    List<AudioSource> bloodSounds;
     List<GameObject> heroes;
     List<GameObject> spawnableHeroes;
     List<Vector2> spawnrate;
@@ -23,6 +24,7 @@ public class HeroManager : MonoBehaviour
     List<Vector2Int> groupsize;
     List<Vector2> delay;
     List<bool> cooldownTracker;
+    bool finalWave;
     int killCount;
 
     private void Awake()
@@ -30,6 +32,7 @@ public class HeroManager : MonoBehaviour
         waveManager = gameObject.GetComponent<WaveManager>();
         waveManager.OnDefensePhaseStart += StopSpawning;
         waveManager.OnNewWave += StartSpawning;
+        bloodSounds = new List<AudioSource>();
         heroes = new List<GameObject>();
         spawnableHeroes = new List<GameObject>();
         spawnrate = new List<Vector2>();
@@ -37,21 +40,51 @@ public class HeroManager : MonoBehaviour
         groupsize = new List<Vector2Int>();
         delay = new List<Vector2>();
         cooldownTracker = new List<bool>();
+        finalWave = false;
+
+        foreach(AudioSource audioSource in bloodDaddy.transform.parent.GetComponentsInChildren<AudioSource>())
+        {
+            bloodSounds.Add(audioSource);
+        }
 
     }
     public void KillHero(GameObject hero)
     {
-        Debug.Log("hero is being killed :sob:");
-        Vector3 spawnPos = hero.transform.position;
-        spawnPos = new Vector3(spawnPos.x, spawnPos.y, spawnPos.z + .1f); //puts it behind heroes 
-        hero.GetComponent<BoxCollider2D>().enabled = false;
-        hero.GetComponent<SpriteRenderer>().enabled = false;
-        GameObject blood = Instantiate(bloodAnim, spawnPos, Quaternion.identity, bloodDaddy.transform);
-        StartCoroutine(BloodAnim(blood, spawnPos));
-        StartCoroutine(DestroyObjectAfterTime(hero));
-        heroes.Remove(hero);
-        killCount++;
-        OnHeroDeath?.Invoke(gameObject, EventArgs.Empty);
+        if (finalWave) //rn it does the same thing as if it were a regular wave, later add a cooler effect
+        {
+            Debug.Log("hero is being killed :sob:");
+            Vector3 spawnPos = hero.transform.position;
+            spawnPos = new Vector3(spawnPos.x, spawnPos.y, spawnPos.z + .1f); //puts it behind heroes 
+            hero.GetComponent<BoxCollider2D>().enabled = false;
+            hero.GetComponent<SpriteRenderer>().enabled = false;
+            GameObject blood = Instantiate(bloodAnim, spawnPos, Quaternion.identity, bloodDaddy.transform);
+            StartCoroutine(BloodAnim(blood, spawnPos));
+            StartCoroutine(DestroyObjectAfterTime(hero));
+            heroes.Remove(hero);
+            killCount++;
+            OnHeroDeath?.Invoke(gameObject, EventArgs.Empty);
+        }
+        else
+        {
+            Debug.Log("hero is being killed :sob:");
+            Vector3 spawnPos = hero.transform.position;
+            spawnPos = new Vector3(spawnPos.x, spawnPos.y, spawnPos.z + .1f); //puts it behind heroes 
+            hero.GetComponent<BoxCollider2D>().enabled = false;
+            hero.GetComponent<SpriteRenderer>().enabled = false;
+
+            int max = bloodSounds.Count;
+            int index = UnityEngine.Random.Range(0, max);
+            Debug.Log("nick12" + bloodSounds[0] + " " + bloodSounds.Count);
+            bloodSounds[index].Play();
+
+            GameObject blood = Instantiate(bloodAnim, spawnPos, Quaternion.identity, bloodDaddy.transform);
+            StartCoroutine(BloodAnim(blood, spawnPos));
+            StartCoroutine(DestroyObjectAfterTime(hero));
+            heroes.Remove(hero);
+            killCount++;
+            OnHeroDeath?.Invoke(gameObject, EventArgs.Empty);
+        }
+
     }
 
     private IEnumerator DestroyObjectAfterTime(GameObject hero)
@@ -65,7 +98,7 @@ public class HeroManager : MonoBehaviour
     {
         yield return new WaitForSeconds(.4f);
         Destroy(bloodAnim);
-        GameObject newBlood = Instantiate(bloodEffect, spawnPos, Quaternion.identity, gameObject.transform);
+        GameObject newBlood = Instantiate(bloodEffect, spawnPos, Quaternion.identity, bloodDaddy.transform);
         newBlood.GetComponent<SpriteRenderer>().sprite = PickBloodEffect();
         
     }
@@ -109,7 +142,14 @@ public class HeroManager : MonoBehaviour
 
     public void StartSpawning(object sender, EventArgs e) //called when a wave starts
     {
-        ClearWaveData();
+        StopSpawning(gameObject, EventArgs.Empty);
+        if (waveManager.GetIsDefensePhase()) {
+            return;
+        }
+        if(waveManager.GetCurrentWave().finalWave) {
+            Debug.Log("hero maanger donezo");
+            return;
+        }
         foreach (GameObject hero in heroTypes)
         {
             if (waveManager.GetCurrentWave().GetHero(hero.name)  != null) {
@@ -145,7 +185,7 @@ public class HeroManager : MonoBehaviour
             }
             float delay = UnityEngine.Random.Range(this.delay[count].x, this.delay[count].y);
             int groupSize = UnityEngine.Random.Range(groupsize[count].x, groupsize[count].y + 1);
-            StartCoroutine(SpawnHero(hero, delay, groupSize));
+            StartCoroutine(SpawnHero(hero, this.delay[count].x, this.delay[count].y, groupSize));
 
             float cooldown = UnityEngine.Random.Range(this.cooldown[count].x, this.cooldown[count].y);
 
@@ -157,8 +197,9 @@ public class HeroManager : MonoBehaviour
         }
     }
 
-    private IEnumerator SpawnHero(GameObject hero, float delay, int groupSize)
+    private IEnumerator SpawnHero(GameObject hero, float minDelay, float maxDelay, int groupSize)
     {
+        float delay = UnityEngine.Random.Range(minDelay, maxDelay);
         yield return new WaitForSeconds(delay);
         Debug.Log("adam12 SPAWNING HERO!");
 
@@ -170,7 +211,7 @@ public class HeroManager : MonoBehaviour
         int newGroupSize = groupSize - 1;
         if(groupSize >= 1)
         {
-            SpawnHero(hero, UnityEngine.Random.Range(0.0f, 1.0f), newGroupSize);
+            SpawnHero(hero, minDelay, maxDelay, newGroupSize);
         }
 
 

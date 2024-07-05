@@ -41,7 +41,8 @@ public class Trap : MonoBehaviour
         waveManager = gameManager.GetComponent<WaveManager>();
         waveManager.OnAttackPhaseStart += AttackPhase;
         waveManager.OnDefensePhaseStart += DefensePhase;
-        defensePhase = !waveManager.GetIsAttackPhase();
+        defensePhase = waveManager.GetIsDefensePhase();
+        attackPhase = waveManager.GetIsAttackPhase();
 
         objectID = gameObject.GetInstanceID();
         Debug.Log("gameObject parent " + gameObject + "id" + objectID);

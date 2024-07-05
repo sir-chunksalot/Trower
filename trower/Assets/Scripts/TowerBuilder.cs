@@ -10,7 +10,6 @@ public class TowerBuilder : MonoBehaviour
     [SerializeField] GameObject[] floors; //FOR FLOOR TYPES
     [SerializeField] GameObject potentialFloor;
     [SerializeField] float opacity;
-    [SerializeField] GameObject orbs;
     [SerializeField] GameObject particle;
     [SerializeField] float sideMapBounds;
     [SerializeField] float topMapBounds;
@@ -56,12 +55,16 @@ public class TowerBuilder : MonoBehaviour
         StartCoroutine(GenerateNewWalls());
 
         GameObject oldFloorsDad = GameObject.FindGameObjectWithTag("BuildDaddy");
-        foreach(Floor floor in oldFloorsDad.GetComponentsInChildren<Floor>())
+        if(oldFloorsDad != null)
         {
-            if(floor.gameObject.tag == "Build")
+            Debug.Log("dad found");
+            foreach (Floor floor in oldFloorsDad.GetComponentsInChildren<Floor>())
             {
-                AddPlacedFloor(floor.gameObject);
-                floorSpawnSpots.Add(floor.gameObject.transform.position);
+                if (floor.gameObject.tag == "Build")
+                {
+                    AddPlacedFloor(floor.gameObject);
+                    floorSpawnSpots.Add(floor.gameObject.transform.position);
+                }
             }
         }
     }
