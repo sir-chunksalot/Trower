@@ -31,6 +31,8 @@ TagManager:
   - BuildPhase
   - Build
   - BuildDaddy
+  - Camera
+  - LevelLoader
   layers:
   - Default
   - TransparentFX

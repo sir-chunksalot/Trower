@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnlockManager : MonoBehaviour
+public static class UnlockManager
 {
-    public event EventHandler OnUnlock;
+    public static event EventHandler OnUnlock;
 
-    List<string> unlocks;
-    bool listExists;
-    public void Unlock(string item)
+    public static List<string> unlocks;
+    static bool listExists;
+    public static void Unlock(string item)
     {
         if (!listExists)
         {
@@ -22,12 +22,12 @@ public class UnlockManager : MonoBehaviour
         OnUnlock?.Invoke(item, EventArgs.Empty);
     }
 
-    public List<string> GetUnlockedItems()
+    public static List<string> GetUnlockedItems()
     {
         return unlocks;
     }
 
-    public bool IsItemUnlocked(string name)
+    public static bool IsItemUnlocked(string name)
     {
         if (unlocks == null) { return false; }
         foreach (string item in unlocks)
@@ -40,7 +40,7 @@ public class UnlockManager : MonoBehaviour
         return false;
     }
 
-    public void LogAllUnlocks()
+    public static void LogAllUnlocks()
     {
         string unlocksString  = "";
         foreach (string items in unlocks)

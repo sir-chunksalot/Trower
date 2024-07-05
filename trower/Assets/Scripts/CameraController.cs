@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
     //[SerializeField] float decreaseFactor;
     [SerializeField] List<GameObject> vCams;
     [SerializeField] List<float> times; //leave blank if you dont want them to transistion automatically
-    [SerializeField] GameObject[] UIelements; //anything and everything you might want to turn off when camera pans
+    [SerializeField] GameObject[] TurnMeOff; //anything and everything you might want to turn off when camera pans
     UIManager uiManager;
 
     private void Start()
@@ -46,7 +46,7 @@ public class CameraController : MonoBehaviour
 
         }
 
-        foreach (GameObject ui in UIelements)
+        foreach (GameObject ui in TurnMeOff)
         {
             ui.SetActive(false);
         }
@@ -55,11 +55,14 @@ public class CameraController : MonoBehaviour
 
     private IEnumerator WaitForCameraPan(float time)
     {
+        if (uiManager == null) { yield break; }
         yield return new WaitForSeconds(time);
-        foreach (GameObject ui in UIelements)
+
+        foreach (GameObject ui in TurnMeOff)
         {
             ui.SetActive(true);
         }
+        
         uiManager.RegenUIElements();
 
     }

@@ -100,7 +100,6 @@ public class Level1_1 : MonoBehaviour
     CameraController camController;
     WaveManager waveManager;
     TrapBuilder trapBuilder;
-    LevelManager levelManager;
     UIManager uiManager;
     int shakeCount;
     bool gottaWait;
@@ -120,7 +119,6 @@ public class Level1_1 : MonoBehaviour
     }
     void Start()
     {
-        levelManager = gameManager.GetComponent<LevelManager>();
         cardHolster = card.GetComponent<CardHolsterGraphics>();
         Debug.Log(gameObject + "snoop");
         waveManager = gameManager.GetComponent<WaveManager>();

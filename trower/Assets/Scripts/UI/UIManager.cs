@@ -28,7 +28,6 @@ public class UIManager : MonoBehaviour
     RectTransform cooldownTimerTransform;
     TrapManager trapManager;
     WaveManager waveManager;
-    UnlockManager unlockManager;
     Image buildImage;
     TMP_Text resourceText;
     TMP_Text coinText;
@@ -50,8 +49,7 @@ public class UIManager : MonoBehaviour
         trapCardsTransform = trapCards.GetComponent<RectTransform>();
         buildImage = buildTabObj.GetComponent<Image>();
         Coins.onChangeCoin += GainCoin;
-        unlockManager = gameObject.GetComponent<UnlockManager>();
-        unlockManager.OnUnlock += UnlockCard;
+        UnlockManager.OnUnlock += UnlockCard;
         coinText = coinTextBox.GetComponent<TMP_Text>();
 
         GainCoin(gameObject, EventArgs.Empty);
@@ -80,7 +78,7 @@ public class UIManager : MonoBehaviour
     {
         foreach (GameObject card in cards)
         {
-            if (!unlockManager.IsItemUnlocked(card.name))
+            if (!UnlockManager.IsItemUnlocked(card.name))
             { //if the card isnt unlocked
                 card.GetComponent<CardHolsterGraphics>().LockCard(); //lock it
             }
