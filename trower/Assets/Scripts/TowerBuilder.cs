@@ -55,18 +55,6 @@ public class TowerBuilder : MonoBehaviour
         StartCoroutine(GenerateNewWalls());
 
         GameObject oldFloorsDad = GameObject.FindGameObjectWithTag("BuildDaddy");
-        if(oldFloorsDad != null)
-        {
-            Debug.Log("dad found");
-            foreach (Floor floor in oldFloorsDad.GetComponentsInChildren<Floor>())
-            {
-                if (floor.gameObject.tag == "Build")
-                {
-                    AddPlacedFloor(floor.gameObject);
-                    floorSpawnSpots.Add(floor.gameObject.transform.position);
-                }
-            }
-        }
     }
 
     public void Place(InputAction.CallbackContext context) //called when mouse is released
@@ -82,7 +70,7 @@ public class TowerBuilder : MonoBehaviour
             placingFloor = false;
             if (placingBomb)
             {
-                SellFloor();
+                SellFloor(FindClosestFloorToMe(sellBombObject));
                 Cleanup();
             }
         }
@@ -506,40 +494,46 @@ public class TowerBuilder : MonoBehaviour
         Debug.Log("tried to equip bomb");
     }
 
-    private void SellFloor()
+    public void SellFloor(GameObject targetFloor)
     {
-        Debug.Log("tried to sell");
-
-        GameObject targetFloor = FindClosestFloorToMe(sellBombObject);
         Debug.Log("targer floor" + targetFloor);
         Vector3 explosionSpawnSpot = targetFloor.transform.position - new Vector3(0, 10);
-        Vector3 floorBombIsNearest = ClosestTo(sellBombObject.transform.position, placedFloors.ToArray(), false);
 
-        if (targetFloor != null && Vector2.Distance(sellBombObject.transform.position, floorBombIsNearest) < reqMouseDistanceToPlace)
+        if (targetFloor != null)
         {
             //cameraController.AddShake(1.8f);
-            if (targetFloor.transform.parent == null)
-            {
-                return;
-            }
-            foreach (Transform child in targetFloor.transform.parent)
-            {
-                Destroy(child.gameObject);
-                placedFloors.Remove(child.gameObject);
-            }
+            if (targetFloor.transform.parent == null) { return; }
+            //foreach (Transform child in targetFloor.transform.parent)
+            //{
+            //    Debug.Log("KIlled kid" + child);
+            //    Destroy(child.gameObject);
+            //    
+            //    placedFloors.Remove(child.gameObject);
+            //}
             floorPapas.Remove(targetFloor.transform.parent.gameObject);
-            Destroy(targetFloor.transform.parent.gameObject);
+            targetFloor.GetComponent<Floor>().DestroyFloor();
+            StartCoroutine(DestroyAfterTime(targetFloor.transform.parent.gameObject));
+            onTowerSell?.Invoke(targetFloor, EventArgs.Empty);
+            //Destroy(targetFloor.transform.parent.gameObject);
 
 
             GameObject explody = Instantiate(explosionEffect, Vector3.zero, Quaternion.identity, UIparent.transform);
             explody.transform.position = explosionSpawnSpot * 25;
-            onTowerSell?.Invoke(gameObject, EventArgs.Empty);
+
 
             StartCoroutine(DestroyAfterTime(explody, 1.5f));
         }
         placingBomb = false;
         SetAlpha(sellBombObject, 0);
     }
+
+    private IEnumerator DestroyAfterTime(GameObject targetFloor)
+    {
+        yield return new WaitForSeconds(5);
+        Destroy(targetFloor);
+    }
+
+
 
     public void SetAlpha(GameObject floor, float alpha)
     {

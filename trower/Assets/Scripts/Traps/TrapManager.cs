@@ -23,7 +23,9 @@ public class TrapManager : MonoBehaviour
         waveManager.OnAttackPhaseStart += FindSelectedTrap;
         traps = new List<GameObject>();
         trapScripts = new List<Trap>();
-        trapCooldownUI = trapCooldown.GetComponent<Image>();
+        if(trapCooldown != null) {
+            trapCooldownUI = trapCooldown.GetComponent<Image>();
+        }
     }
 
     private void FindSelectedTrap(object sender, EventArgs e)
@@ -50,6 +52,11 @@ public class TrapManager : MonoBehaviour
 
     }
 
+    public GameObject GetCooldownTimer()
+    {
+        return trapCooldown;
+    }
+
     private void FixedUpdate()
     {
         if (selectedTrap != null)
@@ -57,7 +64,7 @@ public class TrapManager : MonoBehaviour
             Debug.Log("selectedd trap:" + selectedTrap);
             float currentCooldown = trapScript.GetCurrentCooldown();
             float totalCooldown = trapScript.GetTotalCooldown();
-            trapCooldownUI.fillAmount = currentCooldown / totalCooldown;
+            UpdateTrapCooldownUI(currentCooldown / totalCooldown);
         }
     }
 
@@ -86,6 +93,14 @@ public class TrapManager : MonoBehaviour
         return selectedTrap;
     }
 
+    private void UpdateTrapCooldownUI(float fillAmount)
+    {
+        if(trapCooldownUI == null) {
+            return;
+        }
+        trapCooldownUI.fillAmount = fillAmount;
+    }
+
 
     public void SelectNewTrap(Trap trap)
     {
@@ -94,7 +109,7 @@ public class TrapManager : MonoBehaviour
         trapScript = trap;
         float currentCooldown = trapScript.GetCurrentCooldown();
         float totalCooldown = trapScript.GetTotalCooldown();
-        trapCooldownUI.fillAmount = currentCooldown / totalCooldown;
+        UpdateTrapCooldownUI(currentCooldown / totalCooldown);
         onSelectedTrapChange?.Invoke(gameObject, EventArgs.Empty);
     }
 
@@ -103,7 +118,7 @@ public class TrapManager : MonoBehaviour
         if (selectedTrap == trap)
         {
             selectedTrap = null;
-            trapCooldownUI.fillAmount = 0;
+            UpdateTrapCooldownUI(0);
             onSelectedTrapChange?.Invoke(gameObject, EventArgs.Empty);
         }
     }

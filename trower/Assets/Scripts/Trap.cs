@@ -9,7 +9,6 @@ public class Trap : MonoBehaviour
     [SerializeField] bool hasAbility;
     [SerializeField] bool isLarge;
     [SerializeField] float cooldown;
-    [SerializeField] GameObject cardHolster;
     [SerializeField] GameObject spaceEffect;
     [SerializeField] bool active;
     [SerializeField] Sprite pressSpace;
@@ -20,6 +19,8 @@ public class Trap : MonoBehaviour
     TrapManager trapManager;
     WaveManager waveManager;
     public event EventHandler onActivate;
+    public event EventHandler onDeactivate;
+    public event EventHandler onMouseLeave;
     public event EventHandler onCooldownOver;
     bool canAttack;
     bool defensePhase;
@@ -80,8 +81,10 @@ public class Trap : MonoBehaviour
 
     private void TrapActivated(object sender, EventArgs e)
     {
+        Debug.Log("Trap activated!");
         spaceEffect.GetComponent<SpriteRenderer>().sprite = pressedSpace;
         if (!canAttack || !active || (!attackPhase && !defensePhase)) {
+            Debug.Log("trap activation cancelled" + canAttack + active + attackPhase + defensePhase);
             return;
         }
 
@@ -101,6 +104,11 @@ public class Trap : MonoBehaviour
         {
             Debug.Log("can attack CRIMINAL");
             spaceEffect.GetComponent<SpriteRenderer>().sprite = pressSpace;
+            if (canAttack )
+            {
+                onDeactivate?.Invoke(objectID, EventArgs.Empty);
+            }
+  
         }
 
     }
@@ -174,11 +182,6 @@ public class Trap : MonoBehaviour
         return isLarge;
     }
 
-    public float GetCost()
-    {
-        return cardHolster.GetComponent<CardHolsterGraphics>().GetCost();
-    }
-
     public bool GetIsArmed()
     {
         return armed;
@@ -223,6 +226,7 @@ public class Trap : MonoBehaviour
             {
                 trapManager.DeselectTrap(this.gameObject);
                 canAttack = false;
+                onMouseLeave?.Invoke(objectID, EventArgs.Empty);
             }
             spaceEffect.SetActive(false);
             Debug.Log("MOUSE LEFT");

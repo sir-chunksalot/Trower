@@ -1,10 +1,14 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Hero : MonoBehaviour
 {
     [SerializeField] float speed;
+    [SerializeField] float zOffset;
+    [SerializeField] float offsetLength;
+    [SerializeField] bool faceRight;
     WaveManager waveManager;
     HeroManager heroManager;
     Rigidbody2D rb;
@@ -12,35 +16,52 @@ public class Hero : MonoBehaviour
     bool attackPhase;
     bool facingLeft;
     bool isFalling;
+    bool isSuperFalling;
+    bool isClimbing;
+    bool canClimb;
     float currentSpeed;
-    private void Start()
+    private void Awake()
     {
+        facingLeft = true;
         GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
         heroManager = gameManager.GetComponent<HeroManager>();
-        heroManager.AddHeroToList(gameObject);
         waveManager = gameManager.GetComponent<WaveManager>();
         waveManager.OnAttackPhaseStart += AttackPhase;
         waveManager.OnDefensePhaseStart += DefensePhase;
         waveManager.OnFinalWave += Surrender;
         rb = gameObject.GetComponent<Rigidbody2D>();
         currentSpeed = speed;
-        if (gameObject.transform.position.x > 0)
+        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + zOffset);
+        StartCoroutine(OffsetLength());
+        if(faceRight)
         {
-            facingLeft = true;
-        }
-        else
-        {
-            facingLeft = false;
-            gameObject.GetComponent<SpriteRenderer>().flipX = true;
+            FlipRight();
         }
     }
-    //private void OnTriggerEnter2D(Collider2D collision)
-    //{
-    //    if(collision.gameObject.layer == 11) //trap layer
-    //    {
-    //        heroManager.KillHero(gameObject);
-    //    }
-    //}
+
+    private void Start()
+    {
+        heroManager.AddHeroToList(gameObject);
+    }
+
+    private IEnumerator OffsetLength()
+    {
+        canClimb = false;
+        yield return new WaitForSeconds(offsetLength);
+        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - zOffset);
+        canClimb = true;
+    }
+
+    public void FlipRight()
+    {
+        facingLeft = false;
+        gameObject.GetComponent<SpriteRenderer>().flipX = true;
+    }
+    public void FlipLeft()
+    {
+        facingLeft = true;
+        gameObject.GetComponent<SpriteRenderer>().flipX = false;
+    }
 
     private void Update()
     {
@@ -51,10 +72,75 @@ public class Hero : MonoBehaviour
             {
                 dir *= -1;
             }
+            if (isFalling)
+            {
+                dir = new Vector3(0, -1) * 8;
+            }
+            if (isClimbing)
+            {
+                dir = new Vector2(0, 1) * currentSpeed;
+            }
+            if(isSuperFalling)
+            {
+                if(transform.position.y <= 1)
+                {
+                    isSuperFalling = false;
+                }
+                dir = new Vector3(0, -1) * 10;
+            }
+
 
             rb.velocity = dir;
 
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("FLUMBERG hero hit " + collision.gameObject);
+        if(collision.gameObject.tag == "EnemyWall")
+        {
+            if(facingLeft)
+            {
+                FlipRight();
+            }
+            else
+            {
+                FlipLeft();
+            }
+            
+        }
+        
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Ladder" && collision.gameObject.transform.position.y > transform.position.y && canClimb)
+        {
+            isClimbing = true;
+        }
+        if (collision.gameObject.tag == "EnemyFloor")
+        {
+            isFalling = false;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Ladder")
+        {
+            isClimbing = false;
+        }
+        if (collision.gameObject.tag == "EnemyFloor")
+        {
+            isFalling = true;
+        }
+    }
+
+
+    public void SuperFall()
+    {
+        isSuperFalling = true;
     }
 
     public void ChangeSpeed(float newSpeed)

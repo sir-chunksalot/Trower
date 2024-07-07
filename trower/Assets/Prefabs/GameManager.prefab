@@ -672,7 +672,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3876715780011929799}
+  m_Father: {fileID: 595152444411756002}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -732,6 +732,7 @@ MonoBehaviour:
   buildPhase: 0
   finalWave: 1
   requiredKills: {x: 0, y: 0}
+  waveLength: {x: 0, y: 0}
   earnedCoins: 0
   prisonGuardSprite: {fileID: 21300000, guid: 13d93f45e2251bb448cf6f884402d4dd, type: 3}
   prisonGuard:
@@ -753,6 +754,7 @@ MonoBehaviour:
     spawnRate: {x: 0, y: 0}
     groupSize: {x: 0, y: 0}
     cooldown: {x: 0, y: 0}
+    delay: {x: 0, y: 0}
 --- !u!1 &344527372795860026
 GameObject:
   m_ObjectHideFlags: 0
@@ -1534,6 +1536,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5964073416301929105}
+  - component: {fileID: 2784900776012324650}
   m_Layer: 0
   m_Name: Left
   m_TagString: Untagged
@@ -1556,6 +1559,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7126204764318254185}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2784900776012324650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697013949945755035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f7c96a337bcf7440b57744b4b2880ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  faceLeft: 0
+  faceRight: 1
 --- !u!1 &824768238288180542
 GameObject:
   m_ObjectHideFlags: 0
@@ -4118,9 +4135,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnlockManager, Assembly-CSharp
-        m_MethodName: Unlock
+      - m_Target: {fileID: 6986727639847351740}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: UnlockItem
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12034,44 +12051,6 @@ MonoBehaviour:
   m_FillOrigin: 1
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &3009940140484993699
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3876715780011929799}
-  m_Layer: 5
-  m_Name: WaveHolder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &3876715780011929799
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3009940140484993699}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2783342955886162608}
-  - {fileID: 3778953626979600621}
-  - {fileID: 8169768163885122501}
-  m_Father: {fileID: 4055930796395891662}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3033497831814664225
 GameObject:
   m_ObjectHideFlags: 0
@@ -17339,9 +17318,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnlockManager, Assembly-CSharp
-        m_MethodName: Unlock
+      - m_Target: {fileID: 6986727639847351740}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: UnlockItem
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18488,6 +18467,40 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &3578856486606035143
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 595152444411756002}
+  m_Layer: 0
+  m_Name: WaveDaddy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &595152444411756002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3578856486606035143}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3778953626979600621}
+  - {fileID: 2783342955886162608}
+  - {fileID: 8169768163885122501}
+  m_Father: {fileID: 3674097947130958719}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3590360974561405572
 GameObject:
   m_ObjectHideFlags: 0
@@ -24727,6 +24740,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5092963759062362016}
+  - component: {fileID: 315724410096495974}
   m_Layer: 0
   m_Name: Right
   m_TagString: Untagged
@@ -24749,6 +24763,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7126204764318254185}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &315724410096495974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4184597722629142849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f7c96a337bcf7440b57744b4b2880ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  faceLeft: 1
+  faceRight: 0
 --- !u!1 &4273989891062489403
 GameObject:
   m_ObjectHideFlags: 0
@@ -25298,9 +25326,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnlockManager, Assembly-CSharp
-        m_MethodName: Unlock
+      - m_Target: {fileID: 6986727639847351740}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: UnlockItem
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -26344,6 +26372,7 @@ Transform:
   - {fileID: 1709162036896812421}
   - {fileID: 3934091856463933909}
   - {fileID: 534545768017143098}
+  - {fileID: 3674097947130958719}
   - {fileID: 205068356402593337}
   - {fileID: 2508539888791774621}
   - {fileID: 2215194749045038387}
@@ -26687,7 +26716,6 @@ MonoBehaviour:
   pauseMenu: {fileID: 6343708477103844149}
   coinTextBox: {fileID: 3368856308110183074}
   devMenu: {fileID: 2534211132783207821}
-  cooldownTimer: {fileID: 5825348542179421134}
   dialogueManager: {fileID: 6903061930555695750}
   buildPhaseUI: {fileID: 3063804487571439838}
   buildTabObj: {fileID: 8310489918718232056}
@@ -26807,16 +26835,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e36e5957465ade34c8961802654d4147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveList:
-  - {fileID: 7988046647116627111}
-  - {fileID: 5773842973860836874}
-  - {fileID: 265314198079067700}
+  roundList:
+  - {fileID: 0}
   progressBar: {fileID: 5304518373535540899}
   progresssFillObj: {fileID: 8699734110303112674}
   waveFlag: {fileID: 9027982241263771032}
   attackPhaseEffect: {fileID: 3868212233982716786}
   defensePhaseEffect: {fileID: 6273928838940178212}
   bar: {fileID: 5809115012789286232, guid: 0eee1a6d7be195140be4f3f32390a8da, type: 3}
+  startDefensePhase: 0
+  startAttackPhase: 0
 --- !u!114 &3043218179902012151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28791,9 +28819,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnlockManager, Assembly-CSharp
-        m_MethodName: Unlock
+      - m_Target: {fileID: 6986727639847351740}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: UnlockItem
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -29039,7 +29067,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 3876715780011929799}
   - {fileID: 5212374064949980596}
   - {fileID: 5799272561599014579}
   - {fileID: 945420813485531178}
@@ -30197,7 +30224,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3876715780011929799}
+  m_Father: {fileID: 595152444411756002}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -30257,6 +30284,7 @@ MonoBehaviour:
   buildPhase: 1
   finalWave: 0
   requiredKills: {x: 14, y: 14}
+  waveLength: {x: 0, y: 0}
   earnedCoins: 1000
   prisonGuardSprite: {fileID: 21300000, guid: 13d93f45e2251bb448cf6f884402d4dd, type: 3}
   prisonGuard:
@@ -30278,6 +30306,7 @@ MonoBehaviour:
     spawnRate: {x: 0, y: 0}
     groupSize: {x: 0, y: 0}
     cooldown: {x: 0, y: 0}
+    delay: {x: 0, y: 0}
 --- !u!1 &5791143538807223902
 GameObject:
   m_ObjectHideFlags: 0
@@ -34214,7 +34243,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3058075181057352452}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6986727639847351740}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: GoToMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6862161272151869823
 GameObject:
   m_ObjectHideFlags: 0
@@ -36237,7 +36278,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3876715780011929799}
+  m_Father: {fileID: 595152444411756002}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -36297,14 +36338,15 @@ MonoBehaviour:
   buildPhase: 1
   finalWave: 0
   requiredKills: {x: 14, y: 14}
+  waveLength: {x: 0, y: 0}
   earnedCoins: 100
   prisonGuardSprite: {fileID: 21300000, guid: 13d93f45e2251bb448cf6f884402d4dd, type: 3}
   prisonGuard:
     canSpawn: 0
-    spawnRate: {x: 0, y: 0}
-    groupSize: {x: 0, y: 0}
+    spawnRate: {x: 0.27, y: 0.33878672}
+    groupSize: {x: 1, y: 2}
     cooldown: {x: 0, y: 0}
-    delay: {x: 0, y: 0}
+    delay: {x: 0, y: 0.5852945}
   knightSprite: {fileID: 1232669640, guid: 279b347605c6dc54585dad7193194edd, type: 3}
   knight:
     canSpawn: 0
@@ -36318,6 +36360,7 @@ MonoBehaviour:
     spawnRate: {x: 0, y: 0}
     groupSize: {x: 0, y: 0}
     cooldown: {x: 0, y: 0}
+    delay: {x: 0, y: 0}
 --- !u!1 &8051664338336513350
 GameObject:
   m_ObjectHideFlags: 0
@@ -38832,6 +38875,38 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &8522200841397236096
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3674097947130958719}
+  m_Layer: 0
+  m_Name: RoundDaddy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3674097947130958719
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8522200841397236096}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 595152444411756002}
+  m_Father: {fileID: 6482091635249231417}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8523080935267057330
 GameObject:
   m_ObjectHideFlags: 0

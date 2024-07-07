@@ -7,13 +7,15 @@ using Random = UnityEngine.Random;
 
 public class WaveManager : MonoBehaviour
 {
-    [SerializeField] GameObject[] waveList;
+    [SerializeField] GameObject[] roundList;
     [SerializeField] GameObject progressBar;
     [SerializeField] GameObject progresssFillObj;
     [SerializeField] GameObject waveFlag;
     [SerializeField] GameObject attackPhaseEffect;
     [SerializeField] GameObject defensePhaseEffect;
     [SerializeField] GameObject bar;
+    [SerializeField] bool startDefensePhase;
+    [SerializeField] bool startAttackPhase;
 
     private List<Wave> waves;
     private Wave activeWave;
@@ -30,36 +32,83 @@ public class WaveManager : MonoBehaviour
     private bool attackPhase;
     private bool defensePhase;
 
+    private GameObject[] activeRound;
+
+    private int roundCount;
     private int waveCount;
     private int enemiesKilled;
+    private int timePassed;
     private float progressbarIncrement;
     private float waveFlagIncrement;
     private float fillAmount;
     private float waveFlagHeight;
-    private int reqKills;
-    private bool finalWave;
+    private int length;
+    private bool isTime;
     private void Awake()
     {
+        activeRound = GetWaveList(0);
         waves = new List<Wave>();
-        MakeProgressBar();
+        if (progressBar != null) {
+            MakeProgressBar();
+            progressFill = progresssFillObj.GetComponent<Image>();
+        }
+        else {
+            activeWave = activeRound[0].GetComponent<Wave>();
+        }
+
+        UpdateLength();
         heroManager = gameObject.GetComponent<HeroManager>();
         heroManager.OnHeroDeath += EnemyDied;
 
-        reqKills = Random.Range(GetCurrentWave().requiredKills.x, GetCurrentWave().requiredKills.y);
 
-        progressbarIncrement = (1.0f / reqKills) / (waveList.Length - 1);
-        float topOfProgressBar = 700;
-        //waveFlagHeight = -350;
-        //waveFlagIncrement = ((topOfProgressBar / reqKills) / (waveList.Length - 1));
-        progressFill = progresssFillObj.GetComponent<Image>();
-        Debug.Log("progressbar" + waveFlagIncrement + "top" + topOfProgressBar + "req" + (topOfProgressBar / reqKills) + " help" + 350 + "bro" + waveList[waveList.Length - 1]);
-
-        
+        if (startAttackPhase)
+        {
+            SwitchAttackPhase(false);
+        }
+        else if(defensePhase)
+        {
+            SwitchDefensePhase(false);
+        }
     }
 
     private void Start()
     {
         OnNewWave?.Invoke(gameObject, EventArgs.Empty);
+    }
+
+    private GameObject[] GetWaveList(int index)
+    {
+        Transform[] roundKids = roundList[index].GetComponentsInChildren<Transform>();
+        Debug.Log(roundKids.Length + "PIRATECUM");
+        GameObject[] waveList = new GameObject[roundKids.Length - 1];
+        int count = 0;
+        foreach (Transform kid in roundKids)
+        {
+            if (kid == roundKids[0]) { continue; }
+            Debug.Log("PIRATECUM!" + count);
+            waveList[count] = kid.gameObject;
+            count++;
+        }
+        return waveList;
+    }
+
+    private void UpdateLength()
+    {
+        if (GetCurrentWave().waveLength.y > 0)
+        {  //set up for if the progress bar goes off of time
+            length = Random.Range(GetCurrentWave().waveLength.x, GetCurrentWave().waveLength.y);
+            Debug.Log("JOHN 12 time wave");
+            StartCoroutine(WaveTime(0, length));
+            isTime = true;
+        }
+        else //set up for if the progress bar goes off of kills
+        {
+            length = Random.Range(GetCurrentWave().requiredKills.x, GetCurrentWave().requiredKills.y);
+            isTime = false;
+        }
+
+
+        progressbarIncrement = (1.0f / length) / (activeRound.Length - 1);
     }
 
     public Wave GetCurrentWave()
@@ -73,8 +122,8 @@ public class WaveManager : MonoBehaviour
         
         float screenHeight = Screen.height;
         float yOffSet = screenHeight/5.5f;
-        float split = (screenHeight - (yOffSet*2))/(waveList.Length - 1);
-        foreach (GameObject wave in waveList)
+        float split = (screenHeight - (yOffSet*2))/(activeRound.Length - 1);
+        foreach (GameObject wave in activeRound)
         {
             GameObject newWave = Instantiate(wave, progressBar.transform);
             waves.Add(newWave.GetComponent<Wave>());
@@ -94,14 +143,8 @@ public class WaveManager : MonoBehaviour
         }
         Wave wave = waves[stage];
         activeWave = wave;
-        reqKills = Random.Range(GetCurrentWave().requiredKills.x, GetCurrentWave().requiredKills.y);
 
-
-        progressbarIncrement = (1.0f / reqKills) / (waveList.Length - 1 );
-        // waveFlagIncrement = (700 / reqKills) / (waveList.Length - 1);
-        enemiesKilled = 0;
-
-        Debug.Log("nick12 req kills " + reqKills + "active wave" + activeWave +  " divide by 0?"+ (waveList.Length - 1));
+        Debug.Log("nick12 req kills " + length + "active wave" + activeWave +  " divide by 0?"+ (activeRound.Length - 1));
         if (wave.buildPhase) {
             SwitchDefensePhase(true);
             Debug.Log("adam12 defense phase switch");
@@ -109,19 +152,38 @@ public class WaveManager : MonoBehaviour
         else if(wave.tag == "Horde")  {
             //spawnhorde
         }
-        else if(wave.tag == "End") {
-            //end
-        }
         else //regular wave
         {
             
         }
-        if(wave.finalWave) {
-            finalWave = true;
+        if (wave.finalWave)
+        {
             OnFinalWave?.Invoke(gameObject, EventArgs.Empty);
+            roundCount++;
+            if (roundList.Length - 1 >= roundCount)
+            {
+                activeRound = GetWaveList(roundCount);
+                progressFill.fillAmount = 0;
+                fillAmount = 0;
+                waveCount = 0;
+                StopAllCoroutines();
+                waves = new List<Wave>();
+                MakeProgressBar();
+                StageSwitch(0);
+
+            }
         }
-        OnNewWave?.Invoke(gameObject, EventArgs.Empty);
+        else
+        {
+            UpdateLength();
+            enemiesKilled = 0;
+            timePassed = 0;
+            OnNewWave?.Invoke(gameObject, EventArgs.Empty);
+        }
+
+
     }
+
 
     public void SwitchDefensePhase(bool flashy)
     {
@@ -154,22 +216,23 @@ public class WaveManager : MonoBehaviour
 
     public void EnemyDied(object sender, EventArgs e)
     {
+        if(isTime) { return; }
+        if(defensePhase) { return; }
+        enemiesKilled++;
         FillProgress();
     }
 
     private void FillProgress()
     {
-        if (finalWave)
-        {
-            return;
-        }
-        Debug.Log("current wave " + activeWave + "req kills" + activeWave.requiredKills + "req kills for wave manager " + reqKills + "progress bar increment" + progressbarIncrement);
-        enemiesKilled++;
+        if(progressFill.fillAmount == 1) { return; }
+        Debug.Log("current wave " + activeWave + "req kills" + activeWave.requiredKills + "req kills for wave manager " + length + "progress bar increment" + progressbarIncrement);
+
         fillAmount += progressbarIncrement;
+
         // waveFlagHeight += waveFlagIncrement;
         progressFill.fillAmount = fillAmount;
         // waveFlag.transform.localPosition = new Vector3(waveFlag.transform.localPosition.x, waveFlagHeight, waveFlag.transform.localPosition.z);
-        if (enemiesKilled >= reqKills)
+        if (enemiesKilled >= length || timePassed >= length)
         {
             waveCount++;
             StageSwitch(waveCount);
@@ -214,6 +277,24 @@ public class WaveManager : MonoBehaviour
         attackPhaseEffect.SetActive(!attackPhaseEffect.activeSelf);
     }
 
+    private IEnumerator WaveTime(int localTime, int localLength)
+    {
+        yield return new WaitForSeconds(1);
+        Debug.Log("JOHN 12 wave second passed");
+        if(!defensePhase) {
+            timePassed++;
+            localTime++;
+            FillProgress();
+        }
+        if (localTime < localLength) {
+            StartCoroutine(WaveTime(localTime, localLength));
+        }
+        else
+        {
+            Debug.Log("JOHN 12 its my time, folks");
+        }
+
+    }
     public bool GetIsAttackPhase()
     {
         return attackPhase;

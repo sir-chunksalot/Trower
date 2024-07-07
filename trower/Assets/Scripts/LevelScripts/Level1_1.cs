@@ -564,7 +564,7 @@ public class Level1_1 : MonoBehaviour
             dialogueTriggerkillThatGuyToo.SetActive(false);
             arrowSpear2.SetActive(false);
             camController.ActivateCamera(VCAMPanRight, 5);
-
+            cooldown.SetActive(false);
             StartCoroutine(WaitForCam());
         }
         else

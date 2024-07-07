@@ -11,8 +11,11 @@ public class Wave : MonoBehaviour
 	public bool finalWave;
 	[MinMaxSlider(0.0f, 999)]
 	public Vector2Int requiredKills;
+	[MinMaxSlider(0.0f, 999)]
+	public Vector2Int waveLength;
 	[SerializeField]
 	public float earnedCoins;
+
 
 
 	public Hero GetHero(string name)
@@ -68,18 +71,8 @@ public class Wave : MonoBehaviour
 	public Sprite archerSprite;
 
 	[System.Serializable]
-	public class Ranger 
+	public class Ranger : Hero
 	{
-		public bool canSpawn;
-
-		[MinMaxSlider(0.0f, 1.0f)]
-		public Vector2 spawnRate;
-
-		[MinMaxSlider(0, 20)]
-		public Vector2Int groupSize;
-
-		[MinMaxSlider(0.0f, 40.0f)]
-		public Vector2 cooldown;
 	}
 	public Ranger ranger;
 	//---------------------------------------------------------------------------------------------//

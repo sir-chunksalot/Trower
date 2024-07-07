@@ -16,6 +16,8 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] Sprite susLogo;
     [SerializeField] Sprite regularLogo;
     [SerializeField] GameObject optionsMenu;
+    [SerializeField] GameObject levelsMenu;
+    [SerializeField] GameObject extrasMenu;
     Button amogusButton;
     CameraController camController;
     LevelLoader levelLoader;
@@ -34,9 +36,9 @@ public class MainMenuManager : MonoBehaviour
         camController = gameObject.GetComponent<CameraController>();
         mainView = true;
     }
-    public void LevelList()
+    public void SideBar()
     {
-        if(mainView == false)
+        if (mainView == false)
         {
             Debug.Log("went to BackToMain");
             mainView = true;
@@ -49,7 +51,33 @@ public class MainMenuManager : MonoBehaviour
             mainView = false;
         }
     }
+    public void ToggleLevelsMenu()
+    {
+        if (levelsMenu.activeSelf) { SideBar(); }
+        else
+        {
+            levelsMenu.SetActive(true);
+            extrasMenu.SetActive(false);
+            if (mainView)
+            {
+                SideBar();
+            }
+        }
 
+    }
+    public void ToggleExtrasMenu()
+    {
+        if (extrasMenu.activeSelf) { SideBar(); }
+        else
+        {
+            levelsMenu.SetActive(false);
+            extrasMenu.SetActive(true);
+            if(mainView)
+            {
+                SideBar();
+            }
+        }
+    }
     public void MainMenu()
     {
         camController.ActivateCamera(mainCam);
@@ -58,13 +86,21 @@ public class MainMenuManager : MonoBehaviour
 
     public void SwitchSelectedLevel(string text)
     {
-        string textNum;
-        textNum = text.Substring(0, 1);
-        selectedLevel = int.Parse(textNum);
-        textNum = text.Substring(2, 1);
-        selectedWorld = int.Parse(textNum);
+        if(text.Substring(1,1) == "-")
+        {
+            string textNum;
+            textNum = text.Substring(0, 1);
+            selectedLevel = int.Parse(textNum);
+            textNum = text.Substring(2, 1);
+            selectedWorld = int.Parse(textNum);
+        }
 
         textBox.text = text;
+    }
+
+    public void PlayMinigame(string game)
+    {
+        levelLoader.PlayMinigame(game);
     }
 
     public void ToggleOptions()

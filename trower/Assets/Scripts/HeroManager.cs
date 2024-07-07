@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class HeroManager : MonoBehaviour
 {
+    [Header("SCRIPT DEPENDENCIES: WAVEMANAGER")]
     [SerializeField] List<GameObject> heroTypes;
     [SerializeField] GameObject bloodAnim;
     [SerializeField] GameObject bloodEffect;
@@ -30,6 +31,10 @@ public class HeroManager : MonoBehaviour
     private void Awake()
     {
         waveManager = gameObject.GetComponent<WaveManager>();
+        if(waveManager == null) {
+            Debug.Log("Error. Class 'WaveManager' not found.");
+            return;
+        }
         waveManager.OnDefensePhaseStart += StopSpawning;
         waveManager.OnNewWave += StartSpawning;
         bloodSounds = new List<AudioSource>();
@@ -152,8 +157,8 @@ public class HeroManager : MonoBehaviour
         }
         foreach (GameObject hero in heroTypes)
         {
-            if (waveManager.GetCurrentWave().GetHero(hero.name)  != null) {
-                Wave.Hero heroData = waveManager.GetCurrentWave().GetHero(hero.name);
+            if (waveManager.GetCurrentWave().GetHero(hero.tag)  != null) {
+                Wave.Hero heroData = waveManager.GetCurrentWave().GetHero(hero.tag);
                 if(!heroData.canSpawn) {
                     continue; 
                 }
@@ -207,6 +212,22 @@ public class HeroManager : MonoBehaviour
         Vector3 spawnpos = spawnSpots[spawnDoor].transform.position;
 
         GameObject newHero = Instantiate(hero, spawnpos, Quaternion.identity, heroDaddy.transform);
+
+        SpawnSpot spawnSpot = spawnSpots[spawnDoor].GetComponent<SpawnSpot>();
+        Hero heroScript = newHero.GetComponent<Hero>();
+        if (spawnSpot.faceRight && spawnSpot.faceLeft) {
+            int randInt = UnityEngine.Random.Range(0, 2);
+            if(randInt == 0)
+            {
+                heroScript.FlipRight(); 
+            }
+        } 
+        else if(spawnSpot.faceRight)
+        {
+            Debug.Log("tried to flip hero right");
+            heroScript.FlipRight();
+        }
+
         newHero.GetComponent<Hero>().AttackPhase();
         int newGroupSize = groupSize - 1;
         if(groupSize >= 1)

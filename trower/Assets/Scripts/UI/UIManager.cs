@@ -11,7 +11,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject coinTextBox;
     [SerializeField] GameObject devMenu;
-    [SerializeField] GameObject cooldownTimer;
     [SerializeField] GameObject dialogueManager;
     [SerializeField] GameObject buildPhaseUI;
     [SerializeField] GameObject buildTabObj;
@@ -44,25 +43,26 @@ public class UIManager : MonoBehaviour
         waveManager.OnDefensePhaseStart += DefensePhase;
         waveManager.OnAttackPhaseStart += AttackPhase;
         trapManager.onSelectedTrapChange += SelectedTrapChange;
-        cooldownTimerTransform = cooldownTimer.GetComponent<RectTransform>();
-        buildCardsTransform = buildCards.GetComponent<RectTransform>();
-        trapCardsTransform = trapCards.GetComponent<RectTransform>();
-        buildImage = buildTabObj.GetComponent<Image>();
-        Coins.onChangeCoin += GainCoin;
-        UnlockManager.OnUnlock += UnlockCard;
-        coinText = coinTextBox.GetComponent<TMP_Text>();
-
-        GainCoin(gameObject, EventArgs.Empty);
-        //resourceText = resourceTextBox.GetComponent<TMP_Text>();
-        //coinText = coinTextBox.GetComponent<TMP_Text>();
-
-        //UIObject.SetActive(true);
-
-
-        //Coins.onChangeCoin += CoinChanged;
-        //BuildingResources.onChangeResources += ResourceChanged;
-
-        //BuildingResources.SetResourceCount(100000);
+        GameObject cooldownTimer = trapManager.GetCooldownTimer();
+        if(cooldownTimer != null) {
+            cooldownTimerTransform = cooldownTimer.GetComponent<RectTransform>();
+        }
+        if(buildCards != null) {
+            buildCardsTransform = buildCards.GetComponent<RectTransform>();
+        }
+        if(trapCards != null) {
+            trapCardsTransform = trapCards.GetComponent<RectTransform>();
+        } 
+        if(buildTabObj != null) {
+            buildImage = buildTabObj.GetComponent<Image>();
+        }
+        if(coinTextBox != null)
+        {
+            Coins.onChangeCoin += GainCoin;
+            UnlockManager.OnUnlock += UnlockCard;
+            coinText = coinTextBox.GetComponent<TMP_Text>();
+            GainCoin(gameObject, EventArgs.Empty);
+        }
         StartCoroutine(LateStart());
 
     }
@@ -102,20 +102,28 @@ public class UIManager : MonoBehaviour
     private void AttackPhase(object sender, EventArgs e)
     {
         Debug.Log("UI attack phase");
-        MoveTabs(true);
-        buildPhaseUI.SetActive(false);
-        buildImage.sprite = chainedBuildTab;
-        RegenUIElements();
-        foreach (GameObject card in cards)
+        if(buildCards != null)
         {
-            card.GetComponent<CardHolsterGraphics>().AttackPhase();
+            MoveTabs(true);
+            buildPhaseUI.SetActive(false);
+            buildImage.sprite = chainedBuildTab;
         }
+        if(trapCards != null)
+        {
+            RegenUIElements();
+            foreach (GameObject card in cards)
+            {
+                card.GetComponent<CardHolsterGraphics>().AttackPhase();
+            }
+        }
+        
     }
     private void DefensePhase(object sender, EventArgs e)
     {
+        buildPhaseUI.SetActive(true);
+        if (buildTabObj == null) { return; }
         Debug.Log("UI defense phase");
         buildImage.sprite = buildTab;
-        buildPhaseUI.SetActive(true);
         foreach (GameObject card in cards)
         {
             card.GetComponent<CardHolsterGraphics>().DefensePhase();
@@ -186,7 +194,7 @@ public class UIManager : MonoBehaviour
 
     private void MoveCooldownTimer()
     {
-        if (cooldownTimer == null) { return; }
+        if (cooldownTimerTransform == null) { return; }
 
         GameObject trap = trapManager.GetSelectedTrap();
         Vector3 spawnPos = new Vector3(10000, 10000);

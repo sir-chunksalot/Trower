@@ -13,39 +13,6 @@ MonoBehaviour:
   m_Name: 1-1CamBlend
   m_EditorClassIdentifier: 
   m_CustomBlends:
-  - m_From: CMVCAM
-    m_To: CMVCAM2
-    m_Blend:
-      m_Style: 1
-      m_Time: 2
-      m_CustomCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 0
-  - m_From: CMVCAM
-    m_To: CMVCAM_MainView
-    m_Blend:
-      m_Style: 0
-      m_Time: 2
-      m_CustomCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 0
-  - m_From: CMVCAM_MainView
-    m_To: CMVCAM
-    m_Blend:
-      m_Style: 0
-      m_Time: 2
-      m_CustomCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 0
   - m_From: CMVCAM_MainView
     m_To: CMVCAM_PanRight
     m_Blend:
@@ -57,11 +24,33 @@ MonoBehaviour:
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: CMVCAM_MainView
-    m_To: CMVCAM_MainView2
+  - m_From: CMVCAM_PanRight
+    m_To: CMVCAM_MainView
     m_Blend:
-      m_Style: 6
-      m_Time: 1.5
+      m_Style: 1
+      m_Time: 2
+      m_CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - m_From: CMVCAM2
+    m_To: CMVCAM
+    m_Blend:
+      m_Style: 1
+      m_Time: 2
+      m_CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - m_From: CMVCAM
+    m_To: CMVCAM2
+    m_Blend:
+      m_Style: 1
+      m_Time: 2
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []

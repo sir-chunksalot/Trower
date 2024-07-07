@@ -53,6 +53,11 @@ public class LevelLoader : MonoBehaviour
         StartCoroutine(CrossFade(sceneIndex));
     }
 
+    public void PlayMinigame(string game)
+    {
+        StartCoroutine(CrossFade(game));
+    }
+
     private IEnumerator CrossFade(int sceneIndex)
     {
         transistion.SetTrigger("Start");
@@ -60,5 +65,14 @@ public class LevelLoader : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         SceneManager.LoadScene(sceneIndex);
+    }
+
+    private IEnumerator CrossFade(string sceneName)
+    {
+        transistion.SetTrigger("Start");
+
+        yield return new WaitForSeconds(1);
+
+        SceneManager.LoadScene(sceneName);
     }
 }
