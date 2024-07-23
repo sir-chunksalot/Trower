@@ -20,6 +20,8 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] GameObject extrasMenu;
     Button amogusButton;
     CameraController camController;
+    OptionsManager optionsManager;
+    GameManager gameManagerScript;
     LevelLoader levelLoader;
     TMP_Text textBox;
     private int selectedLevel;                                                                                         
@@ -29,12 +31,25 @@ public class MainMenuManager : MonoBehaviour
     private void Awake()
     {
         levelLoader = GameObject.FindGameObjectWithTag("LevelLoader").GetComponent<LevelLoader>();
+        GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        optionsManager = gameManager.GetComponent<OptionsManager>();
+        gameManagerScript = gameManager.GetComponent<GameManager>();
+        gameManagerScript.OnSceneChange += OnSceneLoad;
         selectedLevel = 1;
         selectedWorld = 1;
         amogusButton = amogusButtonObj.GetComponent<Button>();
         textBox = levelTextObj.GetComponent<TMP_Text>();
         camController = gameObject.GetComponent<CameraController>();
         mainView = true;
+    }
+
+    public void OnSceneLoad(object sender, EventArgs e)
+    {
+        if (this == null) return;
+        if(optionsManager.isSusMode)
+        {
+            AmogusSwitch();
+        }
     }
     public void SideBar()
     {
@@ -105,6 +120,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void ToggleOptions()
     {
+        Debug.Log("Toggled");
         optionsMenu.SetActive(!optionsMenu.activeSelf);
     }
 
@@ -126,6 +142,8 @@ public class MainMenuManager : MonoBehaviour
             amogusGraphics[0].SetActive(false);
 
             logo.GetComponent<Image>().sprite = susLogo;
+
+            optionsManager.isSusMode = true;
         }
         else
         {
@@ -135,6 +153,8 @@ public class MainMenuManager : MonoBehaviour
             amogusGraphics[1].SetActive(false);
 
             logo.GetComponent<Image>().sprite = regularLogo;
+
+            optionsManager.isSusMode = false;
         }
 
     }

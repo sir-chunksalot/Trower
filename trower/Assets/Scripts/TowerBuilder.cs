@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 public class TowerBuilder : MonoBehaviour
 {
+    GameManager gameManager;
     [SerializeField] GameObject[] traps; //FOR TRAP TYPES
     [SerializeField] GameObject[] floors; //FOR FLOOR TYPES
     [SerializeField] GameObject potentialFloor;
@@ -44,7 +45,11 @@ public class TowerBuilder : MonoBehaviour
     private bool placingBomb;
     private int ladderType;
     private int totalPlacedFloorsCount;
-
+    private void Awake()
+    {
+        gameManager = gameObject.GetComponent<GameManager>();
+        gameManager.OnSceneChange += OnSceneLoad;
+    }
     private void Start()
     {
         uiManager = gameObject.GetComponent<UIManager>();
@@ -53,8 +58,31 @@ public class TowerBuilder : MonoBehaviour
         ladderType = 2;
         cameraController = Camera.main.GetComponent<CameraController>();
         StartCoroutine(GenerateNewWalls());
+    }
 
-        GameObject oldFloorsDad = GameObject.FindGameObjectWithTag("BuildDaddy");
+    public void OnSceneLoad(object sender, EventArgs e)
+    {
+        GameObject buildDaddy = gameManager.GetCurrentLevelDetails().GetBuildDaddy();
+        foreach(GameObject floor in placedFloors)
+        {
+            Destroy(floor);
+        }
+        placedFloors.Clear();
+        if(buildDaddy != null)
+        {
+            foreach (Transform kid in buildDaddy.transform)
+            {
+                AddPlacedFloor(kid.gameObject);
+                Debug.Log("Added Floor:" + kid.gameObject);
+            }
+        }
+
+        if(onTowerPlace != null)
+        {
+            onTowerPlace.Invoke(gameObject, EventArgs.Empty);
+            Debug.Log("OnTowerPlaced event invoked.");
+        }
+
     }
 
     public void Place(InputAction.CallbackContext context) //called when mouse is released
@@ -204,7 +232,7 @@ public class TowerBuilder : MonoBehaviour
         List<Vector3> pos = new List<Vector3>();
         foreach (GameObject p in objPos)
         {
-            pos.Add(p.transform.position);
+            pos.Add(p.transform.position); 
         }
         return ClosestTo(target, pos, validCheck);
     }
@@ -511,6 +539,7 @@ public class TowerBuilder : MonoBehaviour
             //    placedFloors.Remove(child.gameObject);
             //}
             floorPapas.Remove(targetFloor.transform.parent.gameObject);
+            placedFloors.Remove(targetFloor);
             targetFloor.GetComponent<Floor>().DestroyFloor();
             StartCoroutine(DestroyAfterTime(targetFloor.transform.parent.gameObject));
             onTowerSell?.Invoke(targetFloor, EventArgs.Empty);
@@ -524,7 +553,10 @@ public class TowerBuilder : MonoBehaviour
             StartCoroutine(DestroyAfterTime(explody, 1.5f));
         }
         placingBomb = false;
-        SetAlpha(sellBombObject, 0);
+        if(sellBombObject != null)
+        {
+            SetAlpha(sellBombObject, 0);
+        }
     }
 
     private IEnumerator DestroyAfterTime(GameObject targetFloor)

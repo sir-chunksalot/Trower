@@ -7,15 +7,18 @@ using Random = UnityEngine.Random;
 
 public class WaveManager : MonoBehaviour
 {
-    [SerializeField] GameObject[] roundList;
+    //[SerializeField] GameObject[] roundList;
     [SerializeField] GameObject progressBar;
     [SerializeField] GameObject progresssFillObj;
     [SerializeField] GameObject waveFlag;
     [SerializeField] GameObject attackPhaseEffect;
     [SerializeField] GameObject defensePhaseEffect;
     [SerializeField] GameObject bar;
-    [SerializeField] bool startDefensePhase;
-    [SerializeField] bool startAttackPhase;
+
+    private GameManager gameManagerScript;
+
+    private LevelDetails level;
+    private GameObject[] roundList;
 
     private List<Wave> waves;
     private Wave activeWave;
@@ -46,38 +49,65 @@ public class WaveManager : MonoBehaviour
     private bool isTime;
     private void Awake()
     {
-        activeRound = GetWaveList(0);
-        waves = new List<Wave>();
-        if (progressBar != null) {
-            MakeProgressBar();
-            progressFill = progresssFillObj.GetComponent<Image>();
-        }
-        else {
-            activeWave = activeRound[0].GetComponent<Wave>();
-        }
-
-        UpdateLength();
         heroManager = gameObject.GetComponent<HeroManager>();
         heroManager.OnHeroDeath += EnemyDied;
 
+        gameManagerScript = gameObject.GetComponent<GameManager>();
+        gameManagerScript.OnSceneChange += OnSceneLoad;
+    }
+    private void OnSceneLoad(object sender, EventArgs e)
+    {
+        Setup();
+    }
 
-        if (startAttackPhase)
+    private void Setup()
+    {
+        level = gameManagerScript.GetCurrentLevelDetails();
+        Debug.Log("LOOKINATME" + level);
+        GameObject roundDaddy = level.GetRoundDaddy();
+        if (roundDaddy != null)
         {
+            List<GameObject> tempList = new List<GameObject>();
+            foreach (Transform obj in roundDaddy.transform)
+            {
+                tempList.Add(obj.gameObject);
+            }
+            roundList = tempList.ToArray();
+            activeRound = GetWaveList(0);
+        }
+
+        waves = new List<Wave>();
+        if (roundDaddy != null)
+        {
+            if (progressBar != null)
+            {
+                MakeProgressBar();
+                progressFill = progresssFillObj.GetComponent<Image>();
+            }
+            else
+            {
+                activeWave = activeRound[0].GetComponent<Wave>();
+            }
+            UpdateLength();
+        }
+
+        Debug.Log("garnet" + level + level.startAttackPhase);
+
+        if (level.startAttackPhase)
+        {
+            Debug.Log("TRIED SWITCHING");
             SwitchAttackPhase(false);
         }
-        else if(defensePhase)
+        else if (level.startDefensePhase)
         {
             SwitchDefensePhase(false);
         }
-    }
 
-    private void Start()
-    {
         OnNewWave?.Invoke(gameObject, EventArgs.Empty);
     }
 
     private GameObject[] GetWaveList(int index)
-    {
+    {   
         Transform[] roundKids = roundList[index].GetComponentsInChildren<Transform>();
         Debug.Log(roundKids.Length + "PIRATECUM");
         GameObject[] waveList = new GameObject[roundKids.Length - 1];
@@ -302,6 +332,11 @@ public class WaveManager : MonoBehaviour
     public bool GetIsDefensePhase()
     {
         return defensePhase;
+    }
+
+    private void NotActive()
+    {
+        Debug.Log("ERROR! Tried to call a 'WaveManager' method while the script was inactive");
     }
 
 

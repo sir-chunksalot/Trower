@@ -33,6 +33,11 @@ TagManager:
   - BuildDaddy
   - Camera
   - LevelLoader
+  - Level
+  - HeroDaddy
+  - SpawnSpots
+  - RoundDaddy
+  - DoorSmackGuard
   layers:
   - Default
   - TransparentFX
@@ -49,6 +54,7 @@ TagManager:
   - BackgroundElements
   - Mouse
   - Vines
+  - HeroFeet
   - 
   - 
   - 
@@ -64,8 +70,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Void
   m_SortingLayers:
   - name: Default
     uniqueID: 0

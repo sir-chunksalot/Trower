@@ -5,16 +5,19 @@ using UnityEngine.InputSystem;
 
 public class TrapBuilder : MonoBehaviour
 {
+    GameManager gameManager;
+
     [SerializeField] GameObject[] traps;
     [SerializeField] GameObject particle;
     [SerializeField] float reqMouseDistanceToPlace;
     [SerializeField] float opacity;
-    [SerializeField] GameObject trapDaddy;
+
+    GameObject trapDaddy;
 
     public event EventHandler onTrapPlace;
     private GameObject currentTrap;
     TowerBuilder towerBuilder;
-    TrapSelect trapSelect;
+    TrapManager trapManager;
     UIManager uiManager;
     private List<Vector2> totalSpawnLocations;
     private List<Vector2> placedTrapsPos;
@@ -23,37 +26,26 @@ public class TrapBuilder : MonoBehaviour
     private string trapName;
     private bool isLarge;
     private Vector2 mousePos;
-    private Vector3 closestRoom;
     private float frontZ;
     private float yOffSet;
+    private void Awake()
+    {
+        towerBuilder = gameObject.GetComponent<TowerBuilder>();
+        trapManager = gameObject.GetComponent<TrapManager>();
+        uiManager = gameObject.GetComponent<UIManager>();
+
+        gameManager = gameObject.GetComponent<GameManager>();
+        gameManager.OnSceneChange += OnSceneChange;
+    }
     private void Start()
     {
         trapSpawnLocations = new List<Vector2>();
         totalSpawnLocations = new List<Vector2>();
         placedTrapsPos = new List<Vector2>();
 
-        towerBuilder = gameObject.GetComponent<TowerBuilder>();
-        trapSelect = gameObject.GetComponent<TrapSelect>();
-        uiManager = gameObject.GetComponent<UIManager>();
+
         towerBuilder.onTowerPlace += NewRoom;
-
-        frontZ = Camera.main.transform.position.z + .1f;
-        OldTraps();
     }
-
-
-    private void OldTraps()
-    {
-        GameObject trapDaddy = GameObject.FindGameObjectWithTag("TrapDaddy");
-        if(trapDaddy != null)
-        {
-            foreach (Transform kid in trapDaddy.transform)
-            {
-                UpdateValidTrapSpawns(kid.position, false);
-            }
-        }
-    }
-
     private void FixedUpdate()
     {
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -81,6 +73,28 @@ public class TrapBuilder : MonoBehaviour
             Debug.Log("PLACING" + closestRoom + " " + currentTrap.transform.position);
 
         }
+    }
+
+    private void OnSceneChange(object sender, EventArgs e)
+    {
+        Debug.Log("gameManager" + gameManager + gameManager);
+        trapDaddy = gameManager.GetTrapDaddy();
+        if(trapDaddy != null)
+        {
+            foreach (Transform kid in trapDaddy.transform)
+            {
+                UpdateValidTrapSpawns(kid.position, false);
+            }
+        } 
+
+        List<GameObject> traps = trapManager.GetAllTraps();
+
+        foreach (GameObject trap in traps)
+        {
+            Instantiate(trap, transform.position, Quaternion.identity, trapDaddy.transform);
+        }
+        frontZ = Camera.main.transform.position.z + .1f;
+
     }
 
     private void NewRoom(object sender, EventArgs e)
@@ -213,6 +227,7 @@ public class TrapBuilder : MonoBehaviour
             currentTrap.GetComponent<Trap>().Rotate();
         }
     }
+
 
     public void EndPlacement()
     {

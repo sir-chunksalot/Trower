@@ -20,10 +20,16 @@ public static class UnlockManager
         unlocks.Add(item);
 
         OnUnlock?.Invoke(item, EventArgs.Empty);
+        Debug.Log("Unlock event fired.");
     }
 
     public static List<string> GetUnlockedItems()
     {
+        if (!listExists)
+        {
+            listExists = true;
+            unlocks = new List<string>();
+        }
         return unlocks;
     }
 

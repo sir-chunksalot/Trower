@@ -9,19 +9,35 @@ public class Hero : MonoBehaviour
     [SerializeField] float zOffset;
     [SerializeField] float offsetLength;
     [SerializeField] bool faceRight;
+    [SerializeField] bool paralyzed;
+    [SerializeField] bool canFall;
+
     WaveManager waveManager;
     HeroManager heroManager;
     Rigidbody2D rb;
+    HeroFeet heroFeet;
 
+    Animator anim;
+    SpriteRenderer spriteRenderer;
+
+    List<GameObject> touchedLadders;
     bool attackPhase;
     bool facingLeft;
-    bool isFalling;
     bool isSuperFalling;
+    float superFallDir;
+    bool isTouchingGround;
+    bool isFalling;
     bool isClimbing;
     bool canClimb;
+    bool smashBros;
     float currentSpeed;
+    float rotation;
     private void Awake()
     {
+        rotation = 15;
+        touchedLadders = new List<GameObject>();
+        heroFeet = gameObject.GetComponentInChildren<HeroFeet>();
+        anim = gameObject.GetComponent<Animator>();
         facingLeft = true;
         GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
         heroManager = gameManager.GetComponent<HeroManager>();
@@ -29,6 +45,7 @@ public class Hero : MonoBehaviour
         waveManager.OnAttackPhaseStart += AttackPhase;
         waveManager.OnDefensePhaseStart += DefensePhase;
         waveManager.OnFinalWave += Surrender;
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         currentSpeed = speed;
         transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + zOffset);
@@ -37,10 +54,13 @@ public class Hero : MonoBehaviour
         {
             FlipRight();
         }
+
+
     }
 
     private void Start()
     {
+        Debug.Log("gameManagerrrr" + heroManager);
         heroManager.AddHeroToList(gameObject);
     }
 
@@ -51,7 +71,46 @@ public class Hero : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - zOffset);
         canClimb = true;
     }
+    private void FixedUpdate()
+    {
+        if (smashBros)
+        {
+            rb.velocity = Vector2.zero;
+            gameObject.transform.Rotate(0, 0, Mathf.Abs(rotation));
+            gameObject.transform.localScale += new Vector3(.04f, .04f, 00);
+        }
+        else if (isSuperFalling)
+        {
+            if (rb.transform.position.y >= heroManager.TopOfMap() + 5)
+            {
+                superFallDir = -1;
+                rb.velocity = rb.velocity * superFallDir;
+            }
+            if (transform.position.y <= 0)
+            {
+                isSuperFalling = false;
+                rb.velocity = Vector2.zero;
+                UpdateMove();
+            }
+        }
+        else if (GetIsTouchingGround())
+        {
+            if (isFalling)
+            {
+                isFalling = false;
+                UpdateMove();
+            }
+        }
+        else
+        {
+            if (!isFalling && canFall)
+            {
+                isFalling = true;
+                UpdateMove();
+            }
 
+        }
+    }
     public void FlipRight()
     {
         facingLeft = false;
@@ -63,36 +122,90 @@ public class Hero : MonoBehaviour
         gameObject.GetComponent<SpriteRenderer>().flipX = false;
     }
 
-    private void Update()
+    private void UpdateMove()
     {
-        if (attackPhase)
-        {
-            Vector2 dir = new Vector2(1, 0) * currentSpeed;
-            if (facingLeft)
-            {
-                dir *= -1;
-            }
-            if (isFalling)
-            {
-                dir = new Vector3(0, -1) * 8;
-            }
-            if (isClimbing)
-            {
-                dir = new Vector2(0, 1) * currentSpeed;
-            }
-            if(isSuperFalling)
-            {
-                if(transform.position.y <= 1)
-                {
-                    isSuperFalling = false;
-                }
-                dir = new Vector3(0, -1) * 10;
-            }
 
-
-            rb.velocity = dir;
-
+        Debug.Log("UpdateMove");
+        if(paralyzed) 
+        { 
+            rb.velocity = Vector2.zero;
+            return;
         }
+
+        if(isSuperFalling)
+        {
+            SuperFall();
+            anim.SetBool("Falling", true);
+            return;
+        }
+        else { anim.SetBool("Falling", false); }
+
+        if(isClimbing)
+        {
+            Climb();
+            anim.SetBool("Climbing", true);
+            return;
+        }
+        else { anim.SetBool("Climbing", false); }
+
+        if(isFalling)
+        {
+            Fall();
+            anim.SetBool("Falling", true);
+            return;
+        }
+        else { anim.SetBool("Falling", false); }
+
+        if(attackPhase)
+        {
+            Walk();
+            anim.SetBool("AttackPhase", true);
+            return;
+        }
+        else { Idle(); }
+    }
+    private void Walk()
+    {
+        float goLeft = 1;
+        if(facingLeft) {
+            goLeft = -1;
+        }
+
+        rb.velocity = new Vector2(1, 0) * currentSpeed * goLeft;
+    }
+    private void Idle()
+    {
+        rb.velocity = Vector2.zero;
+        anim.SetBool("Falling", false);
+        anim.SetBool("Climbing", false);
+        anim.SetBool("AttackPhase", false);
+    }
+    private void Climb()
+    {
+        rb.velocity = new Vector2(0, 1) * currentSpeed;
+    }
+
+    private void Fall()
+    {
+        rb.velocity = new Vector3(0, -1) * 10;
+    }
+
+    private void SuperFall()
+    {
+        rb.velocity = new Vector2(0, 1) * 10 * superFallDir;
+    }
+
+    private bool GetIsTouchingGround()
+    {
+        if(heroFeet != null)
+        {
+            return heroFeet.GetIsTouchingGround();
+        }
+        else
+        {
+            return false;
+        }
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -108,20 +221,24 @@ public class Hero : MonoBehaviour
             {
                 FlipLeft();
             }
-            
+
+            UpdateMove();
+
         }
         
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Ladder" && collision.gameObject.transform.position.y > transform.position.y && canClimb)
         {
+            if(!touchedLadders.Contains(collision.gameObject))
+            {
+                touchedLadders.Add(collision.gameObject);
+            }
+
             isClimbing = true;
-        }
-        if (collision.gameObject.tag == "EnemyFloor")
-        {
-            isFalling = false;
+            UpdateMove();
         }
     }
 
@@ -129,19 +246,17 @@ public class Hero : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ladder")
         {
-            isClimbing = false;
-        }
-        if (collision.gameObject.tag == "EnemyFloor")
-        {
-            isFalling = true;
+            touchedLadders.Remove(collision.gameObject);
+            if(touchedLadders.Count == 0)
+            {
+                isClimbing = false;
+                UpdateMove();
+            }
         }
     }
 
 
-    public void SuperFall()
-    {
-        isSuperFalling = true;
-    }
+
 
     public void ChangeSpeed(float newSpeed)
     {
@@ -151,14 +266,15 @@ public class Hero : MonoBehaviour
     public void AttackPhase()
     {
         attackPhase = true;
+        currentSpeed = speed;
         StartCoroutine(RandomDelay());
     }
     public void DefensePhase()
     {
         attackPhase = false;
+        UpdateMove();
         currentSpeed = 0;
         rb.velocity = Vector2.zero;
-        gameObject.GetComponent<Animator>().SetBool("AttackPhase", false);
     }
     private void AttackPhase(object sender, EventArgs e)
     {
@@ -179,13 +295,45 @@ public class Hero : MonoBehaviour
             seconds -= .5f;
         }
         yield return new WaitForSeconds(seconds);
+        UpdateMove();
         currentSpeed = speed;
-        gameObject.GetComponent<Animator>().SetBool("AttackPhase", true);
+    }
+    public void StartSuperFall(float dir, bool smashBros)
+    {
+        isSuperFalling = true;
+        this.superFallDir = dir;
+        if (smashBros)
+        {
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            rb.velocity = Vector2.zero;
+            this.smashBros = smashBros;
+            StartCoroutine(SmashBros());
+        }
+        UpdateMove();
     }
 
+    private IEnumerator SmashBros()
+    {
+        //anim.SetBool("Falling", y);
+        yield return new WaitForSeconds(1f);
+
+        KillMe();
+    }
+
+    public void Stun(float stunTime)
+    {
+        currentSpeed = 0;
+        StartCoroutine(StunTime(stunTime));
+    }
+
+    private IEnumerator StunTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        currentSpeed = speed;
+    }
     public bool GetFallingStatus()
     {
-        return isFalling;
+        return isSuperFalling;
     }
 
     public void Surrender(object sender, EventArgs e)

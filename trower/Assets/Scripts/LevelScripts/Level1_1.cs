@@ -8,8 +8,8 @@ using UnityEngine.UI;
 public class Level1_1 : MonoBehaviour
 {
     [SerializeField] bool inIntroduction;
-    [SerializeField] GameObject gameManager;
 
+    GameObject gameManager;
     [SerializeField] GameObject pressSpaceUI;
     [SerializeField] GameObject pressSpaceShadow;
     //intro
@@ -59,7 +59,6 @@ public class Level1_1 : MonoBehaviour
     [SerializeField] GameObject dialogueTriggerTabSwitch;
     [SerializeField] GameObject dialogueTriggerDefendEverywhere;
     [SerializeField] GameObject dialogueTriggerAreYouSureAboutThat;
-    [SerializeField] GameObject cooldown;
     //torches
     [SerializeField] GameObject[] redTorches;
     [SerializeField] GameObject[] greenTorches;
@@ -100,6 +99,7 @@ public class Level1_1 : MonoBehaviour
     CameraController camController;
     WaveManager waveManager;
     TrapBuilder trapBuilder;
+    TrapManager trapManager;
     UIManager uiManager;
     int shakeCount;
     bool gottaWait;
@@ -114,12 +114,16 @@ public class Level1_1 : MonoBehaviour
 
     private void Awake()
     {
+        gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        trapManager = gameManager.GetComponent<TrapManager>();
+        trapManager.onSpacePressed += OnSpacePressed;
         uiManager = gameManager.GetComponent<UIManager>();
         uiManager.OnClickContinue += TryContinue;
     }
     void Start()
     {
-        cardHolster = card.GetComponent<CardHolsterGraphics>();
+        cardHolster = uiManager.GetCard(0).GetComponentInChildren<CardHolsterGraphics>();
+        Debug.Log("HERE WE ARE!" + uiManager.GetCard(0));
         Debug.Log(gameObject + "snoop");
         waveManager = gameManager.GetComponent<WaveManager>();
         waveManager.OnDefensePhaseStart += InstructDefensePhase;
@@ -145,7 +149,30 @@ public class Level1_1 : MonoBehaviour
 
 
 
+    private void Update()
+    {
+        if(defensePhase && Input.GetMouseButtonDown(0))
+        {
+            if (arrowBuild.activeInHierarchy)
+            {
+                StartCoroutine(CheckForBuildTab());
+            }
+            else
+            {
+                dialogueTriggerDefendEverywhere.SetActive(false);
+            }
 
+            if (areYouSure)
+            {
+                dialogueTriggerAreYouSureAboutThat.SetActive(false);
+                defensePhase = false;
+                dialogueTriggerDefendEverywhere.SetActive(false);
+                arrowBuild.SetActive(false);
+                uiManager.SetDenySwitch(false);
+                dialogueTriggerTabSwitch.SetActive(false);
+            }
+        }
+    }
 
     public void Grow(InputAction.CallbackContext context)
     {
@@ -288,7 +315,6 @@ public class Level1_1 : MonoBehaviour
         greenTorches[1].SetActive(false);
         redTorches[0].SetActive(false);
         redTorches[1].SetActive(false);
-        doorsUI.SetActive(false);
         highlightUI.SetActive(false);
         bigCrackleft.SetActive(false);
         bigCrackRight.SetActive(false);
@@ -412,7 +438,7 @@ public class Level1_1 : MonoBehaviour
     {
         yield return new WaitForSeconds(.2f);
         {
-            if(buildTab.GetComponent<RectTransform>().localPosition.y >= 0)
+            if(uiManager.GetTowerTab().GetComponent<RectTransform>().localPosition.y >= 0)
             {
                 dialogueTriggerTabSwitch.SetActive(false);
                 arrowBuild.SetActive(false);
@@ -462,7 +488,7 @@ public class Level1_1 : MonoBehaviour
             StartCoroutine(WaitForClick());
 
         }
-        else if (trapDaddy.transform.childCount >= 1)
+        else if (trapDaddy.transform.childCount >= 2)
         {
             Debug.Log("TRAP PLACED");
             arrowSpear.SetActive(false);
@@ -495,7 +521,7 @@ public class Level1_1 : MonoBehaviour
     public void InstructDefensePhase(object sender, EventArgs e)
     {
         camController.ActivateCamera(MainView2);
-        cooldown.GetComponent<Image>().enabled = false;
+        uiManager.EnableCooldownTimer(false);
         arrowBuild.SetActive(true);
         StartCoroutine(WaitForInstruction());
     }
@@ -503,29 +529,26 @@ public class Level1_1 : MonoBehaviour
     private IEnumerator WaitForInstruction()
     {
         yield return new WaitForSeconds(2.5f);
-       // cooldown.SetActive(true);
+        uiManager.EnableCooldownTimer(true);
         dialogueTriggerTabSwitch.GetComponentInChildren<DialogueBox>().ManualReadMessage();
-        cooldown.GetComponent<Image>().enabled = true;
         defensePhase = true;
         uiManager.SetDenySwitch(true);
     }
 
 
-    public void OnSpacePressed(InputAction.CallbackContext context)
+    public void OnSpacePressed(object sender, EventArgs e)
     {
-        if (context.performed)
-        {
             if(!beenThereDoneThat)
             {
                 if (spaceEffect.activeInHierarchy)
                 {
+                    Debug.Log("TRIED TO MANUALLY ACTIVATE");
                     StopAllCoroutines();
                     dialogueTriggerHigh5.SetActive(false);
                     dialogueTriggerHoverOverEnemy.SetActive(false);
                     beenThereDoneThat = true;
                     firstTrap.GetComponent<Trap>().ManualTrapActivate();
                     secondEnemy.GetComponent<Hero>().AttackPhase();
-                    secondEnemy.GetComponent<Hero>().ChangeSpeed(6);
                     StartCoroutine(MakeHeroStop());
                     StartCoroutine(WaitForJoke());
                     //firstTrap.GetComponent<Trap>().DisableTrap();
@@ -543,15 +566,13 @@ public class Level1_1 : MonoBehaviour
                     //StartCoroutine(DelayBeforeCam());
                 }
             }
-            if(secondTrapPlaced && !beenThereDoneThat2 && trapDaddy.GetComponentInChildren<Trap>().GetSpaceEffect().activeInHierarchy)
+            if(secondTrapPlaced && !beenThereDoneThat2 && trapDaddy.GetComponentsInChildren<Trap>()[1].GetSpaceEffect().activeInHierarchy)
             {
-                trapDaddy.GetComponentInChildren<Trap>().ManualTrapActivate();
+                trapDaddy.GetComponentsInChildren<Trap>()[1].ManualTrapActivate();
                 beenThereDoneThat2 = true;
                 StartCoroutine(CheckForSecondDeath());
                 
             }
-           
-        }
     }
 
     private IEnumerator CheckForSecondDeath()
@@ -564,7 +585,7 @@ public class Level1_1 : MonoBehaviour
             dialogueTriggerkillThatGuyToo.SetActive(false);
             arrowSpear2.SetActive(false);
             camController.ActivateCamera(VCAMPanRight, 5);
-            cooldown.SetActive(false);
+            uiManager.EnableCooldownTimer(false);
             StartCoroutine(WaitForCam());
         }
         else
@@ -584,7 +605,8 @@ public class Level1_1 : MonoBehaviour
     private IEnumerator WaitForJoke()
     {
         yield return new WaitForSeconds(1.5f);
-        if(trapDaddy.transform.childCount < 1)
+        Debug.Log("DELTARUNE" + trapDaddy.transform.childCount);
+        if (trapDaddy.transform.childCount <= 1)
         {
             arrow2.SetActive(false);
             dialogueTriggerWhoops.GetComponentInChildren<DialogueBox>().ManualReadMessage();
@@ -619,7 +641,8 @@ public class Level1_1 : MonoBehaviour
     private IEnumerator InstructSecondSpear()
     {
         yield return new WaitForSeconds(2);
-        if(trapDaddy.transform.childCount < 1)
+        Debug.Log("UNDERTALE" + trapDaddy.transform.childCount);
+        if(trapDaddy.transform.childCount <= 1)
         {
             dialogueTriggerWhoops.SetActive(false);
             dialogueTriggerSecondSpike.GetComponentInChildren<DialogueBox>().ManualReadMessage();
@@ -639,7 +662,7 @@ public class Level1_1 : MonoBehaviour
     private IEnumerator WaitForCam()
     {
         yield return new WaitForSeconds(7);
-        cooldown.SetActive(true);
+        uiManager.EnableCooldownTimer(true);
         waveManager.SwitchAttackPhase(true);
         StartCoroutine(WaitABit());
         StartCoroutine(RunForestRun());
@@ -722,6 +745,14 @@ public class Level1_1 : MonoBehaviour
         {
             extraArrowForSlowpokes4.SetActive(true);
         }
+    }
+
+    private void OnDestroy()
+    {
+        trapManager.onSpacePressed -= OnSpacePressed;
+        waveManager.OnDefensePhaseStart -= InstructDefensePhase;
+        uiManager.OnClickContinue -= TryContinue;
+        trapBuilder.onTrapPlace -= CheckPos;
     }
 
 

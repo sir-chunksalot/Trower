@@ -8,6 +8,7 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] float cost;
     [SerializeField] bool isTrap;
+    [SerializeField] string cardName;
     [SerializeField] GameObject costTextBox;
     [SerializeField] GameObject costButton;
     [SerializeField]  Sprite[] defensePhaseImages;
@@ -39,6 +40,10 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
     private void Start()
     {
         gameObject.GetComponentInParent<UIManager>().AddCardToList(gameObject);
+        if (UnlockManager.IsItemUnlocked(cardName))
+        {
+            UnlockCard();
+        }
     }
 
     public void LockCard()
@@ -53,7 +58,8 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
 
     public void AttackPhase()
     {
-        if(isTrap)
+        if (!gameObject.activeInHierarchy) { return; }
+        if (isTrap)
         {
             Debug.Log("attack Phase");
             activeSprite = attackPhaseImages;
@@ -66,6 +72,7 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
 
     public void DefensePhase()
     {
+        if (!gameObject.activeInHierarchy) { return; }
         attackPhase = false;
         if (isTrap)
         {
@@ -79,11 +86,13 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
     
     public void ManualGainCharge()
     {
+        if (!gameObject.activeInHierarchy) { return; }
         UpdateCount(1);
     }
 
     public void PurchaseCharge()
     {
+        if (!gameObject.activeInHierarchy) { return; }
         Debug.Log("cash = " + Coins.GetCoins());
         if(count <= 3 && Coins.GetCoins() >= cost)
         {
@@ -100,6 +109,7 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
 
     public void SellCharge()
     {
+        if(!gameObject.activeInHierarchy) { return; }
         if(count >= 1)
         {
             Coins.ChangeCoins(cost);
@@ -110,6 +120,7 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (!gameObject.activeInHierarchy) { return; }
         if (eventData.button == PointerEventData.InputButton.Right)
         {
             Debug.Log("Right button pressed.");
@@ -124,6 +135,7 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
 
     public void SelectTrap(string buttonName) //called by the button component in this card parent 
     {
+        if (!gameObject.activeInHierarchy) { return; }
         Debug.Log("DOOFEN coins" + Coins.GetCoins() + "cost" + cost);
         if(trapSelect.GetPlacing()) { //if player is  already placing, do not do anything
             return; 
@@ -159,6 +171,7 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
     
     public void UseTrap(bool success) //called whenever a trap is placed by trap builder script or tower builder script
     {
+        if(!gameObject.activeInHierarchy) { return; }
         if(success)
         {
             place.Play();
@@ -190,6 +203,7 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
     private void UpdateCount(int charge)
     {
         count += charge;
+        Debug.Log("WE ARE WE ARE " + gameObject + activeSprite);
         Debug.Log("PHASE" + activeSprite.Length);
         chargeImage.sprite = activeSprite[count];
     }
@@ -210,6 +224,8 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
 
     public void MuteAudio(int index, float howLong)
     {
+        if (!gameObject.activeInHierarchy) { return; }
+
         float volume = 1;
         AudioSource audio = selectTrap;
         switch(index)

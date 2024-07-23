@@ -93,6 +93,16 @@ public class TrapManager : MonoBehaviour
         return selectedTrap;
     }
 
+
+    public List<GameObject> GetAllTraps()
+    {
+        return traps;
+    }
+    public List<Trap> GetAllTrapScripts()
+    {
+        return trapScripts;
+    }
+
     private void UpdateTrapCooldownUI(float fillAmount)
     {
         if(trapCooldownUI == null) {

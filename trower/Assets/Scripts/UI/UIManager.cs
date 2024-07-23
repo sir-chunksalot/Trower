@@ -8,12 +8,19 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    GameManager gameManagerScript;
+    LevelDetails level;
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject coinTextBox;
     [SerializeField] GameObject devMenu;
     [SerializeField] GameObject dialogueManager;
-    [SerializeField] GameObject buildPhaseUI;
+    [SerializeField] GameObject continueHolder;
+    [SerializeField] GameObject buildTabHolder;
+    [SerializeField] GameObject coinCountHolder;
+    [SerializeField] GameObject progressBarHolder;
     [SerializeField] GameObject buildTabObj;
+    [SerializeField] GameObject towerTab;
+    [SerializeField] GameObject cooldownTimer;
     [SerializeField] Sprite chainedBuildTab;
     [SerializeField] Sprite buildTab;
     [SerializeField] AudioSource denySound;
@@ -37,6 +44,8 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
+        gameManagerScript = gameObject.GetComponent<GameManager>();
+        gameManagerScript.OnSceneChange += OnSceneLoad;
         cards = new List<GameObject>();
         trapManager = this.gameObject.GetComponent<TrapManager>();
         waveManager = gameObject.GetComponent<WaveManager>();
@@ -59,45 +68,86 @@ public class UIManager : MonoBehaviour
         if(coinTextBox != null)
         {
             Coins.onChangeCoin += GainCoin;
-            UnlockManager.OnUnlock += UnlockCard;
+            UnlockManager.OnUnlock += OnUnlock;
             coinText = coinTextBox.GetComponent<TMP_Text>();
             GainCoin(gameObject, EventArgs.Empty);
         }
-        StartCoroutine(LateStart());
 
     }
 
-    private IEnumerator LateStart()
+    private void OnSceneLoad(object sender, EventArgs e)
     {
-        yield return new WaitForSeconds(.5f);
-        LockCards();
+        Setup();
     }
 
-
-    private void LockCards()
+    private void Setup()
     {
-        foreach (GameObject card in cards)
+        level = gameManagerScript.GetCurrentLevelDetails();
+        if(level.hideBuildMenu)
         {
-            if (!UnlockManager.IsItemUnlocked(card.name))
-            { //if the card isnt unlocked
-                card.GetComponent<CardHolsterGraphics>().LockCard(); //lock it
-            }
-
+            buildTabHolder.SetActive(false);
         }
+        else
+        {
+            buildTabHolder.SetActive(true);
+        }
+        if(level.hideCoinCount)
+        {
+            coinCountHolder.SetActive(false);
+        }
+        else
+        {
+            coinCountHolder.SetActive(true);
+        }
+        if(level.hideProgressbar)
+        {
+            progressBarHolder.SetActive(false);
+        }
+        else
+        {
+            progressBarHolder.SetActive(true);
+        }
+
+    }
+    public void EnableCooldownTimer(bool activeStatus)
+    {
+        Debug.Log("Cooldown timer is set to :" + activeStatus);
+        cooldownTimer.GetComponent<Image>().enabled = activeStatus;
     }
 
-    public void UnlockCard(object unlockName, EventArgs e)
+    public GameObject GetCard(int index)
     {
-        string name = (string)unlockName;
+            int count = 0;
+            foreach (Transform child in trapCards.transform)
+            {
+                if(count == index)
+                {
+                    return child.gameObject;
+                }
+                count++;
+            }
+        Debug.Log("ERROR! UIManager attempted to get the index of a non existent card.");
+        return null;
+    }
+
+
+    public void OnUnlock(object unlockName, EventArgs e)
+    {
+        UnlockCard((string)unlockName);
+    }
+    public void UnlockCard(string unlockName)
+    {
         foreach (GameObject card in cards)
         {
-            if(name == card.name)
+            if (unlockName == card.name)
             {
+                Debug.Log("unlocked card");
                 card.GetComponent<CardHolsterGraphics>().UnlockCard();
                 return;
             }
         }
     }
+
 
     private void AttackPhase(object sender, EventArgs e)
     {
@@ -105,7 +155,7 @@ public class UIManager : MonoBehaviour
         if(buildCards != null)
         {
             MoveTabs(true);
-            buildPhaseUI.SetActive(false);
+            continueHolder.SetActive(false);
             buildImage.sprite = chainedBuildTab;
         }
         if(trapCards != null)
@@ -120,7 +170,7 @@ public class UIManager : MonoBehaviour
     }
     private void DefensePhase(object sender, EventArgs e)
     {
-        buildPhaseUI.SetActive(true);
+        continueHolder.SetActive(true);
         if (buildTabObj == null) { return; }
         Debug.Log("UI defense phase");
         buildImage.sprite = buildTab;
@@ -147,7 +197,7 @@ public class UIManager : MonoBehaviour
 
     public void SwitchTabs()
     {
-        if(buildImage.sprite == buildTab)
+        if (buildImage.sprite == buildTab)
         {
             MoveTabs(false);
         }
@@ -160,7 +210,7 @@ public class UIManager : MonoBehaviour
 
     public void UseTrap(string name, bool success) //this is an intermediary method so that when a trap is placed the charge goes down for the trap card 
     {
-        foreach(GameObject card in cards)
+        foreach (GameObject card in cards)
         {
             Debug.Log("zoro" + card.name + " " + name);
             if(card.name == name)
@@ -172,7 +222,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void AddCardToList(GameObject card)
+    public void AddCardToList(GameObject card) //called by card holster graphics, a script located in every card
     {
         cards.Add(card);
     }
@@ -180,6 +230,11 @@ public class UIManager : MonoBehaviour
     public void RegenUIElements()
     {
         MoveCooldownTimer();
+    }
+    
+    public GameObject GetTowerTab() //used by stupid level1-1 scripyt
+    {
+        return towerTab;
     }
 
     public void SelectedTrapChange(object sender, EventArgs e)
@@ -222,7 +277,7 @@ public class UIManager : MonoBehaviour
         if(!denySwitch)
         {
             waveManager.SwitchAttackPhase(true);
-            buildPhaseUI.SetActive(false);
+            continueHolder.SetActive(false);
         }
     }
 

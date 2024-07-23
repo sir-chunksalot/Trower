@@ -24,6 +24,8 @@ public class Wave : MonoBehaviour
         {
 			case "PrisonGuard":
 				return prisonGuard;
+			case "DoorSmackGuard":
+				return doorSmackGuard;
 			case "Knight":
 				return knight;
 			default:
@@ -57,6 +59,15 @@ public class Wave : MonoBehaviour
 	{
 	}
 	public PrisonGuard prisonGuard;
+	//---------------------------------------------------------------------------------------------//
+	[PreviewSprite]
+	public Sprite doorSmackGuardSprite;
+
+	[System.Serializable]
+	public class DoorsSmackGuard : Hero
+	{
+	}
+	public DoorsSmackGuard doorSmackGuard;
 	//---------------------------------------------------------------------------------------------//
 	[PreviewSprite]
 	public Sprite knightSprite;

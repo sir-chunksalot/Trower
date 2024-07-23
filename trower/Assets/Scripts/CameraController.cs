@@ -43,7 +43,6 @@ public class CameraController : MonoBehaviour
             {
                 vcam.GetComponent<CinemachineVirtualCamera>().Priority = 0;
             }
-
         }
 
         foreach (GameObject ui in TurnMeOff)

@@ -16,7 +16,8 @@ public class CashManager : MonoBehaviour
 
     public void DefensePhase(object sender, EventArgs e)
     {
-        if(waveManager.GetIsAttackPhase() && waveManager.GetCurrentWave().buildPhase) { //this means that this wave already gave out cash, no reason to do it again
+        if (waveManager.GetCurrentWave() == null) { return; }
+        if (waveManager.GetIsAttackPhase() && waveManager.GetCurrentWave().buildPhase) { //this means that this wave already gave out cash, no reason to do it again
             return;
         }
         Coins.ChangeCoins(waveManager.GetCurrentWave().earnedCoins);
