@@ -19622,11 +19622,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73ca319d54f72a548bdc7a5b4378841b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildPhase: 1
-  finalWave: 0
+  buildPhase: 0
+  finalWave: 1
   requiredKills: {x: 14, y: 14}
   waveLength: {x: 0, y: 0}
-  earnedCoins: 100
+  earnedCoins: 200
   prisonGuardSprite: {fileID: 21300000, guid: 13d93f45e2251bb448cf6f884402d4dd, type: 3}
   prisonGuard:
     canSpawn: 0

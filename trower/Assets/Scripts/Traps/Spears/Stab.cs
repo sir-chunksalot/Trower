@@ -59,6 +59,7 @@ public class Stab : MonoBehaviour
         {
             Debug.Log("i forgor you sunflower");
             Hero hero = collision.gameObject.GetComponent<Hero>();
+            if(hero == null) { return; }
             if (up)
             {
                 if (hero.GetFallingStatus())

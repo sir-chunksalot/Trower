@@ -9,6 +9,7 @@ public class TrapBuilder : MonoBehaviour
 
     [SerializeField] GameObject[] traps;
     [SerializeField] GameObject particle;
+    [SerializeField] GameObject debugTrap;
     [SerializeField] float reqMouseDistanceToPlace;
     [SerializeField] float opacity;
 
@@ -20,11 +21,13 @@ public class TrapBuilder : MonoBehaviour
     TrapManager trapManager;
     UIManager uiManager;
     private List<Vector2> totalSpawnLocations;
+    private List<GameObject> debugTrapTotalSpawnLocations;
     private List<Vector2> placedTrapsPos;
     private List<Vector2> trapSpawnLocations;
     private bool placingTrap;
     private string trapName;
     private bool isLarge;
+    private bool rotateTrap;
     private Vector2 mousePos;
     private float frontZ;
     private float yOffSet;
@@ -36,6 +39,8 @@ public class TrapBuilder : MonoBehaviour
 
         gameManager = gameObject.GetComponent<GameManager>();
         gameManager.OnSceneChange += OnSceneChange;
+
+        debugTrapTotalSpawnLocations = new List<GameObject>();
     }
     private void Start()
     {
@@ -116,16 +121,16 @@ public class TrapBuilder : MonoBehaviour
 
     public void UpdateValidTrapSpawns(Vector2 pos, bool newSpawn)
     {
-        if (Vector2.Distance(pos, towerBuilder.GetDoorPos()) <= 7)
-        {
-            placedTrapsPos.Add(pos);
-        }
+        //if (Vector2.Distance(pos, towerBuilder.GetDoorPos()) <= 7)
+        //{
+        //    placedTrapsPos.Add(pos);
+        //}
         Vector2 closestTrap = towerBuilder.ClosestTo(pos, placedTrapsPos, false);
         if (newSpawn)
         {
             totalSpawnLocations.Add(pos);
             Debug.Log(pos + " " + "closestTrap" + closestTrap + "NIGHTONFIREW");
-            if (Mathf.Abs(Vector2.Distance(pos, closestTrap)) >= 4 && !trapSpawnLocations.Contains(pos)) //confirms the requested pos is no where near another trap
+            if (Mathf.Abs(Vector2.Distance(pos, closestTrap)) >= 4 && !trapSpawnLocations.Contains(pos)) //confirms the requested pos is nowhere near another trap
             {
                 Debug.Log("NEW POS PASSIOn" + pos);
                 trapSpawnLocations.Add(pos);
@@ -166,7 +171,7 @@ public class TrapBuilder : MonoBehaviour
 
         if(mousePos == (Vector2)currentTrap.transform.position) {
             Debug.Log("80s!");
-            uiManager.UseTrap(trapName, false);
+            uiManager.UseCard(trapName, false);
             EndPlacement();
             return;
         }
@@ -175,19 +180,25 @@ public class TrapBuilder : MonoBehaviour
             Debug.Log("90s!");
             if (Vector2.Distance(nextTrapPos, new Vector2(mousePos.x, mousePos.y - yOffSet)) < reqMouseDistanceToPlace)
             {
-                float rotation = 0;
-                if (currentTrap.GetComponent<Trap>().GetRotation() == 1)
-                {
-                    rotation = 180;
-                }
-                uiManager.UseTrap(trapName, true);
-                GameObject newBuild = Instantiate(currentTrap, nextTrapPos, Quaternion.Euler(0, rotation, 0), trapDaddy.transform);
+                uiManager.UseCard(trapName, true);
+                GameObject newBuild = Instantiate(currentTrap, nextTrapPos, Quaternion.identity, trapDaddy.transform);
                 Debug.Log("BEW BUILD!" + newBuild);
-                UpdateValidTrapSpawns(new Vector2(nextTrapPos.x, nextTrapPos.y - yOffSet), false); 
+                UpdateValidTrapSpawns(new Vector2(nextTrapPos.x, nextTrapPos.y - yOffSet), false);
+
                 Trap trap = newBuild.GetComponent<Trap>();
+                Detector detector = newBuild.GetComponent<Detector>();
+                if (trap != null)
+                { 
+                    trap.EnableTrap(); 
+                    if(rotateTrap) { trap.Rotate(); }
+                }
+                if (detector != null)
+                {
+                    detector.EnableSensor();
+                    if(rotateTrap) { detector.Rotate(); }
+                }
 
                 towerBuilder.SetAlpha(newBuild, 1);
-                trap.EnableTrap();
                 Vector3 particleSpawnPos = newBuild.transform.position;
                 particle.gameObject.transform.position = new Vector3(particleSpawnPos.x, particleSpawnPos.y, particleSpawnPos.z - 2);
                 particle.GetComponent<ParticleSystem>().Clear();
@@ -195,7 +206,7 @@ public class TrapBuilder : MonoBehaviour
             }
             else
             {
-                uiManager.UseTrap(trapName, false);
+                uiManager.UseCard(trapName, false);
             }
             EndPlacement();
         }
@@ -204,6 +215,7 @@ public class TrapBuilder : MonoBehaviour
     {
         Debug.Log(newTrapName + "UNO");
         placingTrap = true;
+        rotateTrap = false;
 
         GameObject activeTrap = traps[0];
         foreach (GameObject trap in traps)
@@ -213,21 +225,65 @@ public class TrapBuilder : MonoBehaviour
                 activeTrap = trap;
             }
         }
-        yOffSet = activeTrap.GetComponent<Trap>().GetYOffset();
-        trapName = activeTrap.name;
-        GameObject newTrap = Instantiate(activeTrap, new Vector3(mousePos.x, mousePos.y, 20), Quaternion.identity);
-        newTrap.GetComponent<Trap>().DisableTrap();
-        towerBuilder.SetAlpha(newTrap, opacity);
-        currentTrap = newTrap;
-        isLarge = currentTrap.GetComponent<Trap>().GetTrapSize();
 
-        if (rotation)
+
+        Trap trapScript = activeTrap.GetComponent<Trap>();
+        Detector sensorScript = activeTrap.GetComponent<Detector>();
+        trapName = activeTrap.name;
+        if (trapScript != null) { //it is a trap
+            yOffSet =  trapScript.GetYOffset();
+            GameObject newTrap = Instantiate(activeTrap, new Vector3(mousePos.x, mousePos.y, 20), Quaternion.identity);
+            newTrap.GetComponent<Trap>().DisableTrap();
+            towerBuilder.SetAlpha(newTrap, opacity);
+            currentTrap = newTrap;
+            isLarge = currentTrap.GetComponent<Trap>().GetTrapSize();
+
+            if (rotation)
+            {
+                Debug.Log("LOLOL");
+                currentTrap.GetComponent<Trap>().Rotate();
+                rotateTrap = true;
+            }
+        }
+        else //it is a sensor
         {
-            Debug.Log("LOLOL");
-            currentTrap.GetComponent<Trap>().Rotate();
+            yOffSet = sensorScript.GetYOffset();
+            GameObject newSensor = Instantiate(activeTrap, new Vector3(mousePos.x, mousePos.y, 20), Quaternion.identity);
+            newSensor.GetComponent<Detector>().DisableSensor();
+            towerBuilder.SetAlpha(newSensor, opacity);
+            currentTrap = newSensor;
+            isLarge = false;
+
+            if(rotation)
+            {
+                newSensor.GetComponent<Detector>().Rotate();
+                rotateTrap = true;
+            }
         }
     }
 
+
+    public void DebugTrapSpawnLocations(bool availableCheck)
+    {
+        if(debugTrapTotalSpawnLocations.Count >= 1)
+        {
+            foreach(GameObject trap in debugTrapTotalSpawnLocations)
+            {
+                Destroy(trap);
+            }
+            debugTrapTotalSpawnLocations.Clear();
+        }
+        else
+        {
+            foreach (Vector3 pos in totalSpawnLocations)
+            {
+                if (placedTrapsPos.Contains(pos) && availableCheck) { continue; }
+                GameObject trap = Instantiate(debugTrap, pos, Quaternion.identity);
+                debugTrapTotalSpawnLocations.Add(trap);
+            }
+        }
+
+    }
 
     public void EndPlacement()
     {

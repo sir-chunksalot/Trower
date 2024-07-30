@@ -30,7 +30,7 @@ public class TrapSelect : MonoBehaviour
         foreach (GameObject builds in potentialTraps)
         {
             buildNames.Add(builds.name);
-            Debug.Log(builds.name);
+            Debug.Log(builds.name + "zorogori og");
         }
 
     }
@@ -56,7 +56,6 @@ public class TrapSelect : MonoBehaviour
         {
             Debug.Log("Grabbed Floor");
         }
-        else if (currentBuild.GetComponent<CardHolsterGraphics>().GetActiveStatus() == false) return; //play a sound that signifies that you cant place that tower
         //trapSprites[selectedTrap].image.color = selectedColor;
         Debug.Log(buttonName + "BUTTON WAS CLICKED");
 
@@ -120,7 +119,7 @@ public class TrapSelect : MonoBehaviour
                 towerBuilder.CurrentFloor(currentBuild.name + "(Clone)");
                 trapBuilder.EndPlacement();
             }
-            else //if its just a regular trap, tell the towerbuilder script
+            else if(currentBuild.name[0] == 'T')//if its just a regular trap, tell the trappbuilder script
             {
                 trapBuilder.EndPlacement();
                 trapBuilder.CurrentTrap(currentBuild.name, rotateTrap); 

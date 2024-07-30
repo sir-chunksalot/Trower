@@ -11,9 +11,12 @@ public class Trap : MonoBehaviour
     [SerializeField] float cooldown;
     [SerializeField] GameObject spaceEffect;
     [SerializeField] bool active;
+    [SerializeField] bool canUse;
     [SerializeField] Sprite pressSpace;
     [SerializeField] Sprite pressedSpace;
     [SerializeField] GameObject armedSprite;
+    [SerializeField] GameObject trapObj;
+    [SerializeField] GameObject trapSprite;
 
     RectTransform cooldownTimerTransform;
     TrapManager trapManager;
@@ -169,13 +172,14 @@ public class Trap : MonoBehaviour
     }
     public void Rotate()
     {
-        gameObject.transform.Rotate(0, 180, 0);
+        trapObj.transform.localRotation = new Quaternion(0, 180, 0, 0);
+        trapSprite.transform.localRotation = new Quaternion(0, 180, 0, 0);
         Debug.Log("fartfartafrt");
     }
 
     public float GetRotation()
     {
-        return gameObject.transform.rotation.y;
+        return trapObj.transform.rotation.y;
     }
     public bool GetTrapSize()
     {
@@ -217,6 +221,23 @@ public class Trap : MonoBehaviour
         {
             trapManager.SelectNewTrap(this);
         }
+        if(collision.tag == "Bolt")
+        {
+            if (!active || (!attackPhase && !defensePhase))
+            {
+                Debug.Log("trap activation cancelled" + active + attackPhase + defensePhase);
+                return;
+            }
+            if (defensePhase && cooldownCount <= 0)
+            {
+                armed = !armed;
+                armedSprite.SetActive(armed);
+            }
+            else
+            {
+                onActivate?.Invoke(objectID, EventArgs.Empty);
+            }
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -231,6 +252,13 @@ public class Trap : MonoBehaviour
             spaceEffect.SetActive(false);
             Debug.Log("MOUSE LEFT");
 
+        }
+        if(collision.tag == "Bolt")
+        {
+            if(active)
+            {
+                onDeactivate?.Invoke(objectID, EventArgs.Empty);
+            }
         }
     }
 

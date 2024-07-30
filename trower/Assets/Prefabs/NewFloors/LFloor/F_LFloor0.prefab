@@ -679,10 +679,10 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.5, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -693,7 +693,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 1.5}
+  m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
 --- !u!50 &8920820816929952913
 Rigidbody2D:
@@ -988,6 +988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cost: 300
+  enemyCol: {fileID: 0}
 --- !u!1 &2225655607173559755
 GameObject:
   m_ObjectHideFlags: 0
@@ -1134,6 +1135,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 4564428179753025999}
   bottomFloorSprite: {fileID: 0}
+  armor: 0
+  sprites: []
 --- !u!50 &789994192618985969
 Rigidbody2D:
   serializedVersion: 4
@@ -1437,6 +1440,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 4130227535398553535}
   bottomFloorSprite: {fileID: 0}
+  armor: 0
+  sprites: []
 --- !u!50 &7065369281354945664
 Rigidbody2D:
   serializedVersion: 4
@@ -1730,6 +1735,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 9150140559309654858}
   bottomFloorSprite: {fileID: 0}
+  armor: 0
+  sprites: []
 --- !u!50 &955085024431245334
 Rigidbody2D:
   serializedVersion: 4
@@ -1820,10 +1827,10 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.5, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1834,7 +1841,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 1.5}
+  m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
 --- !u!50 &3618779259406396947
 Rigidbody2D:
@@ -1938,10 +1945,10 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.5, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1952,7 +1959,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 1.5}
+  m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
 --- !u!50 &3175552983262352855
 Rigidbody2D:
@@ -2056,10 +2063,10 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.5, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2070,7 +2077,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 1.5}
+  m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
 --- !u!50 &3129511679937342642
 Rigidbody2D:
@@ -2174,10 +2181,10 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.5, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2188,7 +2195,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 1.5}
+  m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
 --- !u!50 &1076403387292428388
 Rigidbody2D:
@@ -2375,6 +2382,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 1099627310495710647}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
+  armor: 0
+  sprites: []
 --- !u!50 &723847722403202198
 Rigidbody2D:
   serializedVersion: 4
@@ -2764,6 +2773,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 4611058914471882125}
   bottomFloorSprite: {fileID: 0}
+  armor: 0
+  sprites: []
 --- !u!50 &3767684004777789997
 Rigidbody2D:
   serializedVersion: 4
@@ -2972,6 +2983,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 8643040349546733153}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
+  armor: 0
+  sprites: []
 --- !u!50 &3150228395836496076
 Rigidbody2D:
   serializedVersion: 4
@@ -3145,6 +3158,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 7759861155080723425}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
+  armor: 0
+  sprites: []
 --- !u!50 &8882141391674053510
 Rigidbody2D:
   serializedVersion: 4
@@ -3475,6 +3490,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 1135962504927127909}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
+  armor: 0
+  sprites: []
 --- !u!50 &3802080791150447530
 Rigidbody2D:
   serializedVersion: 4
@@ -3648,6 +3665,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 1828937633254276822}
   bottomFloorSprite: {fileID: 0}
+  armor: 0
+  sprites: []
 --- !u!50 &4014299915684225182
 Rigidbody2D:
   serializedVersion: 4
@@ -4144,6 +4163,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 7618869608130330210}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
+  armor: 0
+  sprites: []
 --- !u!50 &7088241436025734036
 Rigidbody2D:
   serializedVersion: 4
@@ -4388,7 +4409,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 2.5}
+  m_Offset: {x: 0, y: 2}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -4399,7 +4420,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.5, y: 1.5}
+  m_Size: {x: 2.5, y: 1.7}
   m_EdgeRadius: 0
 --- !u!1 &9021156055689013629
 GameObject:
@@ -4547,6 +4568,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 2000712768258941656}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
+  armor: 0
+  sprites: []
 --- !u!50 &1893318099076440619
 Rigidbody2D:
   serializedVersion: 4
@@ -4720,6 +4743,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 4010970507725097251}
   bottomFloorSprite: {fileID: 0}
+  armor: 0
+  sprites: []
 --- !u!50 &444351127950126036
 Rigidbody2D:
   serializedVersion: 4
@@ -4810,10 +4835,10 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.5, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -4824,7 +4849,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 1.5}
+  m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
 --- !u!50 &13958966336090807
 Rigidbody2D:

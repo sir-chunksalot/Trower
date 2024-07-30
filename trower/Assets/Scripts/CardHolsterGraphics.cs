@@ -36,16 +36,14 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
         activeSprite = attackPhaseImages;
         trapSelect = gameObject.GetComponentInParent<TrapSelect>();
         attackPhase = true;
-    }
-    private void Start()
-    {
+
         gameObject.GetComponentInParent<UIManager>().AddCardToList(gameObject);
         if (UnlockManager.IsItemUnlocked(cardName))
         {
             UnlockCard();
         }
+        Debug.Log("CARD AWAKE! doofen");
     }
-
     public void LockCard()
     {
         lockedCard.SetActive(true);
@@ -58,25 +56,26 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
 
     public void AttackPhase()
     {
-        if (!gameObject.activeInHierarchy) { return; }
+        attackPhase = true;
+        if (!gameObject.activeSelf) { return; }
         if (isTrap)
         {
             Debug.Log("attack Phase");
             activeSprite = attackPhaseImages;
             costButton.SetActive(false);
             costTextBox.SetActive(false);
-            attackPhase = true;
             UpdateCount(0);
         }
     }
 
     public void DefensePhase()
     {
-        if (!gameObject.activeInHierarchy) { return; }
+        Debug.Log("CARD DEFENSE PHASE DOOFEN");
         attackPhase = false;
+        if (!gameObject.activeSelf) { return; }
         if (isTrap)
         {
-            Debug.Log("defense Phase");
+            Debug.Log("defense Phase DOOFENB");
             activeSprite = defensePhaseImages;
             costButton.SetActive(true);
             costTextBox.SetActive(true);
@@ -86,13 +85,13 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
     
     public void ManualGainCharge()
     {
-        if (!gameObject.activeInHierarchy) { return; }
+        if (!gameObject.activeSelf) { return; }
         UpdateCount(1);
     }
 
     public void PurchaseCharge()
     {
-        if (!gameObject.activeInHierarchy) { return; }
+        if (!gameObject.activeSelf) { return; }
         Debug.Log("cash = " + Coins.GetCoins());
         if(count <= 3 && Coins.GetCoins() >= cost)
         {
@@ -109,7 +108,7 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
 
     public void SellCharge()
     {
-        if(!gameObject.activeInHierarchy) { return; }
+        if(!gameObject.activeSelf) { return; }
         if(count >= 1)
         {
             Coins.ChangeCoins(cost);
@@ -117,10 +116,17 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
             UpdateCount(-1);
         }
     }
+     
+    public void SetCharge(int count)
+    {
+        if (!gameObject.activeSelf) { return; }
+        this.count = count;
+        UpdateCount(0);
+    }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!gameObject.activeInHierarchy) { return; }
+        if (!gameObject.activeSelf) { return; }
         if (eventData.button == PointerEventData.InputButton.Right)
         {
             Debug.Log("Right button pressed.");
@@ -133,23 +139,23 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
     }
 
 
-    public void SelectTrap(string buttonName) //called by the button component in this card parent 
+    public void SelectTrap() //called by the button component in this card parent 
     {
-        if (!gameObject.activeInHierarchy) { return; }
+        if (!gameObject.activeSelf) { return; }
         Debug.Log("DOOFEN coins" + Coins.GetCoins() + "cost" + cost);
         if(trapSelect.GetPlacing()) { //if player is  already placing, do not do anything
             return; 
         }
         if (isTrap && count > 0) //during any phase when a trap card has charge
         {
-            trapSelect.OnItemClicked(buttonName);
+            trapSelect.OnItemClicked(cardName);
             selectTrap.Play();
         }
         else if (Coins.GetCoins() >= cost && !attackPhase) //bought and tried placing during defense phase
         {
             Debug.Log("DOOFEN tried to buy");
             PurchaseCharge();
-            trapSelect.OnItemClicked(buttonName);
+            trapSelect.OnItemClicked(cardName);
             selectTrap.Play();
         }
         else //player has no money and no charge, L no buy for you
@@ -169,9 +175,9 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
         chargeImage.sprite = activeSprite[0];
     }
     
-    public void UseTrap(bool success) //called whenever a trap is placed by trap builder script or tower builder script
+    public void UseCard(bool success) //called whenever a trap is placed by trap builder script or tower builder script
     {
-        if(!gameObject.activeInHierarchy) { return; }
+        if(!gameObject.activeSelf) { return; }
         if(success)
         {
             place.Play();
@@ -207,10 +213,6 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
         Debug.Log("PHASE" + activeSprite.Length);
         chargeImage.sprite = activeSprite[count];
     }
-    public bool GetActiveStatus()
-    {
-        return true;
-    }
 
     public bool GetIsTrap()
     {
@@ -224,7 +226,7 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
 
     public void MuteAudio(int index, float howLong)
     {
-        if (!gameObject.activeInHierarchy) { return; }
+        if (!gameObject.activeSelf) { return; }
 
         float volume = 1;
         AudioSource audio = selectTrap;

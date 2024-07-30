@@ -14,6 +14,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField] GameObject attackPhaseEffect;
     [SerializeField] GameObject defensePhaseEffect;
     [SerializeField] GameObject bar;
+    [SerializeField] GameObject endLevelParticles;
 
     private GameManager gameManagerScript;
 
@@ -65,6 +66,14 @@ public class WaveManager : MonoBehaviour
         level = gameManagerScript.GetCurrentLevelDetails();
         Debug.Log("LOOKINATME" + level);
         GameObject roundDaddy = level.GetRoundDaddy();
+        StopAllCoroutines();
+
+        roundCount = 0;
+        waveCount = 0;
+        enemiesKilled = 0;
+        timePassed = 0;
+        isTime = false;
+        progressbarIncrement = 0;
         if (roundDaddy != null)
         {
             List<GameObject> tempList = new List<GameObject>();
@@ -83,6 +92,8 @@ public class WaveManager : MonoBehaviour
             {
                 MakeProgressBar();
                 progressFill = progresssFillObj.GetComponent<Image>();
+                fillAmount = 0;
+                progressFill.fillAmount = fillAmount;
             }
             else
             {
@@ -200,7 +211,12 @@ public class WaveManager : MonoBehaviour
                 waves = new List<Wave>();
                 MakeProgressBar();
                 StageSwitch(0);
-
+            }
+            else
+            {
+                Debug.Log("ENDING LEVEL");
+                endLevelParticles.SetActive(true);
+                StartCoroutine(EndLevelParticlesLifetime());
             }
         }
         else
@@ -208,15 +224,20 @@ public class WaveManager : MonoBehaviour
             UpdateLength();
             enemiesKilled = 0;
             timePassed = 0;
-            OnNewWave?.Invoke(gameObject, EventArgs.Empty);
         }
+        OnNewWave?.Invoke(gameObject, EventArgs.Empty);
+    }
 
-
+    private IEnumerator EndLevelParticlesLifetime()
+    {
+        yield return new WaitForSeconds(4);
+        endLevelParticles.SetActive(false);
     }
 
 
     public void SwitchDefensePhase(bool flashy)
     {
+        Debug.Log("WAVE MANAGER DEFENSE PHASE START");
         attackPhase = false;
         defensePhase = true;
         if (flashy)

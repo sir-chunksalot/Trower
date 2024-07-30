@@ -72,7 +72,11 @@ public class TowerBuilder : MonoBehaviour
         {
             foreach (Transform kid in buildDaddy.transform)
             {
-                AddPlacedFloor(kid.gameObject);
+                floorPapas.Add(kid.gameObject);
+                foreach(Transform floor in kid)
+                {
+                    placedFloors.Add(floor.gameObject);
+                }
                 Debug.Log("Added Floor:" + kid.gameObject);
             }
         }
@@ -145,7 +149,7 @@ public class TowerBuilder : MonoBehaviour
                 {
                     count++;
                     Debug.Log("HELLOW BABY");
-                    uiManager.UseTrap(floorName, true);
+                    uiManager.UseCard(floorName, true);
                     GameObject newBuild = Instantiate(child.gameObject, nextFloorPos, Quaternion.identity, papa.transform);
                     newBuild.transform.position += child.transform.position - build.transform.position;
                     newBuild.transform.position = new Vector3(newBuild.transform.position.x, newBuild.transform.position.y, 10);
@@ -159,7 +163,7 @@ public class TowerBuilder : MonoBehaviour
             }
             else
             {
-                uiManager.UseTrap(floorName, false);
+                uiManager.UseCard(floorName, false);
             }
 
             particle.gameObject.transform.position = new Vector3(particleSpawnPos.x, particleSpawnPos.y, particleSpawnPos.z - 2);
@@ -168,7 +172,7 @@ public class TowerBuilder : MonoBehaviour
         }
         else
         {
-            uiManager.UseTrap(floorName, false);
+            uiManager.UseCard(floorName, false);
             Debug.Log("Mission Failed. We'll get em' next time (failed to build structure)");
         }
     }
@@ -402,6 +406,7 @@ public class TowerBuilder : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        Debug.Log("-DEV- " + potentialFloors.Count);
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3 closestFloor = ClosestTo(mousePos, potentialFloors.ToArray(), true);
         if (Vector2.Distance(closestFloor, mousePos) > reqMouseDistanceToPlace)
@@ -626,6 +631,19 @@ public class TowerBuilder : MonoBehaviour
             }
         }
         return placedFloorsPos;
+    }
+
+    public void DebugFloorLocations()
+    {
+        Debug.Log("-DEV- floor locations. floor count: " + GetPotentialFloorsPos().Count);
+        if (potentialFloors.Count >= 1)
+        {
+            DestroyPotentialFloors();
+        }
+        else
+        {
+            NewPotentialFloors();
+        }
     }
 
     public List<Vector3> GetPotentialFloorsPos()

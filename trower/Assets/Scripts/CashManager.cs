@@ -6,20 +6,32 @@ using UnityEngine;
 public class CashManager : MonoBehaviour
 {
     WaveManager waveManager;
+    Wave currentWave;
     private void Awake()
     {
         waveManager = gameObject.GetComponent<WaveManager>();
         Debug.Log("adam 12" + waveManager);
-        waveManager.OnNewWave += DefensePhase;
-        
+        GameManager gameManager = gameObject.GetComponent<GameManager>();
+        gameManager.OnSceneChange += OnSceneLoad;
+        waveManager.OnNewWave += GainCoins;
     }
 
-    public void DefensePhase(object sender, EventArgs e)
+
+    public void OnSceneLoad(object sender, EventArgs e)
     {
-        if (waveManager.GetCurrentWave() == null) { return; }
-        if (waveManager.GetIsAttackPhase() && waveManager.GetCurrentWave().buildPhase) { //this means that this wave already gave out cash, no reason to do it again
-            return;
+        Coins.SetCoin(0);
+    }
+    public void GainCoins(object sender, EventArgs e)
+    {
+        Wave wave = waveManager.GetCurrentWave();
+        if (wave != null)
+        {
+            if(currentWave != wave)
+            {
+                Coins.ChangeCoins(wave.earnedCoins);
+                currentWave = wave;
+            }
+
         }
-        Coins.ChangeCoins(waveManager.GetCurrentWave().earnedCoins);
     }
 }

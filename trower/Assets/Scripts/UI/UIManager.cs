@@ -46,11 +46,11 @@ public class UIManager : MonoBehaviour
     {
         gameManagerScript = gameObject.GetComponent<GameManager>();
         gameManagerScript.OnSceneChange += OnSceneLoad;
-        cards = new List<GameObject>();
         trapManager = this.gameObject.GetComponent<TrapManager>();
         waveManager = gameObject.GetComponent<WaveManager>();
         waveManager.OnDefensePhaseStart += DefensePhase;
         waveManager.OnAttackPhaseStart += AttackPhase;
+        Debug.Log("WAVE MANAGER ASSIGNED TO UI MANAGER");
         trapManager.onSelectedTrapChange += SelectedTrapChange;
         GameObject cooldownTimer = trapManager.GetCooldownTimer();
         if(cooldownTimer != null) {
@@ -106,6 +106,13 @@ public class UIManager : MonoBehaviour
         else
         {
             progressBarHolder.SetActive(true);
+        }
+
+        Debug.Log("doofen counts the cards: " + cards.Count);
+
+        foreach(GameObject card in cards)
+        {
+            card.GetComponent<CardHolsterGraphics>().SetCharge(0);
         }
 
     }
@@ -170,9 +177,10 @@ public class UIManager : MonoBehaviour
     }
     private void DefensePhase(object sender, EventArgs e)
     {
+        Debug.Log("UI MANAGER TRIED TO START DEFENSE PHASE WAVE MANANGER");
         continueHolder.SetActive(true);
         if (buildTabObj == null) { return; }
-        Debug.Log("UI defense phase");
+        Debug.Log("UI defense phase WAVE MANAGER");
         buildImage.sprite = buildTab;
         foreach (GameObject card in cards)
         {
@@ -208,15 +216,21 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void UseTrap(string name, bool success) //this is an intermediary method so that when a trap is placed the charge goes down for the trap card 
+    public void UseCard(string name, bool success) //this is an intermediary method so that when a trap is placed the charge goes down for the trap card 
     {
+        string lastNum = name.Substring(name.Length - 1);
+        if (lastNum == "1" || lastNum == "2" || lastNum == "3") { //converts rotation names to the base of 0
+            name = name.Substring(0, name.Length - 1) + "0";
+        }
+
         foreach (GameObject card in cards)
         {
             Debug.Log("zoro" + card.name + " " + name);
             if(card.name == name)
             {
-                Debug.Log("TRAP FOUND AND IS BEING USED");
-                card.GetComponent<CardHolsterGraphics>().UseTrap(success);
+                CardHolsterGraphics cardHolster = card.GetComponent<CardHolsterGraphics>();
+                    Debug.Log("TRAP FOUND AND IS BEING USED");
+                    cardHolster.UseCard(success);
                 break;
             }
         }
@@ -224,6 +238,7 @@ public class UIManager : MonoBehaviour
 
     public void AddCardToList(GameObject card) //called by card holster graphics, a script located in every card
     {
+        if(cards == null) { cards = new List<GameObject>(); }
         cards.Add(card);
     }
 

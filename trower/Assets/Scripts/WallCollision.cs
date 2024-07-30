@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WallCollision : MonoBehaviour
 {
     [SerializeField] GameObject enemyWall;
     [SerializeField] Sprite bottomFloorSprite;
+    [SerializeField] float armor;
+    [SerializeField] List<SpriteRenderer> sprites;
     GameObject gameManager;
     bool hasBeenEnabled;
     private void Start()
@@ -14,6 +17,11 @@ public class WallCollision : MonoBehaviour
         gameManager.GetComponent<TowerBuilder>().onTowerSell += RegenWalls;
         Debug.Log(transform.position.y);
         hasBeenEnabled = false;
+
+        if(sprites.Count == 0)
+        {
+            sprites.Add(gameObject.GetComponent<SpriteRenderer>());
+        }
     }
 
     public BoxCollider2D GetEnemyWall()
@@ -37,34 +45,54 @@ public class WallCollision : MonoBehaviour
                     GetEnemyWall().enabled = false;
                 }
             }
-            gameObject.GetComponent<SpriteRenderer>().sprite = bottomFloorSprite;
+            if(bottomFloorSprite != null)
+            {
+                gameObject.GetComponent<SpriteRenderer>().sprite = bottomFloorSprite;
+            }
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log("test");
-        if ((collision.transform.tag == "Wall" && gameObject.tag == "Wall") || (collision.transform.tag == "Floor" && gameObject.tag == "Floor"))
+        if ((collision.transform.tag == "Wall" && gameObject.tag == "Wall") || (collision.transform.tag == "Floor" && gameObject.tag == "Floor") || (collision.transform.tag == "Extension" && gameObject.tag == "Extension"))
         {
             Debug.Log("fart collision" + collision.transform.gameObject);
             if (gameObject != null)
             {
                 Debug.Log("deletion");
-                if (enemyWall != null)
+                if (enemyWall != null && gameObject.name != "Floor1")
                 {
                     enemyWall.GetComponent<BoxCollider2D>().enabled = false;
                     enemyWall.SetActive(false);
                 }
-                gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                if(armor <= 0)
+                {
+                    foreach(SpriteRenderer sprite in sprites)
+                    {
+                        sprite.enabled = false;
+                    }
+                }
+                else
+                {
+                    armor--;
+                }
 
+
+
+                if (collision.gameObject.name == "Floor1") return;
                 BoxCollider2D otherEnemyWall = collision.gameObject.GetComponent<WallCollision>().GetEnemyWall();
                 if (otherEnemyWall != null)
                 {
                     otherEnemyWall.enabled = false;
                     // collision.gameObject.GetComponent<WallCollision>().GetEnemyWall().gameObject.SetActive(false);
                 }
-                collision.gameObject.GetComponent<SpriteRenderer>().enabled = false;
             }
         }
+    }
+
+    public float GetArmor()
+    {
+        return armor;
     }
 
     private void OnDestroy()
@@ -99,7 +127,11 @@ public class WallCollision : MonoBehaviour
             this.GetComponent<BoxCollider2D>().enabled = true;
             //this.GetComponent<SpriteRenderer>().enabled = true;
             Debug.Log(this.GetComponent<BoxCollider2D>().enabled);
-            enemyWall.GetComponent<EnemyWallCollision>().TurnOn();
+
+            if(enemyWall != null)
+            {
+                enemyWall.GetComponent<EnemyWallCollision>().TurnOn();
+            }
         }
     }
 }
