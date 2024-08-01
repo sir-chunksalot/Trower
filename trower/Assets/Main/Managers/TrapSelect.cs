@@ -69,6 +69,7 @@ public class TrapSelect : MonoBehaviour
                 rotateTrap = !rotateTrap;
                 Debug.Log(rotateTrap + " sankji");
                 GetCurrentTrap();
+                return;
             }
             string trapName = currentBuild.name;
             char endOfString = trapName[trapName.Length - 1];
@@ -99,6 +100,7 @@ public class TrapSelect : MonoBehaviour
                         Debug.Log("NAMI");
                         currentBuild = rotations;
                         GetCurrentTrap();
+                        return;
                     }
                 }
             }

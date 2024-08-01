@@ -23,7 +23,7 @@ public class Stab : MonoBehaviour
         trap.onCooldownOver += SpearDown;
         col = gameObject.GetComponent<BoxCollider2D>();
         col.enabled = false;
-        parentID = gameObject.transform.parent.gameObject.GetInstanceID();
+        parentID = dad.GetInstanceID();
         Debug.Log("(stab) gameObject parent " + gameObject.transform.parent.gameObject + "id" + parentID);
         reset = true;
     }

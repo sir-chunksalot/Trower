@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class WallCollision : MonoBehaviour
     [SerializeField] Sprite bottomFloorSprite;
     [SerializeField] float strength;
     [SerializeField] List<SpriteRenderer> sprites;
+    public bool active;
     GameObject gameManager;
     BoxCollider2D towerCollider;
     BoxCollider2D enemyCollider;
@@ -16,6 +18,7 @@ public class WallCollision : MonoBehaviour
     bool hasBeenEnabled;
     private void Start()
     {
+        active = true;
         gameManager = GameObject.FindGameObjectWithTag("GameManager");
         towerBuilder = gameManager.GetComponent<TowerBuilder>();
         towerBuilder.onTowerPlace += DestroyWalls;
@@ -64,12 +67,14 @@ public class WallCollision : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (!active) return;
         if ((collision.transform.tag == "Wall" && gameObject.tag == "Wall") || (collision.transform.tag == "Floor" && gameObject.tag == "Floor") || (collision.transform.tag == "Extension" && gameObject.tag == "Extension"))
         {
             if (gameObject != null)
             {
                 if (strength <= collision.gameObject.GetComponent<WallCollision>().strength)
                 {
+                    active = false;
                     if (enemyWall != null && gameObject.name != "Floor1")
                     {
                         enemyWall.GetComponent<BoxCollider2D>().enabled = false;
@@ -98,16 +103,25 @@ public class WallCollision : MonoBehaviour
     {
         if(enemyWall != null)
         {
-            enemyCollider.enabled = true;
-            enemyWall.SetActive(true);
-
-            gameObject.GetComponent<SpriteRenderer>().enabled = true;
-
+            active = true;
+            Debug.Log("REGENERATING WALLS!~!" + sender);
             hasBeenEnabled = true;
-            enemyWallCollision.TurnOn();
-
             gameObject.SetActive(false); // i have to do this so that the colission detection updates
             gameObject.SetActive(true);
+
+            StartCoroutine(WaitForColission());
+        }
+    }
+
+    private IEnumerator WaitForColission()
+    {
+        yield return new WaitForSeconds(.2f);
+        if(active)
+        {
+            enemyCollider.enabled = true;
+            enemyWall.SetActive(true);
+            enemyWallCollision.TurnOn();
+            gameObject.GetComponent<SpriteRenderer>().enabled = true;
         }
     }
 

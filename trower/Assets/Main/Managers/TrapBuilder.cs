@@ -85,6 +85,11 @@ public class TrapBuilder : MonoBehaviour
     private void OnSceneChange(object sender, EventArgs e)
     {
         Debug.Log("gameManager" + gameManager + gameManager);
+        trapSpawnLocations.Clear();
+        debugTrapTotalSpawnLocations.Clear();
+        placedTrapsPos.Clear();
+        trapSpawnLocations.Clear();
+        totalSpawnLocations.Clear();
         trapDaddy = gameManager.GetTrapDaddy();
         if (trapDaddy != null)
         {
