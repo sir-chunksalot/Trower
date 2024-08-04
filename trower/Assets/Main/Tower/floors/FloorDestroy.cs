@@ -1,40 +1,70 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FloorDestroy : MonoBehaviour
 {
-    Floor floor;
+    List<Hero> heroes;
+    List<GameObject> heroObj;
+    Rigidbody2D rb;
+    BoxCollider2D col;
+
     private void Start()
     {
-        GameObject parent = gameObject.transform.parent.transform.parent.gameObject;
-        floor = parent.GetComponentInParent<Floor>();
-        Debug.Log("DIRECTCUM" + gameObject + "   " + gameObject.transform.parent.transform.parent.gameObject.name);
-        floor.GetTowerBuilder().onTowerSell += DestroyFloor;
+        rb = gameObject.GetComponent<Rigidbody2D>();
+        col = gameObject.GetComponent<BoxCollider2D>();
+        heroes = new List<Hero>();
+        heroObj = new List<GameObject>();
     }
-    public void DestroyFloor(object floorObj, EventArgs empty)
+    public void DestroyFloor()
     {
-        if ((GameObject)floorObj != gameObject.transform.parent.transform.parent.gameObject) { return; }
-        gameObject.layer = 31;
-        transform.position = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z + 1);
-        Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
-        rb.gravityScale = 1;
-        rb.freezeRotation = false;
-        rb.constraints = RigidbodyConstraints2D.None;
-        rb.angularVelocity = UnityEngine.Random.Range(0, 180);
-        rb.velocity = new Vector2(UnityEngine.Random.Range(0, 1.0f), UnityEngine.Random.Range(0, 1.0f));
-
-        GameObject enemyCol = floor.GetEnemyCol(gameObject.name);
-        if (enemyCol != null)
+        if(col != null)
         {
-            Debug.Log("ENEMY COL DISABLED");
-            enemyCol.GetComponent<BoxCollider2D>().enabled = false;
+            col.enabled = false;
         }
 
 
+
+        foreach (Hero hero in heroes)
+        {
+            Debug.Log("floor made hero super fall wacum");
+            hero.GetComponent<Hero>().StartSuperFall(-1, false);
+        }
+
+        gameObject.layer = 31;
+        transform.position = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z + 10);
+
+        rb.gravityScale = 1;
+        rb.freezeRotation = false;
+        rb.constraints = RigidbodyConstraints2D.None;
+        rb.angularVelocity = Random.Range(0, 180);
+        rb.velocity = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
     }
 
-    private void OnDestroy()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        floor.GetTowerBuilder().onTowerSell -= DestroyFloor;
+        if (collision.gameObject.layer == 6)
+        {
+            Debug.Log("wacum + hero was added to list");
+            Hero hero = collision.gameObject.GetComponent<Hero>();
+            if (hero != null)
+            {
+                heroObj.Add(collision.gameObject);
+                heroes.Add(hero);
+            }
+
+        }
+    }
+
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 6)
+        {
+            Debug.Log("hero was removed from list");
+            if (!heroObj.Contains(collision.gameObject)) { return; }
+            int index = heroObj.IndexOf(collision.gameObject);
+            heroes.RemoveAt(index);
+            heroObj.RemoveAt(index);
+        }
     }
 }

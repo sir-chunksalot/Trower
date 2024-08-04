@@ -36,6 +36,12 @@ public class GenerateViableFloors : MonoBehaviour
                 foundWall = true;
                 rightWallPos = hit.transform.position;
             }
+            if(hit.collider.gameObject.tag == "BridgeWall" && !foundWall)
+            {
+                hits.Add(hit);
+                foundWall = true;
+                rightWallPos = hit.transform.position;
+            }
             else if (hit.collider.gameObject.tag == "BottomOfLadder")
             {
                 Debug.Log("right hit a ladder" + hit.collider.gameObject + " " + hit.collider.gameObject.transform.position);
@@ -61,6 +67,12 @@ public class GenerateViableFloors : MonoBehaviour
             if (hit.collider.gameObject.tag == "EnemyWall" && !foundWall)
             {
                 Debug.Log("left hit collision" + hit.collider.gameObject + " " + hit.collider.gameObject.tag + " " + hit.collider.gameObject.transform.parent.gameObject.transform.parent.transform.parent.name);
+                hits.Add(hit);
+                foundWall = true;
+                lefttWallPos = hit.transform.position;
+            }
+            if (hit.collider.gameObject.tag == "BridgeWall" && !foundWall)
+            {
                 hits.Add(hit);
                 foundWall = true;
                 lefttWallPos = hit.transform.position;
@@ -101,7 +113,16 @@ public class GenerateViableFloors : MonoBehaviour
             {
                 if (foundLadder == false)
                 {
-                    GameObject room = hit.collider.gameObject.transform.parent.transform.parent.gameObject;
+                    GameObject room = this.gameObject; //default value
+                    if (hit.collider.gameObject.tag == "BridgeWall")
+                    {
+                        Vector3 floorPos = towerBuilder.ClosestTo(hit.collider.transform.position, towerBuilder.GetPlacedFloors().ToArray(), false);
+                        room = towerBuilder.GetPlacedFloor(floorPos);
+                    }
+                    else
+                    {
+                        room = hit.collider.gameObject.transform.parent.transform.parent.gameObject;
+                    }
                     if (!inacessibleRoomsPos.Contains(room.transform.position))
                     {
                         inacessibleRooms.Add(room);
@@ -160,11 +181,13 @@ public class GenerateViableFloors : MonoBehaviour
         }
     }
 
-    public bool IsFloorAccessible(Vector3 pos)
+    public bool IsFloorAccessible(Vector2 pos)
     {
+        Debug.Log("japan lol real" + pos);
         foreach(GameObject floor in GetInaccessibleFloors())
         {
-            if(floor.transform.position == pos)
+            Debug.Log("japan lol real check" + floor.transform.position);
+            if (new Vector2(floor.transform.position.x, floor.transform.position.y) == pos)
             {
                 return false;
             }

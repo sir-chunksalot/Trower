@@ -304,6 +304,7 @@ GameObject:
   - component: {fileID: 153769589}
   - component: {fileID: 153769588}
   - component: {fileID: 153769587}
+  - component: {fileID: 153769591}
   m_Layer: 10
   m_Name: Wall2
   m_TagString: Wall
@@ -367,6 +368,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 936736826}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
+  strength: 0
+  sprites: []
+  active: 0
 --- !u!61 &153769589
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -464,6 +468,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &153769591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153769585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &176563231
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,6 +490,7 @@ GameObject:
   m_Component:
   - component: {fileID: 176563232}
   - component: {fileID: 176563233}
+  - component: {fileID: 176563234}
   m_Layer: 0
   m_Name: BaseFloor
   m_TagString: Untagged
@@ -551,6 +568,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &176563234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176563231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &199854526
 GameObject:
   m_ObjectHideFlags: 0
@@ -692,7 +721,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 19
+  orthographic size: 20
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -717,7 +746,7 @@ Transform:
   m_GameObject: {fileID: 199854526}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 10.79, z: -20}
+  m_LocalPosition: {x: 0, y: 12, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1110,6 +1139,7 @@ GameObject:
   - component: {fileID: 516063176}
   - component: {fileID: 516063175}
   - component: {fileID: 516063174}
+  - component: {fileID: 516063177}
   m_Layer: 7
   m_Name: Floor2
   m_TagString: EnemyFloor
@@ -1216,6 +1246,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 1.5}
   m_EdgeRadius: 0
+--- !u!114 &516063177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516063172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &592393251
 GameObject:
   m_ObjectHideFlags: 0
@@ -2086,6 +2128,7 @@ GameObject:
   - component: {fileID: 936736830}
   - component: {fileID: 936736829}
   - component: {fileID: 936736828}
+  - component: {fileID: 936736831}
   m_Layer: 7
   m_Name: Wall2
   m_TagString: EnemyWall
@@ -2192,6 +2235,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 1.5}
   m_EdgeRadius: 0
+--- !u!114 &936736831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 936736826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1045220351
 GameObject:
   m_ObjectHideFlags: 0
@@ -2547,6 +2602,7 @@ GameObject:
   - component: {fileID: 1233217520}
   - component: {fileID: 1233217519}
   - component: {fileID: 1233217518}
+  - component: {fileID: 1233217522}
   m_Layer: 10
   m_Name: Floor2
   m_TagString: Floor
@@ -2609,7 +2665,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 516063172}
-  bottomFloorSprite: {fileID: 0}
+  bottomFloorSprite: {fileID: 21300000, guid: 895b2e55a902be44dbcd68d742d031da, type: 3}
+  strength: 0
+  sprites: []
+  active: 0
 --- !u!61 &1233217520
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2707,6 +2766,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1233217522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1233217516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1290042834
 GameObject:
   m_ObjectHideFlags: 0
@@ -2876,8 +2947,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f4ac5ba8c56e24682415bfc359387c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 100
-  enemyCol: {fileID: 1426190707}
+  floorDestroyed: 0
 --- !u!1 &1408937031
 GameObject:
   m_ObjectHideFlags: 0
@@ -2891,6 +2961,7 @@ GameObject:
   - component: {fileID: 1408937035}
   - component: {fileID: 1408937034}
   - component: {fileID: 1408937033}
+  - component: {fileID: 1408937037}
   m_Layer: 10
   m_Name: Wall1
   m_TagString: Wall
@@ -2954,6 +3025,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 1487964671}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
+  strength: 0
+  sprites: []
+  active: 0
 --- !u!61 &1408937035
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3051,6 +3125,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1408937037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408937031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1426190706
 GameObject:
   m_ObjectHideFlags: 0
@@ -3099,6 +3185,7 @@ GameObject:
   - component: {fileID: 1435091538}
   - component: {fileID: 1435091537}
   - component: {fileID: 1435091536}
+  - component: {fileID: 1435091540}
   m_Layer: 10
   m_Name: Floor1
   m_TagString: Floor
@@ -3161,7 +3248,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 1469673662}
-  bottomFloorSprite: {fileID: 0}
+  bottomFloorSprite: {fileID: 21300000, guid: 895b2e55a902be44dbcd68d742d031da, type: 3}
+  strength: 0
+  sprites: []
+  active: 0
 --- !u!61 &1435091538
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3259,6 +3349,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1435091540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1435091534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1457778220
 GameObject:
   m_ObjectHideFlags: 0
@@ -3376,6 +3478,7 @@ GameObject:
   - component: {fileID: 1469673666}
   - component: {fileID: 1469673665}
   - component: {fileID: 1469673664}
+  - component: {fileID: 1469673667}
   m_Layer: 7
   m_Name: Floor1
   m_TagString: EnemyFloor
@@ -3482,6 +3585,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.92033195, y: 2.1762123}
   m_EdgeRadius: 0
+--- !u!114 &1469673667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1469673662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1482908270
 GameObject:
   m_ObjectHideFlags: 0
@@ -3578,6 +3693,7 @@ GameObject:
   - component: {fileID: 1487964675}
   - component: {fileID: 1487964674}
   - component: {fileID: 1487964673}
+  - component: {fileID: 1487964676}
   m_Layer: 7
   m_Name: Wall1
   m_TagString: EnemyWall
@@ -3684,6 +3800,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 1.5}
   m_EdgeRadius: 0
+--- !u!114 &1487964676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1487964671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1571138577
 GameObject:
   m_ObjectHideFlags: 0
@@ -3962,7 +4090,7 @@ MonoBehaviour:
   m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 40
-    OrthographicSize: 19
+    OrthographicSize: 20
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
@@ -3988,7 +4116,7 @@ Transform:
   m_GameObject: {fileID: 1777591902}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 10.79, z: -20}
+  m_LocalPosition: {x: 0, y: 12, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4049,10 +4177,10 @@ MonoBehaviour:
   finalWave: 0
   requiredKills: {x: 14, y: 14}
   waveLength: {x: 0, y: 0}
-  earnedCoins: 200
+  earnedCoins: 1200
   prisonGuardSprite: {fileID: 21300000, guid: 13d93f45e2251bb448cf6f884402d4dd, type: 3}
   prisonGuard:
-    canSpawn: 0
+    canSpawn: 1
     spawnRate: {x: 0.27, y: 0.33878672}
     groupSize: {x: 2, y: 4}
     cooldown: {x: 0, y: 0}
@@ -4141,7 +4269,7 @@ Transform:
   m_GameObject: {fileID: 2147067553}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.8215275, y: 1.8, z: 10.11414}
+  m_LocalPosition: {x: 1.82, y: 1.8, z: 10.11414}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

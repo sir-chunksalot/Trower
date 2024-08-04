@@ -42,7 +42,11 @@ public class Crossbow : MonoBehaviour
     private IEnumerator ShootDelay()
     {
         yield return new WaitForSeconds(1.25f);
-        Instantiate(arrow, spawnPos, Quaternion.identity);
+
+        float yRot = 0;
+        if(transform.rotation.y != 1) { yRot = 180; }
+
+        Instantiate(arrow, spawnPos, Quaternion.Euler(0, yRot, 0), transform.parent.transform);
         trap.CooldownOn();
     }
 

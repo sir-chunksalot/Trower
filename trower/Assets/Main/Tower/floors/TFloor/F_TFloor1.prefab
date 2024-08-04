@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6990494056295336074}
   - component: {fileID: 6300892696507040629}
+  - component: {fileID: 1739428924574757326}
+  - component: {fileID: 7412126169211808245}
   m_Layer: 0
   m_Name: RightFloor
   m_TagString: Untagged
@@ -87,6 +89,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &1739428924574757326
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24861787543761694}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
+--- !u!114 &7412126169211808245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24861787543761694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &162700375729373394
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,6 +175,7 @@ GameObject:
   - component: {fileID: 1860400424939959630}
   - component: {fileID: 9066982293171345212}
   - component: {fileID: 4845264719864052219}
+  - component: {fileID: 7392637210669207180}
   m_Layer: 7
   m_Name: Floor1
   m_TagString: EnemyFloor
@@ -240,6 +282,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f40cd9b796ef94197791d16ef4f17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7392637210669207180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410273746301102810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &524194287421349537
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,6 +342,7 @@ GameObject:
   - component: {fileID: 6978512669515313983}
   - component: {fileID: 6588293368928916680}
   - component: {fileID: 1057944789171443151}
+  - component: {fileID: 5614162936459548084}
   m_Layer: 10
   m_Name: Floor2
   m_TagString: Floor
@@ -420,9 +475,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 4278028949736313071}
-  bottomFloorSprite: {fileID: 0}
-  armor: 0
+  bottomFloorSprite: {fileID: 21300000, guid: 895b2e55a902be44dbcd68d742d031da, type: 3}
+  strength: 0
   sprites: []
+  active: 0
 --- !u!50 &1057944789171443151
 Rigidbody2D:
   serializedVersion: 4
@@ -450,6 +506,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &5614162936459548084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 575281815876754794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &915149588373326622
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,6 +651,7 @@ GameObject:
   - component: {fileID: 4639773676875411717}
   - component: {fileID: 7709095147108307972}
   - component: {fileID: 5288747842297884116}
+  - component: {fileID: 6667819613551327980}
   m_Layer: 7
   m_Name: Wall1
   m_TagString: EnemyWall
@@ -689,6 +758,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f40cd9b796ef94197791d16ef4f17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6667819613551327980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143202042963342924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1332053228381626210
 GameObject:
   m_ObjectHideFlags: 0
@@ -737,6 +818,7 @@ GameObject:
   - component: {fileID: 817242457871062347}
   - component: {fileID: 1055952680117931208}
   - component: {fileID: 2163740697528141813}
+  - component: {fileID: 6546700488494902904}
   m_Layer: 10
   m_Name: Floor2
   m_TagString: Floor
@@ -869,9 +951,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 4040573131921201682}
-  bottomFloorSprite: {fileID: 0}
-  armor: 0
+  bottomFloorSprite: {fileID: 21300000, guid: 895b2e55a902be44dbcd68d742d031da, type: 3}
+  strength: 0
   sprites: []
+  active: 0
 --- !u!50 &2163740697528141813
 Rigidbody2D:
   serializedVersion: 4
@@ -899,6 +982,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &6546700488494902904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371606491688556219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1374797908123658680
 GameObject:
   m_ObjectHideFlags: 0
@@ -912,6 +1007,7 @@ GameObject:
   - component: {fileID: 1984344339543628834}
   - component: {fileID: 6552308173709680653}
   - component: {fileID: 6157487463513371577}
+  - component: {fileID: 957135929320441953}
   m_Layer: 10
   m_Name: Floor1
   m_TagString: Floor
@@ -1044,9 +1140,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 7190155454715263013}
-  bottomFloorSprite: {fileID: 0}
-  armor: 0
+  bottomFloorSprite: {fileID: 21300000, guid: 895b2e55a902be44dbcd68d742d031da, type: 3}
+  strength: 0
   sprites: []
+  active: 0
 --- !u!50 &6157487463513371577
 Rigidbody2D:
   serializedVersion: 4
@@ -1074,6 +1171,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &957135929320441953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1374797908123658680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1673484210890566362
 GameObject:
   m_ObjectHideFlags: 0
@@ -1213,7 +1322,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5600919814758655648}
-  - component: {fileID: 4298231869232802382}
+  - component: {fileID: 367959751172900138}
   m_Layer: 0
   m_Name: F_TFloor1
   m_TagString: Untagged
@@ -1240,7 +1349,7 @@ Transform:
   - {fileID: 1985259523724561259}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4298231869232802382
+--- !u!114 &367959751172900138
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1252,8 +1361,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f4ac5ba8c56e24682415bfc359387c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 400
-  enemyCol: {fileID: 0}
 --- !u!1 &2288650971218238282
 GameObject:
   m_ObjectHideFlags: 0
@@ -1266,6 +1373,7 @@ GameObject:
   - component: {fileID: 3371608230999117770}
   - component: {fileID: 4219721362623159468}
   - component: {fileID: 1922790189434733053}
+  - component: {fileID: 4626593133984305660}
   m_Layer: 7
   m_Name: Wall1
   m_TagString: EnemyWall
@@ -1372,6 +1480,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f40cd9b796ef94197791d16ef4f17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4626593133984305660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2288650971218238282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2302377487748458467
 GameObject:
   m_ObjectHideFlags: 0
@@ -1384,6 +1504,7 @@ GameObject:
   - component: {fileID: 4892837120117869455}
   - component: {fileID: 7588690433382391714}
   - component: {fileID: 7886102467025947323}
+  - component: {fileID: 1562262695449791580}
   m_Layer: 7
   m_Name: Floor1
   m_TagString: EnemyFloor
@@ -1490,6 +1611,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f40cd9b796ef94197791d16ef4f17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1562262695449791580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2302377487748458467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2312862194430062093
 GameObject:
   m_ObjectHideFlags: 0
@@ -1500,6 +1633,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8900976377934182701}
   - component: {fileID: 6910842340427394248}
+  - component: {fileID: 883112133379722762}
+  - component: {fileID: 4945829650366700138}
   m_Layer: 0
   m_Name: MiddleFloor
   m_TagString: Untagged
@@ -1578,6 +1713,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &883112133379722762
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2312862194430062093}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
+--- !u!114 &4945829650366700138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2312862194430062093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2475914764599947403
 GameObject:
   m_ObjectHideFlags: 0
@@ -1591,6 +1765,7 @@ GameObject:
   - component: {fileID: 47588194600447021}
   - component: {fileID: 7676103343929111737}
   - component: {fileID: 1944894744366970881}
+  - component: {fileID: 4882458266885596768}
   m_Layer: 10
   m_Name: Wall1
   m_TagString: Wall
@@ -1724,8 +1899,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 1143202042963342924}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
-  armor: 0
+  strength: 0
   sprites: []
+  active: 0
 --- !u!50 &1944894744366970881
 Rigidbody2D:
   serializedVersion: 4
@@ -1753,6 +1929,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &4882458266885596768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2475914764599947403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2508543215965800877
 GameObject:
   m_ObjectHideFlags: 0
@@ -1765,6 +1953,7 @@ GameObject:
   - component: {fileID: 4368390910758507708}
   - component: {fileID: 340505188854265275}
   - component: {fileID: 624026031225451075}
+  - component: {fileID: 7590738970362140011}
   m_Layer: 7
   m_Name: Floor2
   m_TagString: EnemyFloor
@@ -1869,6 +2058,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78f40cd9b796ef94197791d16ef4f17e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7590738970362140011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2508543215965800877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2942400534779499594
@@ -2013,6 +2214,7 @@ GameObject:
   - component: {fileID: 3171182914408257084}
   - component: {fileID: 8866642262789845623}
   - component: {fileID: 2756683800002978253}
+  - component: {fileID: 5662917480512929122}
   m_Layer: 7
   m_Name: Wall2
   m_TagString: EnemyWall
@@ -2119,6 +2321,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f40cd9b796ef94197791d16ef4f17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5662917480512929122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3144220801282645836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3160794926867745705
 GameObject:
   m_ObjectHideFlags: 0
@@ -2132,6 +2346,7 @@ GameObject:
   - component: {fileID: 8392549572413537446}
   - component: {fileID: 6272309235615945477}
   - component: {fileID: 3503239973421313288}
+  - component: {fileID: 5593495947049220278}
   m_Layer: 10
   m_Name: Wall1
   m_TagString: Wall
@@ -2265,8 +2480,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 4150039579302081667}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
-  armor: 0
+  strength: 0
   sprites: []
+  active: 0
 --- !u!50 &3503239973421313288
 Rigidbody2D:
   serializedVersion: 4
@@ -2294,6 +2510,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &5593495947049220278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3160794926867745705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3332499944343417857
 GameObject:
   m_ObjectHideFlags: 0
@@ -2307,6 +2535,7 @@ GameObject:
   - component: {fileID: 8608501978375699549}
   - component: {fileID: 3473435168220833988}
   - component: {fileID: 2579963601810569546}
+  - component: {fileID: 2452079829041092154}
   m_Layer: 10
   m_Name: Floor1
   m_TagString: Floor
@@ -2439,9 +2668,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 410273746301102810}
-  bottomFloorSprite: {fileID: 0}
-  armor: 0
+  bottomFloorSprite: {fileID: 21300000, guid: 895b2e55a902be44dbcd68d742d031da, type: 3}
+  strength: 0
   sprites: []
+  active: 0
 --- !u!50 &2579963601810569546
 Rigidbody2D:
   serializedVersion: 4
@@ -2469,6 +2699,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &2452079829041092154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3332499944343417857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3340497109582535915
 GameObject:
   m_ObjectHideFlags: 0
@@ -2696,6 +2938,7 @@ GameObject:
   - component: {fileID: 1809927050456103916}
   - component: {fileID: 3142761036182701369}
   - component: {fileID: 1140915378321900400}
+  - component: {fileID: 7091047748740721166}
   m_Layer: 7
   m_Name: Floor1
   m_TagString: EnemyFloor
@@ -2802,6 +3045,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f40cd9b796ef94197791d16ef4f17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7091047748740721166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3640601803849476550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3826232844730635283
 GameObject:
   m_ObjectHideFlags: 0
@@ -2814,6 +3069,7 @@ GameObject:
   - component: {fileID: 2054929588733912733}
   - component: {fileID: 5616757176525038100}
   - component: {fileID: 1172814458380429394}
+  - component: {fileID: 2758613295838882513}
   m_Layer: 7
   m_Name: Wall2
   m_TagString: EnemyWall
@@ -2920,6 +3176,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f40cd9b796ef94197791d16ef4f17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2758613295838882513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3826232844730635283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3884601834408914781
 GameObject:
   m_ObjectHideFlags: 0
@@ -3018,6 +3286,7 @@ GameObject:
   - component: {fileID: 8721804972519762429}
   - component: {fileID: 202764363393210459}
   - component: {fileID: 1446172028364034034}
+  - component: {fileID: 9043852512962240398}
   m_Layer: 7
   m_Name: Wall2
   m_TagString: EnemyWall
@@ -3124,6 +3393,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f40cd9b796ef94197791d16ef4f17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &9043852512962240398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3918263847319712566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4040573131921201682
 GameObject:
   m_ObjectHideFlags: 0
@@ -3136,6 +3417,7 @@ GameObject:
   - component: {fileID: 4073283491113782985}
   - component: {fileID: 3611656740339043945}
   - component: {fileID: 262839100208080639}
+  - component: {fileID: 1434250908191819489}
   m_Layer: 7
   m_Name: Floor2
   m_TagString: EnemyFloor
@@ -3242,6 +3524,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f40cd9b796ef94197791d16ef4f17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1434250908191819489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4040573131921201682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4119228550655661146
 GameObject:
   m_ObjectHideFlags: 0
@@ -3331,6 +3625,7 @@ GameObject:
   - component: {fileID: 2975773273924633344}
   - component: {fileID: 3448007077455325032}
   - component: {fileID: 7157376583640640125}
+  - component: {fileID: 525297125534716353}
   m_Layer: 7
   m_Name: Wall1
   m_TagString: EnemyWall
@@ -3437,6 +3732,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f40cd9b796ef94197791d16ef4f17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &525297125534716353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4150039579302081667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4278028949736313071
 GameObject:
   m_ObjectHideFlags: 0
@@ -3449,6 +3756,7 @@ GameObject:
   - component: {fileID: 6493668485969665809}
   - component: {fileID: 211502126596367480}
   - component: {fileID: 7969567318278306773}
+  - component: {fileID: 830771299635260327}
   m_Layer: 7
   m_Name: Floor2
   m_TagString: EnemyFloor
@@ -3553,6 +3861,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78f40cd9b796ef94197791d16ef4f17e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &830771299635260327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4278028949736313071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4674460450826708610
@@ -3698,6 +4018,7 @@ GameObject:
   - component: {fileID: 3007981043605565982}
   - component: {fileID: 5637130039806833840}
   - component: {fileID: 6758779784759585986}
+  - component: {fileID: 353777991932636867}
   m_Layer: 10
   m_Name: Floor2
   m_TagString: Floor
@@ -3830,9 +4151,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 6286021768835993434}
-  bottomFloorSprite: {fileID: 0}
-  armor: 0
+  bottomFloorSprite: {fileID: 21300000, guid: 895b2e55a902be44dbcd68d742d031da, type: 3}
+  strength: 0
   sprites: []
+  active: 0
 --- !u!50 &6758779784759585986
 Rigidbody2D:
   serializedVersion: 4
@@ -3860,6 +4182,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &353777991932636867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4803491067752511293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5054149176354644392
 GameObject:
   m_ObjectHideFlags: 0
@@ -3958,6 +4292,7 @@ GameObject:
   - component: {fileID: 2454496013689519190}
   - component: {fileID: 1428326575419299078}
   - component: {fileID: 4995633367468260132}
+  - component: {fileID: 503026479295335251}
   m_Layer: 10
   m_Name: Wall1
   m_TagString: Wall
@@ -4091,8 +4426,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 2288650971218238282}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
-  armor: 0
+  strength: 0
   sprites: []
+  active: 0
 --- !u!50 &4995633367468260132
 Rigidbody2D:
   serializedVersion: 4
@@ -4120,6 +4456,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &503026479295335251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5226358335327538609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6098963342930552706
 GameObject:
   m_ObjectHideFlags: 0
@@ -4130,6 +4478,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6886685567423383229}
   - component: {fileID: 327571698054225565}
+  - component: {fileID: 3187229378236071966}
+  - component: {fileID: 4482197820968399521}
   m_Layer: 0
   m_Name: BaseFloor
   m_TagString: Untagged
@@ -4208,6 +4558,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &3187229378236071966
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6098963342930552706}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
+--- !u!114 &4482197820968399521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6098963342930552706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6286021768835993434
 GameObject:
   m_ObjectHideFlags: 0
@@ -4220,6 +4609,7 @@ GameObject:
   - component: {fileID: 116688634102054279}
   - component: {fileID: 5497026529629310684}
   - component: {fileID: 7377714247715759882}
+  - component: {fileID: 53890221286422010}
   m_Layer: 7
   m_Name: Floor2
   m_TagString: EnemyFloor
@@ -4326,6 +4716,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f40cd9b796ef94197791d16ef4f17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &53890221286422010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6286021768835993434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6863814002202869732
 GameObject:
   m_ObjectHideFlags: 0
@@ -4373,6 +4775,7 @@ GameObject:
   - component: {fileID: 7974861948668823952}
   - component: {fileID: 8501988677853000560}
   - component: {fileID: 4523384636001286109}
+  - component: {fileID: 6440996375513815369}
   m_Layer: 7
   m_Name: Floor1
   m_TagString: EnemyFloor
@@ -4479,6 +4882,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f40cd9b796ef94197791d16ef4f17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6440996375513815369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7190155454715263013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7282654300803481686
 GameObject:
   m_ObjectHideFlags: 0
@@ -4492,6 +4907,7 @@ GameObject:
   - component: {fileID: 8965651440505588664}
   - component: {fileID: 1879061112220639756}
   - component: {fileID: 2772412998825888338}
+  - component: {fileID: 5199072110123839539}
   m_Layer: 10
   m_Name: Floor1
   m_TagString: Floor
@@ -4624,9 +5040,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 3640601803849476550}
-  bottomFloorSprite: {fileID: 0}
-  armor: 0
+  bottomFloorSprite: {fileID: 21300000, guid: 895b2e55a902be44dbcd68d742d031da, type: 3}
+  strength: 0
   sprites: []
+  active: 0
 --- !u!50 &2772412998825888338
 Rigidbody2D:
   serializedVersion: 4
@@ -4654,6 +5071,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &5199072110123839539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7282654300803481686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7428195651714102822
 GameObject:
   m_ObjectHideFlags: 0
@@ -4664,6 +5093,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1985259523724561259}
   - component: {fileID: 8059119373434786181}
+  - component: {fileID: 2205000385646886444}
+  - component: {fileID: 809945265330339386}
   m_Layer: 0
   m_Name: TopFloor
   m_TagString: Untagged
@@ -4741,6 +5172,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &2205000385646886444
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7428195651714102822}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
+--- !u!114 &809945265330339386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7428195651714102822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7503534236649940614
 GameObject:
   m_ObjectHideFlags: 0
@@ -4754,6 +5224,7 @@ GameObject:
   - component: {fileID: 4160351389686071525}
   - component: {fileID: 4814689233996302921}
   - component: {fileID: 365460159635969531}
+  - component: {fileID: 8942735645382607943}
   m_Layer: 10
   m_Name: Wall2
   m_TagString: Wall
@@ -4887,8 +5358,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 3144220801282645836}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
-  armor: 0
+  strength: 0
   sprites: []
+  active: 0
 --- !u!50 &365460159635969531
 Rigidbody2D:
   serializedVersion: 4
@@ -4916,6 +5388,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &8942735645382607943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7503534236649940614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7529637825193728563
 GameObject:
   m_ObjectHideFlags: 0
@@ -5006,6 +5490,7 @@ GameObject:
   - component: {fileID: 4965320173711162116}
   - component: {fileID: 8317642962096264818}
   - component: {fileID: 741907416880019659}
+  - component: {fileID: 8999630873925826981}
   m_Layer: 10
   m_Name: Wall2
   m_TagString: Wall
@@ -5139,8 +5624,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 3918263847319712566}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
-  armor: 0
+  strength: 0
   sprites: []
+  active: 0
 --- !u!50 &741907416880019659
 Rigidbody2D:
   serializedVersion: 4
@@ -5168,6 +5654,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &8999630873925826981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7563974535741834914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8169113100277344708
 GameObject:
   m_ObjectHideFlags: 0
@@ -5180,6 +5678,7 @@ GameObject:
   - component: {fileID: 628798103253807889}
   - component: {fileID: 2918851894988455221}
   - component: {fileID: 3979394327558533763}
+  - component: {fileID: 5902436752423378975}
   m_Layer: 7
   m_Name: Wall2
   m_TagString: EnemyWall
@@ -5286,6 +5785,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f40cd9b796ef94197791d16ef4f17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5902436752423378975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8169113100277344708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8193524363285100148
 GameObject:
   m_ObjectHideFlags: 0
@@ -5299,6 +5810,7 @@ GameObject:
   - component: {fileID: 3787035674012366783}
   - component: {fileID: 4068014353367466862}
   - component: {fileID: 1109939337594340718}
+  - component: {fileID: 8977432597922337231}
   m_Layer: 10
   m_Name: Wall1
   m_TagString: Wall
@@ -5432,8 +5944,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 8921732995035784221}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
-  armor: 0
+  strength: 0
   sprites: []
+  active: 0
 --- !u!50 &1109939337594340718
 Rigidbody2D:
   serializedVersion: 4
@@ -5461,6 +5974,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &8977432597922337231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8193524363285100148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8242436638067239600
 GameObject:
   m_ObjectHideFlags: 0
@@ -5509,6 +6034,7 @@ GameObject:
   - component: {fileID: 6239596585870802870}
   - component: {fileID: 6714577110032449954}
   - component: {fileID: 1011430770152186005}
+  - component: {fileID: 234021058821939546}
   m_Layer: 10
   m_Name: Wall2
   m_TagString: Wall
@@ -5642,8 +6168,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 3826232844730635283}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
-  armor: 0
+  strength: 0
   sprites: []
+  active: 0
 --- !u!50 &1011430770152186005
 Rigidbody2D:
   serializedVersion: 4
@@ -5671,6 +6198,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &234021058821939546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8549360742710521053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8566445285797073768
 GameObject:
   m_ObjectHideFlags: 0
@@ -5719,6 +6258,7 @@ GameObject:
   - component: {fileID: 2183088587062064351}
   - component: {fileID: 2398047361939803675}
   - component: {fileID: 858678067738956617}
+  - component: {fileID: 218266316394976821}
   m_Layer: 10
   m_Name: Wall2
   m_TagString: Wall
@@ -5852,8 +6392,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 8169113100277344708}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
-  armor: 0
+  strength: 0
   sprites: []
+  active: 0
 --- !u!50 &858678067738956617
 Rigidbody2D:
   serializedVersion: 4
@@ -5881,6 +6422,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &218266316394976821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8685452340904768366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8721118424011151150
 GameObject:
   m_ObjectHideFlags: 0
@@ -5894,6 +6447,7 @@ GameObject:
   - component: {fileID: 1802414178964774180}
   - component: {fileID: 50135934195449381}
   - component: {fileID: 6233906402461963409}
+  - component: {fileID: 1857660957704458176}
   m_Layer: 10
   m_Name: Floor2
   m_TagString: Floor
@@ -6026,9 +6580,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 2508543215965800877}
-  bottomFloorSprite: {fileID: 0}
-  armor: 0
+  bottomFloorSprite: {fileID: 21300000, guid: 895b2e55a902be44dbcd68d742d031da, type: 3}
+  strength: 0
   sprites: []
+  active: 0
 --- !u!50 &6233906402461963409
 Rigidbody2D:
   serializedVersion: 4
@@ -6056,6 +6611,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &1857660957704458176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8721118424011151150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8755083479849315954
 GameObject:
   m_ObjectHideFlags: 0
@@ -6069,6 +6636,7 @@ GameObject:
   - component: {fileID: 8271539627792834506}
   - component: {fileID: 6227428400738636882}
   - component: {fileID: 8868959524800350677}
+  - component: {fileID: 665232086592727657}
   m_Layer: 10
   m_Name: Floor1
   m_TagString: Floor
@@ -6201,9 +6769,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 2302377487748458467}
-  bottomFloorSprite: {fileID: 0}
-  armor: 0
+  bottomFloorSprite: {fileID: 21300000, guid: 895b2e55a902be44dbcd68d742d031da, type: 3}
+  strength: 0
   sprites: []
+  active: 0
 --- !u!50 &8868959524800350677
 Rigidbody2D:
   serializedVersion: 4
@@ -6231,6 +6800,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &665232086592727657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8755083479849315954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8921732995035784221
 GameObject:
   m_ObjectHideFlags: 0
@@ -6243,6 +6824,7 @@ GameObject:
   - component: {fileID: 7578350373293844791}
   - component: {fileID: 7091054965746212874}
   - component: {fileID: 7539467396842534100}
+  - component: {fileID: 1533579022378126763}
   m_Layer: 7
   m_Name: Wall1
   m_TagString: EnemyWall
@@ -6347,6 +6929,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78f40cd9b796ef94197791d16ef4f17e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1533579022378126763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8921732995035784221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &9001595857986571962

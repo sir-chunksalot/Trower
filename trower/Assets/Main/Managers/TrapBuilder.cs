@@ -40,13 +40,10 @@ public class TrapBuilder : MonoBehaviour
         gameManager = gameObject.GetComponent<GameManager>();
         gameManager.OnSceneChange += OnSceneChange;
 
-        debugTrapTotalSpawnLocations = new List<GameObject>();
+
     }
     private void Start()
     {
-        trapSpawnLocations = new List<Vector2>();
-        totalSpawnLocations = new List<Vector2>();
-        placedTrapsPos = new List<Vector2>();
 
 
         towerBuilder.onTowerPlace += NewRoom;
@@ -85,11 +82,11 @@ public class TrapBuilder : MonoBehaviour
     private void OnSceneChange(object sender, EventArgs e)
     {
         Debug.Log("gameManager" + gameManager + gameManager);
-        trapSpawnLocations.Clear();
-        debugTrapTotalSpawnLocations.Clear();
-        placedTrapsPos.Clear();
-        trapSpawnLocations.Clear();
-        totalSpawnLocations.Clear();
+        trapSpawnLocations = new List<Vector2>();
+        totalSpawnLocations = new List<Vector2>();
+        placedTrapsPos = new List<Vector2>();
+        debugTrapTotalSpawnLocations = new List<GameObject>();
+
         trapDaddy = gameManager.GetTrapDaddy();
         if (trapDaddy != null)
         {

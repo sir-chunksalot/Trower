@@ -184,7 +184,15 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
             place.Play();
             if (isTrap)
             {
-                UpdateCount(-1);
+                if(count >= 1)
+                {
+                    UpdateCount(-1);
+                }
+                else
+                {
+                    Debug.Log("ERROR: Tried to lower card holster count by one, but it was already at zero. You should not see this.");
+                }
+
             }
 
         }
@@ -200,7 +208,14 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
                 Coins.ChangeCoins(cost);
                 if (isTrap)
                 {
-                    UpdateCount(-1);
+                    if (count >= 1)
+                    {
+                        UpdateCount(-1);
+                    }
+                    else
+                    {
+                        Debug.Log("ERROR: Tried to lower card holster count by one, but it was already at zero. You should not see this.");
+                    }
                 }
             }
 

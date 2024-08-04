@@ -62,6 +62,7 @@ public class TrapSelect : MonoBehaviour
 
     public void Rotate(InputAction.CallbackContext context) //this doesnt actually rotate the trap, it just sends a different prerendered game object to the tower builder script to be used
     {
+        if(currentBuild == null) { return; }
         if (context.performed)
         {
             if (currentBuild.name[0] == 'T')

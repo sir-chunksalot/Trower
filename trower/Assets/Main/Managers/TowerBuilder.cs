@@ -18,25 +18,29 @@ public class TowerBuilder : MonoBehaviour
     [SerializeField] GameObject door;
     [SerializeField] GameObject sellBomb;
     [SerializeField] GameObject explosionEffect;
-    [SerializeField] GameObject UIparent;
 
     public event EventHandler onTowerPlace;
     public event EventHandler onTowerSell;
+    public event EventHandler onBridgeBuild;
 
     GameObject currentFloor;
     GameObject sellBombObject;
+    GameObject buildDaddy;
     CameraController cameraController;
     UIManager uiManager;
 
     private List<GameObject> placedFloors = new List<GameObject>(); //LIST OF PLACED INDIVIDUAL FLOORS
+    private List<Vector3> placedFloorsPos = new List<Vector3>(); //LIST OF PLACED INDIVIDUAL FLOOR POSISTIONS
     private List<GameObject> floorPapas = new List<GameObject>(); //LIST OF PLACED GROUPED FLOOR TYPES
     //private List<GameObject> trapTypes = new List<GameObject>();
     private List<GameObject> floorTypes = new List<GameObject>();//assigns the floor types at runtime
-    private List<GameObject> potentialFloors = new List<GameObject>();//potential spots a floor could spawn (saved as instantiated gameobjects in valid spots, i did this for debugging)
+    private List<GameObject> potentialFloors = new List<GameObject>();//potential spots a floor could spawn (saved as instantiated gameobjects in valid spots, i did this for debugging) ||CLEARED EVERY TOWER PLACE
+    private List<Vector3> mapPotentialFloors = new List<Vector3>();//potential spots a floor could spawn (saved as instantiated gameobjects in valid spots, i did this for debugging) ||CLEARED ON LEVEL COMPLETION
     private List<GameObject> ladders = new List<GameObject>();
     List<Vector3> floorSpawnSpots = new List<Vector3>();
     Vector3 nextFloorPos;
-    Vector3 highestPoint;
+    float highestPoint;
+    float floorSpawnZ;
     Vector2 mousePos;
 
     private string floorName;
@@ -49,6 +53,7 @@ public class TowerBuilder : MonoBehaviour
     {
         gameManager = gameObject.GetComponent<GameManager>();
         gameManager.OnSceneChange += OnSceneLoad;
+        floorSpawnZ = 10;
     }
     private void Start()
     {
@@ -62,7 +67,12 @@ public class TowerBuilder : MonoBehaviour
 
     public void OnSceneLoad(object sender, EventArgs e)
     {
-        GameObject buildDaddy = gameManager.GetCurrentLevelDetails().GetBuildDaddy();
+        placedFloorsPos.Clear();
+        floorPapas.Clear();
+        floorTypes.Clear();
+        potentialFloors.Clear();
+        mapPotentialFloors.Clear();
+        buildDaddy = gameManager.GetCurrentLevelDetails().GetBuildDaddy();
         foreach (GameObject floor in placedFloors)
         {
             Destroy(floor);
@@ -75,7 +85,7 @@ public class TowerBuilder : MonoBehaviour
                 floorPapas.Add(kid.gameObject);
                 foreach (Transform floor in kid)
                 {
-                    placedFloors.Add(floor.gameObject);
+                    AddPlacedFloor(floor.gameObject);
                 }
                 Debug.Log("Added Floor:" + kid.gameObject);
             }
@@ -87,6 +97,8 @@ public class TowerBuilder : MonoBehaviour
             Debug.Log("OnTowerPlaced event invoked.");
         }
 
+        GenerateMapSpawns();
+
     }
 
     public void Place(InputAction.CallbackContext context) //called when mouse is released
@@ -96,7 +108,7 @@ public class TowerBuilder : MonoBehaviour
             if (placingFloor)
             {
                 PlaceBuild(currentFloor);
-                PlaceDoor();
+                //PlaceDoor();
                 Cleanup();
             }
             placingFloor = false;
@@ -108,23 +120,8 @@ public class TowerBuilder : MonoBehaviour
         }
 
     }
-
-    private void DestroyOverlap(GameObject newFloor)
-    {
-        foreach (GameObject floor in placedFloors)
-        {
-            if (floor.transform.position == newFloor.transform.position)
-            {
-                Destroy(floor);
-                placedFloors.Remove(floor);
-                return;
-            }
-        }
-    }
-
     public void PlaceBuild(GameObject build)
     {
-        float cost = currentFloor.GetComponent<Floor>().GetCost();
         if (placingFloor)
         {
             nextFloorPos = ClosestTo(currentFloor.transform.position, potentialFloors.ToArray(), true);
@@ -137,29 +134,17 @@ public class TowerBuilder : MonoBehaviour
 
             if (placingFloor)
             {
-                GameObject papa = new GameObject();
-                papa.name = build.name + "#" + totalPlacedFloorsCount;
-                floorPapas.Add(papa);
-
-                totalPlacedFloorsCount++;
-
-                Debug.Log("goose");
-                int count = 0;
-                foreach (Transform child in build.GetComponentInChildren<Transform>())
+                floorPapas.Add(build);
+                Debug.Log("HELLOW BABY");
+                uiManager.UseCard(floorName, true);
+                nextFloorPos = new Vector3(nextFloorPos.x, nextFloorPos.y, 10);
+                GameObject newBuild = Instantiate(build, nextFloorPos, Quaternion.identity, buildDaddy.transform);
+                SetAlpha(newBuild, 1);
+                foreach(Transform floor in newBuild.transform)
                 {
-                    count++;
-                    Debug.Log("HELLOW BABY");
-                    uiManager.UseCard(floorName, true);
-                    GameObject newBuild = Instantiate(child.gameObject, nextFloorPos, Quaternion.identity, papa.transform);
-                    newBuild.transform.position += child.transform.position - build.transform.position;
-                    newBuild.transform.position = new Vector3(newBuild.transform.position.x, newBuild.transform.position.y, 10);
-                    SetAlpha(newBuild, 1);
-                    DestroyOverlap(newBuild);
-                    placedFloors.Add(newBuild);
-
-
-                    particleSpawnPos = newBuild.transform.position;
+                    AddPlacedFloor(floor.gameObject);
                 }
+                particleSpawnPos = newBuild.transform.position;
             }
             else
             {
@@ -173,35 +158,37 @@ public class TowerBuilder : MonoBehaviour
         else
         {
             uiManager.UseCard(floorName, false);
+            Destroy(currentFloor);
             Debug.Log("Mission Failed. We'll get em' next time (failed to build structure)");
         }
     }
 
     public void CurrentFloor(string floorName) //CALLED FIRST BY THE BUILD SELECT SCRIPT
     {
+        if(currentFloor != null) { Destroy(currentFloor); }
         NewPotentialFloors();
         placingFloor = true;
 
 
-        if (floorTypes.Count == 0)
-        {
-            foreach (GameObject floor in floors)
-            {
-                Debug.Log(floor.name);
-                GameObject newFloor = Instantiate(floor, new Vector3(mousePos.x, mousePos.y, 20), Quaternion.identity);
-                floorTypes.Add(newFloor);
-                newFloor.SetActive(false);
-            }
-        }
+        //if (floorTypes.Count == 0)
+        //{
+        //    foreach (GameObject floor in floors)
+        //    {
+        //        Debug.Log(floor.name);
+        //        GameObject newFloor = Instantiate(floor, new Vector3(mousePos.x, mousePos.y, 20), Quaternion.identity);
+        //        floorTypes.Add(newFloor);
+        //        newFloor.SetActive(false);
+        //    }
+        //}
 
-        GameObject activeFloor = floorTypes[0];
+        GameObject activeFloor = floors[0];
 
-        foreach (GameObject floor in floorTypes)
+        foreach (GameObject floor in floors)
         {
-            Debug.Log(floor.name + " " + floorName);
-            if (floor.name == floorName)
+            Debug.Log("rocket league" + floor.name + " " + floorName);
+            if (floor.name + "(Clone)" == floorName)
             {
-                activeFloor = floor;
+                activeFloor = Instantiate(floor, new Vector3(mousePos.x, mousePos.y, 20), Quaternion.identity);
             }
         }
         this.floorName = floorName.Substring(0, floorName.Length - 7);
@@ -219,7 +206,7 @@ public class TowerBuilder : MonoBehaviour
             floorSpawnSpots.Add(newFloorPos);
         }
 
-        currentFloor.transform.position = new Vector3(mousePos.x, mousePos.y, 10);
+        currentFloor.transform.position = new Vector3(mousePos.x, mousePos.y, floorSpawnZ);
         currentFloor.SetActive(true);
         SetAlpha(activeFloor, opacity);
 
@@ -326,6 +313,55 @@ public class TowerBuilder : MonoBehaviour
         return true;
     }
 
+    public void Undo()
+    {
+        GameObject floor = placedFloors[placedFloors.Count - 1];
+        DestroyFloor(floor);
+    }
+
+    public void DestroyFloor(GameObject floor)
+    {
+        if (placedFloors.Contains(floor))
+        {
+            GameObject floorDad = floor.transform.parent.gameObject;
+            foreach (Transform childFloor in floorDad.transform)
+            {
+                int index = placedFloors.IndexOf(childFloor.gameObject);
+                placedFloors.RemoveAt(index);
+                placedFloorsPos.RemoveAt(index);
+                Vector3 explosionSpawnPos = new Vector3(childFloor.transform.position.x, childFloor.transform.position.y, Camera.main.transform.position.z + 1);
+                GameObject explosion = Instantiate(explosionEffect, explosionSpawnPos, Quaternion.identity);
+                StartCoroutine(DestroyExplosionEffect(explosion));
+            }
+            Debug.Log("floor dad!!" + floorDad);
+            floorPapas.Remove(floorDad);
+
+            floorDad.GetComponent<Floor>().DestroyFloor();
+
+            float highestFloor = 0;
+            foreach(Vector3 floorPos in placedFloorsPos)
+            {
+                if(floorPos.y > highestFloor)
+                {
+                    highestFloor = floorPos.y;
+                }
+            }
+            highestPoint = highestFloor;
+        }
+        else
+        {
+            Debug.Log("ERROR! TowerBuilder tried to destroy " + floor + " but it does not exist.");
+        }
+
+        onTowerSell?.Invoke(gameObject, EventArgs.Empty);
+    }
+
+    private IEnumerator DestroyExplosionEffect(GameObject explosion)
+    {
+        yield return new WaitForSeconds(2);
+        Destroy(explosion);
+    }
+
     private void DestroyPotentialFloors()
     {
         foreach (GameObject e in potentialFloors)
@@ -336,71 +372,50 @@ public class TowerBuilder : MonoBehaviour
     }
     private void NewPotentialFloors()
     {
+        if(mapPotentialFloors.Count <= 0) { return; }
         DestroyPotentialFloors();
         Debug.Log("SHITCUM");
+       
+        foreach(Vector3 mapSpawn in mapPotentialFloors)
+        {
+            Debug.Log("MAP SPAWN" + mapSpawn + "limofart");
+            Debug.Log("" + placedFloorsPos[0] + "limofart");
+            if(!placedFloorsPos.Contains(mapSpawn) && mapSpawn.y <= highestPoint)
+            {
+                Debug.Log("FLOOR SPAWN" + mapSpawn + " limofart");
+                potentialFloors.Add(Instantiate(potentialFloor, new Vector3(mapSpawn.x, mapSpawn.y, 1), Quaternion.identity));
+            }
+        }
+    }
+
+    private void GenerateMapSpawns()
+    {
         Vector3 right = new Vector3(GetRoomBounds().x, 0, 0);
         Vector3 up = new Vector3(0, GetRoomBounds().y, 0);
-        Vector3 spawnPos = new Vector3(-((sideMapBounds * right.x) / 2), -up.y, 1);
+        Vector3 spawnPos = new Vector3(-((sideMapBounds * right.x) / 2), -up.y, floorSpawnZ);
         for (int i = 0; i < topMapBounds; i++)
         {
             spawnPos = spawnPos + up;
             for (int j = 0; j < sideMapBounds + 1; j++)
             {
-                potentialFloors.Add(Instantiate(potentialFloor, spawnPos, Quaternion.identity));
+                mapPotentialFloors.Add(spawnPos);
                 spawnPos = spawnPos + right;
             }
             spawnPos = spawnPos - (right * sideMapBounds) - right;
         }
-        float highestPoint = -5;
-        foreach (Vector3 floor in GetPlacedFloorsPos())
-        {
-            if (highestPoint < floor.y)
-            {
-                highestPoint = floor.y;
-            }
-        }
-        bool invalid;
-        GameObject[] potFloorList = potentialFloors.ToArray();
-        foreach (GameObject potentialFloor in potFloorList)
-        {
-            invalid = false;
-
-            foreach (GameObject floor in placedFloors)
-            {
-                Debug.Log(potentialFloor.transform.position + " dqagplayz" + floor.transform.position);
-                if (potentialFloor.transform.position.x == floor.transform.position.x && potentialFloor.transform.position.y == floor.transform.position.y) //makes sure there arent any pot floors in the same spot as placed floors
-                {
-                    invalid = true;
-                }
-
-            }
-            if (potentialFloor.transform.position.y > highestPoint) //makes sure there arent any pot floors above the tiower
-            {
-                invalid = true;
-            }
-            //if (potentialFloor.transform.position.x > (sideMapBounds * GetRoomBounds().x) / 2 || potentialFloor.transform.position.x < (sideMapBounds * GetRoomBounds().x * -1) / 2)
-            //{
-            //    invalid = true;
-            //}
-            if (invalid)
-            {
-                potentialFloors.Remove(potentialFloor);
-                Destroy(potentialFloor);
-            }
-        }
     }
 
-    private void PlaceDoor()
-    {
-        foreach (GameObject floor in placedFloors)
-        {
-            if (floor.transform.position.y > highestPoint.y)
-            {
-                highestPoint = floor.transform.position;
-                door.transform.position = new Vector3(highestPoint.x, highestPoint.y, door.transform.position.z);
-            }
-        }
-    }
+    //private void PlaceDoor()
+    //{
+    //    foreach (GameObject floor in placedFloors)
+    //    {
+    //        if (floor.transform.position.y > highestPoint.y)
+    //        {
+    //            highestPoint = floor.transform.position;
+    //            door.transform.position = new Vector3(highestPoint.x, highestPoint.y, door.transform.position.z);
+    //        }
+    //    }
+    //}
     private void FixedUpdate()
     {
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -539,16 +554,16 @@ public class TowerBuilder : MonoBehaviour
             floorPapas.Remove(targetFloor.transform.parent.gameObject);
             placedFloors.Remove(targetFloor);
             targetFloor.GetComponent<Floor>().DestroyFloor();
-            StartCoroutine(DestroyAfterTime(targetFloor.transform.parent.gameObject));
+            //StartCoroutine(DestroyAfterTime(targetFloor.transform.parent.gameObject));
             onTowerSell?.Invoke(targetFloor, EventArgs.Empty);
             //Destroy(targetFloor.transform.parent.gameObject);
 
 
-            GameObject explody = Instantiate(explosionEffect, Vector3.zero, Quaternion.identity, UIparent.transform);
-            explody.transform.position = explosionSpawnSpot * 25;
+            //GameObject explody = Instantiate(explosionEffect, Vector3.zero, Quaternion.identity, UIparent.transform);
+            //explody.transform.position = explosionSpawnSpot * 25;
 
 
-            StartCoroutine(DestroyAfterTime(explody, 1.5f));
+            //StartCoroutine(DestroyAfterTime(explody, 1.5f));
         }
         placingBomb = false;
         if (sellBombObject != null)
@@ -556,14 +571,6 @@ public class TowerBuilder : MonoBehaviour
             SetAlpha(sellBombObject, 0);
         }
     }
-
-    private IEnumerator DestroyAfterTime(GameObject targetFloor)
-    {
-        yield return new WaitForSeconds(5);
-        Destroy(targetFloor);
-    }
-
-
 
     public void SetAlpha(GameObject floor, float alpha)
     {
@@ -576,53 +583,23 @@ public class TowerBuilder : MonoBehaviour
         }
 
     }
-
-    //public List<GameObject> GetLaders()
-    //{
-    //    return ladders;
-    //}
-
-    //public void AddLadders(GameObject ladder) //used by ladder enable script (the script that makes it so enemies cant hop on ladders prematurely)
-    //{
-    //    ladders.Add(ladder);
-    //}
-
-    //public void RemoveLadders(GameObject ladder)
-    //{
-    //    if (ladders.Contains(ladder))
-    //    {
-    //        ladders.Remove(ladder);
-    //    }
-    //}
     public List<GameObject> GetPlacedFloors()
     {
         return placedFloors;
     }
 
-    public GameObject GetFloor(Vector3 pos)
+    public GameObject GetPlacedFloor(Vector3 floorPos)
     {
-        foreach (GameObject floor in placedFloors)
+        if(placedFloorsPos.Contains(floorPos))
         {
-            if (floor.transform.position == pos)
-            {
-                return floor;
-            }
+            int index = placedFloorsPos.IndexOf(floorPos);
+            return placedFloors[index];
         }
-
         return null;
     }
 
     public List<Vector3> GetPlacedFloorsPos()
     {
-        List<Vector3> placedFloorsPos = new List<Vector3>();
-        List<GameObject> floorLoop = placedFloors;
-        foreach (GameObject floor in floorLoop)
-        {
-            if (floor != null)
-            {
-                placedFloorsPos.Add(floor.transform.position);
-            }
-        }
         return placedFloorsPos;
     }
 
@@ -670,9 +647,20 @@ public class TowerBuilder : MonoBehaviour
         return placingFloor;
     }
 
+
+    public void BridgeBuilt()
+    {
+        onBridgeBuild?.Invoke(gameObject, EventArgs.Empty);
+    }
     public void AddPlacedFloor(GameObject floor) //used by other scripts whenever a floor is spawned in the gameworld without this scripts permission. its added to the list so other scripts can see it 
     {
+        Debug.Log("This floor has been added to the scene!" + floor);
         placedFloors.Add(floor);
+        placedFloorsPos.Add(floor.transform.position);
+        if (highestPoint < floor.transform.position.y)
+        {
+            highestPoint = floor.transform.position.y;
+        }
     }
 
     private IEnumerator GenerateNewWalls() //for some reason you have to wait a little bit or it breaks. dont ask me
@@ -680,13 +668,6 @@ public class TowerBuilder : MonoBehaviour
         yield return new WaitForSeconds(.01f);
         onTowerPlace?.Invoke(gameObject, EventArgs.Empty);
     }
-
-    private IEnumerator DestroyAfterTime(GameObject target, float time)
-    {
-        yield return new WaitForSeconds(time);
-        Destroy(target);
-    }
-
 
     private void Cleanup()
     {

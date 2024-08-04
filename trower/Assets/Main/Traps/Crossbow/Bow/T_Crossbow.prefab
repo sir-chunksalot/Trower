@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dad: {fileID: 4198525688800097134}
-  arrow: {fileID: 2122601522289401827, guid: 8fc9f2376e176bf44a5a4dfec9a0612e, type: 3}
+  arrow: {fileID: 4875218797270347397, guid: a026dcee83188084580d076784df10ad, type: 3}
   shootDelay: 0
   anim: {fileID: 1492517812860431221}
 --- !u!1 &2740415336116777232

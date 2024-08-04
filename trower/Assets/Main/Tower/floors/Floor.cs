@@ -1,22 +1,44 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Floor : MonoBehaviour
 {
-    [SerializeField] private float cost;
-    [SerializeField] private Transform enemyCol;
-    TowerBuilder towerBuilder;
-    List<Hero> heroes;
-    List<GameObject> heroObj;
+    List<FloorDestroy> floorDestroyables;
+    List<GameObject> followers;
+    private TowerBuilder towerBuilder;
+    public bool floorDestroyed;
     private void Awake()
     {
         towerBuilder = GameObject.FindGameObjectWithTag("GameManager").GetComponent<TowerBuilder>();
-        heroes = new List<Hero>();
-        heroObj = new List<GameObject>();
+        floorDestroyables = new List<FloorDestroy>();
+        followers = new List<GameObject>();
+        foreach (FloorDestroy floorDestroyable in gameObject.GetComponentsInChildren<FloorDestroy>())
+        {
+            floorDestroyables.Add(floorDestroyable);
+        }
     }
-    public float GetCost()
+    public void DestroyFloor()
     {
-        return cost;
+        floorDestroyed = true;
+        foreach (FloorDestroy floorDestroyable in floorDestroyables)
+        {
+            floorDestroyable.DestroyFloor();
+        }
+
+        foreach(GameObject follower in followers)
+        {
+            Debug.Log("follower list!" + follower);
+            Destroy(follower);
+        }
+
+        StartCoroutine(WaitToDelete());
+    }
+
+    private IEnumerator WaitToDelete()
+    {
+        yield return new WaitForSeconds(5);
+        Destroy(gameObject);
     }
 
     public TowerBuilder GetTowerBuilder()
@@ -24,54 +46,9 @@ public class Floor : MonoBehaviour
         return towerBuilder;
     }
 
-    public void DestroyFloor()
+    public void AddFollower(GameObject follower)
     {
-        gameObject.GetComponent<SpriteRenderer>().enabled = false;
-
-        foreach (Hero hero in heroes)
-        {
-            Debug.Log("floor made hero super fall wacum");
-            hero.GetComponent<Hero>().StartSuperFall(-1, false);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == 6)
-        {
-            Debug.Log("wacum + hero was added to list");
-            Hero hero = collision.gameObject.GetComponent<Hero>();
-            if (hero != null)
-            {
-                heroObj.Add(collision.gameObject);
-                heroes.Add(hero);
-            }
-
-        }
-    }
-
-    public GameObject GetEnemyCol(string name)
-    {
-        foreach (Transform child in enemyCol)
-        {
-            if (child.name == name)
-            {
-                return child.gameObject;
-            }
-        }
-        return null;
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == 6)
-        {
-            Debug.Log("hero was removed from list");
-            if (!heroObj.Contains(collision.gameObject)) { return; }
-            int index = heroObj.IndexOf(collision.gameObject);
-            heroes.RemoveAt(index);
-            heroObj.RemoveAt(index);
-        }
+        followers.Add(follower);
     }
 
 }

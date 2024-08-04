@@ -40,6 +40,8 @@ TagManager:
   - DoorSmackGuard
   - Bolt
   - Extension
+  - FloorMurderer
+  - BridgeWall
   layers:
   - Default
   - TransparentFX
@@ -59,7 +61,7 @@ TagManager:
   - HeroFeet
   - DetectionBolt
   - TowerExtensions
-  - 
+  - Bridge
   - 
   - 
   - 

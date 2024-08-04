@@ -11,20 +11,23 @@ public class WallCollision : MonoBehaviour
     [SerializeField] List<SpriteRenderer> sprites;
     public bool active;
     GameObject gameManager;
-    BoxCollider2D towerCollider;
+    BoxCollider2D col;
     BoxCollider2D enemyCollider;
     EnemyWallCollision enemyWallCollision;
     TowerBuilder towerBuilder;
+    Floor floor;
     bool hasBeenEnabled;
     private void Start()
     {
         active = true;
-        gameManager = GameObject.FindGameObjectWithTag("GameManager");
-        towerBuilder = gameManager.GetComponent<TowerBuilder>();
+        floor = gameObject.GetComponentInParent<Floor>();
+        towerBuilder = floor.GetTowerBuilder();
+        gameManager = towerBuilder.gameObject;
         towerBuilder.onTowerPlace += DestroyWalls;
         towerBuilder.onTowerSell += RegenWalls;
         towerBuilder.onTowerPlace += RegenWalls;
-        towerCollider = gameObject.GetComponent<BoxCollider2D>();
+        towerBuilder.onBridgeBuild += RegenWalls;
+        col = gameObject.GetComponent<BoxCollider2D>();
         if (enemyWall != null)
         {
             enemyCollider = enemyWall.GetComponent<BoxCollider2D>();
@@ -49,7 +52,7 @@ public class WallCollision : MonoBehaviour
     }
     private void Update()
     {
-        if (transform.position.y <= 0 && towerCollider.enabled) //runs whenever you try and place walls on the bottom layer
+        if (transform.position.y <= 0 && col.enabled) //runs whenever you try and place walls on the bottom layer
         {
             if (gameObject.tag != "Floor")
             {
@@ -68,7 +71,7 @@ public class WallCollision : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!active) return;
-        if ((collision.transform.tag == "Wall" && gameObject.tag == "Wall") || (collision.transform.tag == "Floor" && gameObject.tag == "Floor") || (collision.transform.tag == "Extension" && gameObject.tag == "Extension"))
+        if ((collision.transform.tag == "Wall" && gameObject.tag == "Wall") || (collision.transform.tag == "Floor" && gameObject.tag == "Floor") || (collision.transform.tag == "Extension" && gameObject.tag == "Extension") || (collision.transform.tag == "FloorMurderer" && gameObject.tag == "Floor"))
         {
             if (gameObject != null)
             {
@@ -90,6 +93,17 @@ public class WallCollision : MonoBehaviour
         }
     }
 
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "FloorMurderer" && gameObject.tag == "Floor")
+        {
+            enemyCollider.enabled = true;
+            enemyWall.SetActive(true);
+            enemyWallCollision.TurnOn();
+            gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        }
+    }
+
     private void OnDestroy()
     {
         if (gameManager != null) //i dont remember what this is for but dont remove it
@@ -101,11 +115,11 @@ public class WallCollision : MonoBehaviour
 
     private void RegenWalls(object sender, EventArgs e) //this triggers whenever a build is sold, so all the calculations can be ran again 
     {
-        if(enemyWall != null)
+        if(enemyWall != null && hasBeenEnabled && gameObject.activeInHierarchy && !floor.floorDestroyed)
         {
             active = true;
             Debug.Log("REGENERATING WALLS!~!" + sender);
-            hasBeenEnabled = true;
+            //hasBeenEnabled = true;
             gameObject.SetActive(false); // i have to do this so that the colission detection updates
             gameObject.SetActive(true);
 

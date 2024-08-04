@@ -19,7 +19,7 @@ public class DoorSmackButton : MonoBehaviour
     private GameObject FindClosestFloor()
     {
         Vector3 floorPos = towerBuilder.ClosestTo(gameObject.transform.position, towerBuilder.GetPlacedFloors().ToArray(), false);
-        return towerBuilder.GetFloor(floorPos);
+        return towerBuilder.GetPlacedFloor(floorPos);
 
     }
     private void OnTriggerEnter2D(Collider2D collision)
