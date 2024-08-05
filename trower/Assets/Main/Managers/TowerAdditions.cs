@@ -17,6 +17,7 @@ public class TowerAdditions : MonoBehaviour
     List<GameObject> bridgesBeginFloor;
     List<GameObject> bridgeEndFloor;
     List<GameObject> bridges;
+    List<GameObject> debugThings;
     GenerateViableFloors genViableFloors;
     void Start()
     {
@@ -30,6 +31,7 @@ public class TowerAdditions : MonoBehaviour
         bridgesPos = new List<Vector3>();
         bridges = new List<GameObject>();
         bridgesBeginFloor = new List<GameObject>();
+        debugThings = new List<GameObject>();
         bridgeEndFloor = new List<GameObject>();
     }
 
@@ -43,28 +45,14 @@ public class TowerAdditions : MonoBehaviour
         buildDaddy = gameManager.GetCurrentLevelDetails().GetBuildDaddy();
     }
 
-    private Vector3[] GetFloorLocations()
-    {
-        List<GameObject> placedFloors = towerBuilder.GetPlacedFloors();
-        Vector3[] floorLocations = new Vector3[placedFloors.Count];
-
-        int i = 0;
-        foreach (GameObject floors in placedFloors)
-        {
-            floorLocations[i] = floors.transform.position;
-            i++;
-        }
-
-        return floorLocations;
-    }
-
     private void CreateAdditions(object sender, EventArgs e)
     {
         StopAllCoroutines();
         Debug.Log("THE LISTS" + "bridgePosCount" + bridgesPos.Count + "bridges count " + bridges.Count + "startFloors count" + bridgesBeginFloor.Count);
-        GameObject[] placedFloors = towerBuilder.GetPlacedFloors().ToArray();
+        GameObject[] placedFloors = CopyToArray(towerBuilder.GetPlacedFloors());
         int index = 0;
-        foreach (Vector3 floorPos in GetFloorLocations())
+        Vector3[] placedFloorsPos = CopyToArray(towerBuilder.GetPlacedFloorsPos());
+        foreach (Vector3 floorPos in placedFloorsPos)
         {
 
             WoodenTriangle(floorPos, placedFloors[index]);
@@ -77,7 +65,7 @@ public class TowerAdditions : MonoBehaviour
         Debug.Log("fuckfart");
         //StartCoroutine(CheckValidBridgeSpawns());
 
-        foreach (Vector3 floorPos in GetFloorLocations())
+        foreach (Vector3 floorPos in placedFloorsPos)
         {
             foreach (GameObject additions in addedFrills)
             {
@@ -104,11 +92,15 @@ public class TowerAdditions : MonoBehaviour
         foreach(GameObject bridge in bridges)
         {
             if (bridge == null) continue;
-            foreach (GameObject additions in addedFrills)
+            GameObject[] currentFrills = CopyToArray(addedFrills);
+            foreach (GameObject additions in currentFrills)
             {
+                if (additions == null) continue;
+                Debug.Log("baba zui additionms" + additions + ", bridge" + bridge);
                 if(Vector2.Distance(additions.transform.position, bridge.transform.position) < 7)
                 {
                     Destroy(additions);
+                    addedFrills.Remove(additions);
                 }
             }
         }
@@ -116,8 +108,8 @@ public class TowerAdditions : MonoBehaviour
 
     private IEnumerator DeleteOldBridges(int test)
     {
-        yield return new WaitForSeconds(2.5f);
-        GameObject[] badFloors = genViableFloors.GetInaccessibleFloors().ToArray();
+        yield return new WaitForSeconds(.5f);
+        GameObject[] badFloors = CopyToArray(genViableFloors.GetInaccessibleFloors());
         List<GameObject> validBridges = new List<GameObject>();
         List<Vector3> validBridgePos = new List<Vector3>();
         List<GameObject> validBridgeStarts = new List<GameObject>();
@@ -173,7 +165,7 @@ public class TowerAdditions : MonoBehaviour
             Debug.Log("naht FOUND INACCESSIBLE FLOOR");
             Vector3 endPointLeft = new Vector3(-100, 0, 0);
             Vector3 endPointRight = new Vector3(100, 0, 0);
-            Vector3[] placedFloorsPos = towerBuilder.GetPlacedFloorsPos().ToArray();
+            Vector3[] placedFloorsPos = CopyToArray(towerBuilder.GetPlacedFloorsPos());
             foreach (Vector3 floorPos in placedFloorsPos)
             {
                 Debug.Log("naht getting floors");
@@ -212,6 +204,8 @@ public class TowerAdditions : MonoBehaviour
         float bridgeCount = 0;
         float dir = -1;
         GameObject endFloorObj = towerBuilder.GetPlacedFloor(endFloor);
+
+        if (Mathf.Abs(startFloor.x - endFloor.x) == 10) return;
 
         if (goLeft) dir = 1;
         Debug.Log("naht TRIED TO MAKE BRIDGE" + "endfloor" + endFloor + "startfloor" + startFloor + "isLeft" + goLeft);
@@ -256,10 +250,36 @@ public class TowerAdditions : MonoBehaviour
 
     }
 
+    public void DebugSpawnAdditions()
+    {
+        Debug.Log("ronald chan counted " + addedFrills.Count);
+        if(debugThings.Count > 0)
+        {
+            Debug.Log("ronald chan killed the frills");
+            foreach (GameObject additions in debugThings)
+            {
+                Destroy(additions);
+            }
+            debugThings.Clear();
+        }
+        else
+        {
+            foreach (GameObject additions in addedFrills)
+            {
+                if (additions == null) continue;
+                Debug.Log("ronald chan made frill at " + additions.transform.position);
+                GameObject debugThing = Instantiate(roofExtension, new Vector3(additions.transform.position.x, additions.transform.position.y, Camera.main.transform.position.z + 1), Quaternion.identity) ;
+                debugThing.GetComponent<SpriteRenderer>().color = Color.black;
+                debugThings.Add(debugThing);
+            }
+        }
+
+    }
+
 
     private void RoofExtensions(Vector3 floorPos, GameObject currentFloor)
     {
-        Vector3[] floorLocations = GetFloorLocations();
+        Vector3[] floorLocations = CopyToArray(towerBuilder.GetPlacedFloorsPos());
 
         float yOffSet = 3.07f;
         float xOffSet = 5;
@@ -321,7 +341,7 @@ public class TowerAdditions : MonoBehaviour
 
     private void WoodenTriangle(Vector3 floorPos, GameObject currentFloor)
     {
-        Vector3[] floorLocations = GetFloorLocations();
+        Vector3[] floorLocations = CopyToArray(towerBuilder.GetPlacedFloorsPos());
 
         float xDistance = towerBuilder.GetRoomBounds().x;
         float yDistance = towerBuilder.GetRoomBounds().y;
@@ -392,6 +412,12 @@ public class TowerAdditions : MonoBehaviour
                 addedFrills.Add(newBuild);
             }
         }
+
+    }
+
+    public T[] CopyToArray<T>(List<T> genList) 
+    {
+        return (T[])genList.ToArray().Clone();
 
     }
 

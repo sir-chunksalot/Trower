@@ -21,7 +21,14 @@ public class DontTouchMe : MonoBehaviour
         if(target != null)
         {
             Debug.Log("Dont touch me i died");
-            Destroy(target);
+            StartCoroutine(ShadowRealm(target));
         }
+    }
+
+    private IEnumerator ShadowRealm(GameObject target)
+    {
+        target.transform.position = new Vector3(999, 999, 999);
+        yield return new WaitForSeconds(1);
+        Destroy(target);
     }
 }

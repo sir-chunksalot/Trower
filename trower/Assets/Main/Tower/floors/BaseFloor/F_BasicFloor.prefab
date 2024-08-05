@@ -463,6 +463,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f4ac5ba8c56e24682415bfc359387c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activateMe:
+  - {fileID: 8112889060893796700}
+  isPlaced: 0
   floorDestroyed: 0
 --- !u!1 &1935031970991554358
 GameObject:
@@ -747,6 +750,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
+  colCount: 0
   active: 0
 --- !u!50 &7633351138965333596
 Rigidbody2D:
@@ -1320,6 +1324,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
+  colCount: 0
   active: 0
 --- !u!50 &6887167106774281841
 Rigidbody2D:
@@ -1512,6 +1517,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
+  colCount: 0
   active: 0
 --- !u!50 &7364456398486527422
 Rigidbody2D:
@@ -1730,6 +1736,8 @@ GameObject:
   - component: {fileID: 7494362775248841189}
   - component: {fileID: 4389151954597379213}
   - component: {fileID: 4722313016566885639}
+  - component: {fileID: 8112889060893796700}
+  - component: {fileID: 8544963368717017913}
   m_Layer: 0
   m_Name: BaseFloor
   m_TagString: Untagged
@@ -1848,6 +1856,65 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!61 &8112889060893796700
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7472033387787060341}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 10, y: 5}
+    newSize: {x: 20, y: 10}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 10, y: 5}
+  m_EdgeRadius: 0
+--- !u!114 &8544963368717017913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7472033387787060341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e01c0ad27d18534d9ead16ed887aa86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1635590567734414344}
+  strength: 10
 --- !u!1 &7852389384521117084
 GameObject:
   m_ObjectHideFlags: 0
@@ -1999,6 +2066,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
+  colCount: 0
   active: 0
 --- !u!50 &5848817945084060643
 Rigidbody2D:

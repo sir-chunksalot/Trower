@@ -1577,6 +1577,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
+  colCount: 0
   active: 0
 --- !u!50 &789994192618985969
 Rigidbody2D:
@@ -2018,6 +2019,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
+  colCount: 0
   active: 0
 --- !u!50 &7065369281354945664
 Rigidbody2D:
@@ -2568,6 +2570,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
+  colCount: 0
   active: 0
 --- !u!50 &955085024431245334
 Rigidbody2D:
@@ -3288,6 +3291,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
+  colCount: 0
   active: 0
 --- !u!50 &723847722403202198
 Rigidbody2D:
@@ -3696,6 +3700,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
+  colCount: 0
   active: 0
 --- !u!50 &3767684004777789997
 Rigidbody2D:
@@ -3923,6 +3928,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
+  colCount: 0
   active: 0
 --- !u!50 &3150228395836496076
 Rigidbody2D:
@@ -4115,6 +4121,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
+  colCount: 0
   active: 0
 --- !u!50 &8882141391674053510
 Rigidbody2D:
@@ -4687,6 +4694,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
+  colCount: 0
   active: 0
 --- !u!50 &3802080791150447530
 Rigidbody2D:
@@ -4879,6 +4887,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
+  colCount: 0
   active: 0
 --- !u!50 &4014299915684225182
 Rigidbody2D:
@@ -6037,6 +6046,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
+  colCount: 0
   active: 0
 --- !u!50 &7088241436025734036
 Rigidbody2D:
@@ -6746,6 +6756,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
+  colCount: 0
   active: 0
 --- !u!50 &1893318099076440619
 Rigidbody2D:
@@ -6938,6 +6949,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
+  colCount: 0
   active: 0
 --- !u!50 &444351127950126036
 Rigidbody2D:

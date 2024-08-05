@@ -12,7 +12,6 @@ public class WallCollision : MonoBehaviour
     [SerializeField] List<SpriteRenderer> sprites;
     [SerializeField] bool isBridge;
     public int colCount;
-    public bool active;
     BoxCollider2D enemyCollider;
     BoxCollider2D col;
     EnemyWallCollision enemyWallCollision;
@@ -20,7 +19,6 @@ public class WallCollision : MonoBehaviour
     bool hasBeenEnabled;
     private void Awake()
     {
-        active = true;
         col = gameObject.GetComponent<BoxCollider2D>();
         if (enemyWall != null)
         {
@@ -60,7 +58,6 @@ public class WallCollision : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!active) return;
         if ((collision.transform.tag == "Wall" && gameObject.tag == "Wall") || (collision.transform.tag == "Floor" && gameObject.tag == "Floor") || (collision.transform.tag == "Extension" && gameObject.tag == "Extension") || (collision.transform.tag == "FloorMurderer" && gameObject.tag == "Floor"))
         {
             if (gameObject != null)
@@ -68,7 +65,6 @@ public class WallCollision : MonoBehaviour
                 WallCollision otherCol = collision.gameObject.GetComponent<WallCollision>();
                 if (strength <= otherCol.strength)
                 {
-                    active = false;
                     if(!otherCol.isBridge && raycastWall != null)
                     {
                         raycastWall.SetActive(false);
@@ -119,7 +115,6 @@ public class WallCollision : MonoBehaviour
 
     private void RegenWalls()
     {
-        active = true;
         Debug.Log("Renabling!");
         if (sprites != null)
         {

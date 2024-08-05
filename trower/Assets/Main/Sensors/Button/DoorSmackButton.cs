@@ -28,7 +28,8 @@ public class DoorSmackButton : MonoBehaviour
         {
             closestFloor = FindClosestFloor();
             anim.SetBool("Click", true);
-            towerBuilder.SellFloor(closestFloor);
+            //towerBuilder.SellFloor(closestFloor);
+            //change this later to destroy floor that is what you need now
             closestFloor = FindClosestFloor();
 
             if (door.transform.position.y - 5.5 != 0)
