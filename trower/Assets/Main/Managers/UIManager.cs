@@ -229,11 +229,9 @@ public class UIManager : MonoBehaviour
 
         foreach (GameObject card in cards)
         {
-            Debug.Log("zoro" + card.name + " " + name);
             if (card.name == name)
             {
                 CardHolsterGraphics cardHolster = card.GetComponent<CardHolsterGraphics>();
-                Debug.Log("TRAP FOUND AND IS BEING USED");
                 cardHolster.UseCard(success);
                 break;
             }

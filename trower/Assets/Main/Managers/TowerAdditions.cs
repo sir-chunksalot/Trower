@@ -27,6 +27,7 @@ public class TowerAdditions : MonoBehaviour
         genViableFloors = gameObject.GetComponent<GenerateViableFloors>();
         towerBuilder.onTowerPlace += CreateAdditions;
         towerBuilder.onTowerSell += CreateAdditions;
+        genViableFloors.onFinishedScan += CreateBridges;
         addedFrills = new List<GameObject>();
         bridgesPos = new List<Vector3>();
         bridges = new List<GameObject>();
@@ -44,7 +45,10 @@ public class TowerAdditions : MonoBehaviour
         bridges.Clear();
         buildDaddy = gameManager.GetCurrentLevelDetails().GetBuildDaddy();
     }
-
+    private void CreateBridges(object sender, EventArgs e)
+    {
+        DeleteOldBridges();
+    }
     private void CreateAdditions(object sender, EventArgs e)
     {
         StopAllCoroutines();
@@ -60,9 +64,6 @@ public class TowerAdditions : MonoBehaviour
             index++;
         }
         //DeleteOldBridges();
-
-        StartCoroutine(DeleteOldBridges(UnityEngine.Random.Range(0,100)));
-        Debug.Log("fuckfart");
         //StartCoroutine(CheckValidBridgeSpawns());
 
         foreach (Vector3 floorPos in placedFloorsPos)
@@ -96,7 +97,6 @@ public class TowerAdditions : MonoBehaviour
             foreach (GameObject additions in currentFrills)
             {
                 if (additions == null) continue;
-                Debug.Log("baba zui additionms" + additions + ", bridge" + bridge);
                 if(Vector2.Distance(additions.transform.position, bridge.transform.position) < 7)
                 {
                     Destroy(additions);
@@ -106,18 +106,16 @@ public class TowerAdditions : MonoBehaviour
         }
     }
 
-    private IEnumerator DeleteOldBridges(int test)
+    private void DeleteOldBridges()
     {
-        yield return new WaitForSeconds(.5f);
-        GameObject[] badFloors = CopyToArray(genViableFloors.GetInaccessibleFloors());
         List<GameObject> validBridges = new List<GameObject>();
         List<Vector3> validBridgePos = new List<Vector3>();
         List<GameObject> validBridgeStarts = new List<GameObject>();
         List<GameObject> validBridgeEnds = new List<GameObject>();
         List<GameObject> deadBridges = new List<GameObject>();
-        foreach(GameObject floor in badFloors)
+        foreach(GameObject floor in genViableFloors.GetInaccessibleFloors())
         {
-            Debug.Log("armageddon" + floor + test);
+            Debug.Log("armageddon" + floor.name);
         }
         foreach (GameObject bridge in bridges)
         {
@@ -126,7 +124,7 @@ public class TowerAdditions : MonoBehaviour
             {
                 deadBridges.Add(bridges[bridgeIndex]);
             }
-            else if (genViableFloors.IsFloorAccessible(bridgeEndFloor[bridgeIndex].transform.position, badFloors) && genViableFloors.IsFloorAccessible(bridgesBeginFloor[bridgeIndex].transform.position, badFloors)) //bridge is no longer needed
+            else if (genViableFloors.IsFloorAccessible(bridgeEndFloor[bridgeIndex].transform.position) && genViableFloors.IsFloorAccessible(bridgesBeginFloor[bridgeIndex].transform.position)) //bridge is no longer needed
             {
                 Debug.Log("japan lol" + genViableFloors.IsFloorAccessible(bridgeEndFloor[bridgeIndex].transform.position) + genViableFloors.IsFloorAccessible(bridgesBeginFloor[bridgeIndex].transform.position));
                 deadBridges.Add(bridges[bridgeIndex]);
@@ -153,14 +151,12 @@ public class TowerAdditions : MonoBehaviour
         bridgesBeginFloor = validBridgeStarts;
         bridgesPos = validBridgePos;
         bridgeEndFloor = validBridgeEnds;
-        CheckValidBridgeSpawns(badFloors);
+        CheckValidBridgeSpawns();
     }
 
-    private void CheckValidBridgeSpawns(GameObject[] badFloors)
+    private void CheckValidBridgeSpawns()
     {
-        //yield return new WaitForSeconds(5.5f);
-        //GameObject[] badFloors = genViableFloors.GetInaccessibleFloors().ToArray();
-        foreach (GameObject badFloor in badFloors)
+        foreach (GameObject badFloor in genViableFloors.GetInaccessibleFloors())
         {
             Debug.Log("naht FOUND INACCESSIBLE FLOOR");
             Vector3 endPointLeft = new Vector3(-100, 0, 0);

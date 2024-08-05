@@ -34,7 +34,6 @@ public class TowerBuilder : MonoBehaviour
     private List<Vector3> placedFloorsPos = new List<Vector3>(); //LIST OF PLACED INDIVIDUAL FLOOR POSISTIONS
     private List<GameObject> floorPapas = new List<GameObject>(); //LIST OF PLACED GROUPED FLOOR TYPES
     //private List<GameObject> trapTypes = new List<GameObject>();
-    private List<GameObject> floorTypes = new List<GameObject>();//assigns the floor types at runtime
     private List<GameObject> potentialFloors = new List<GameObject>();//potential spots a floor could spawn (saved as instantiated gameobjects in valid spots, i did this for debugging) ||CLEARED EVERY TOWER PLACE
     private List<Vector3> mapPotentialFloors = new List<Vector3>();//potential spots a floor could spawn (saved as instantiated gameobjects in valid spots, i did this for debugging) ||CLEARED ON LEVEL COMPLETION
     private List<GameObject> ladders = new List<GameObject>();
@@ -51,7 +50,8 @@ public class TowerBuilder : MonoBehaviour
     private bool placingFloor;
     private bool placingBomb;
     private int ladderType;
-    private bool fart;
+    private bool cleanup;
+    private int cleanupCount;
     private int totalPlacedFloorsCount;
     private void Awake()
     {
@@ -68,14 +68,12 @@ public class TowerBuilder : MonoBehaviour
         SetAlpha(sellBombObject, 0);
         ladderType = 2;
         cameraController = Camera.main.GetComponent<CameraController>();
-        StartCoroutine(GenerateNewWalls());
     }
 
     public void OnSceneLoad(object sender, EventArgs e)
     {
         placedFloorsPos.Clear();
         floorPapas.Clear();
-        floorTypes.Clear();
         potentialFloors.Clear();
         mapPotentialFloors.Clear();
         buildDaddy = gameManager.GetCurrentLevelDetails().GetBuildDaddy();
@@ -116,11 +114,6 @@ public class TowerBuilder : MonoBehaviour
                 PlaceBuild(currentFloor);
             }
             placingFloor = false;
-            if (placingBomb)
-            {
-                //SellFloor(FindClosestFloorToMe(sellBombObject));
-                Cleanup();
-            }
         }
 
     }
@@ -148,7 +141,8 @@ public class TowerBuilder : MonoBehaviour
                 foreach(Transform floor in newBuild.transform)
                 {
                     AddPlacedFloor(floor.gameObject);
-
+                    Debug.Log("owen klanke is sleepy" + floor);
+                    floor.gameObject.name = floor.gameObject.name + "#" + UnityEngine.Random.Range(0, 10000);
                 }
                 particleSpawnPos = newBuild.transform.position;
             }
@@ -179,33 +173,16 @@ public class TowerBuilder : MonoBehaviour
         NewPotentialFloors();
         placingFloor = true;
 
-
-        //if (floorTypes.Count == 0)
-        //{
-        //    foreach (GameObject floor in floors)
-        //    {
-        //        Debug.Log(floor.name);
-        //        GameObject newFloor = Instantiate(floor, new Vector3(mousePos.x, mousePos.y, 20), Quaternion.identity);
-        //        floorTypes.Add(newFloor);
-        //        newFloor.SetActive(false);
-        //    }
-        //}
-
         GameObject activeFloor = floors[0];
 
         foreach (GameObject floor in floors)
         {
-            Debug.Log("rocket league" + floor.name + " " + floorName);
             if (floor.name + "(Clone)" == floorName)
             {
                 activeFloor = Instantiate(floor, new Vector3(mousePos.x, mousePos.y, 20), Quaternion.identity);
             }
         }
         this.floorName = floorName.Substring(0, floorName.Length - 7);
-        Debug.Log("DOOFEN activefloorname" + floorName);
-        int index = floorTypes.IndexOf(activeFloor);
-        Debug.Log("LUFFY: " + index + " " + activeFloor + " " + ladderType + " " + goingUp);
-
         if (currentFloor != null) { currentFloor.SetActive(false); }
 
         currentFloor = activeFloor;
@@ -230,8 +207,11 @@ public class TowerBuilder : MonoBehaviour
 
     public void EndPlacement()
     {
-        placingFloor = false;
-        Cleanup();
+        if(placingFloor)
+        {
+            placingFloor = false;
+            Cleanup();
+        }
     }
 
     public Vector3 ClosestTo(Vector3 target, GameObject[] objPos, bool validCheck)
@@ -402,15 +382,11 @@ public class TowerBuilder : MonoBehaviour
     {
         if(mapPotentialFloors.Count <= 0) { return; }
         DestroyPotentialFloors();
-        Debug.Log("SHITCUM");
        
         foreach(Vector3 mapSpawn in mapPotentialFloors)
         {
-            Debug.Log("MAP SPAWN" + mapSpawn + "limofart");
-            Debug.Log("" + placedFloorsPos[0] + "limofart");
             if(!placedFloorsPos.Contains(mapSpawn) && mapSpawn.y <= highestPoint)
             {
-                Debug.Log("FLOOR SPAWN" + mapSpawn + " limofart");
                 potentialFloors.Add(Instantiate(potentialFloor, new Vector3(mapSpawn.x, mapSpawn.y, 1), Quaternion.identity));
             }
         }
@@ -512,10 +488,21 @@ public class TowerBuilder : MonoBehaviour
 
     }
 
-    //private void LateUpdate()
-    //{
-        
-    //}
+    private void LateUpdate()
+    {
+        if(cleanup)
+        {
+            if(cleanupCount > 8) //WE LOVE 8!!!!
+            {
+                Debug.Log("we gotta late update in here fellas");
+                onTowerPlaceLate?.Invoke(gameObject, EventArgs.Empty);
+                cleanup = false;
+                cleanupCount = 0;
+            }
+            cleanupCount++;
+
+        }
+    }
 
 
 
@@ -698,24 +685,12 @@ public class TowerBuilder : MonoBehaviour
         }
     }
 
-    private IEnumerator GenerateNewWalls() //for some reason you have to wait a little bit or it breaks. dont ask me
-    {
-        onTowerPlace?.Invoke(gameObject, EventArgs.Empty);
-        yield return new WaitForSeconds(.3f);
-        onTowerPlaceLate?.Invoke(gameObject, EventArgs.Empty);
-
-    }
-
     private void Cleanup()
     {
         DestroyPotentialFloors();
 
-        foreach (GameObject floor in floorTypes)
-        {
-            Destroy(floor);
-        }
-        floorTypes.Clear();
-        StartCoroutine(GenerateNewWalls());
+        onTowerPlace?.Invoke(gameObject, EventArgs.Empty);
+        cleanup = true;
     }
 
 

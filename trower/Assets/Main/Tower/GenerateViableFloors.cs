@@ -9,6 +9,8 @@ public class GenerateViableFloors : MonoBehaviour
     List<GameObject> inacessibleRooms;
     List<Vector3> inacessibleRoomsPos;
     TowerBuilder towerBuilder;
+
+    public event EventHandler onFinishedScan;
     void Start()
     {
         upRooms = new List<GameObject>();
@@ -175,8 +177,11 @@ public class GenerateViableFloors : MonoBehaviour
         {
             ViableFloors();
         }
-        Debug.Log(upRooms.Count + "MEN");
-
+        else
+        {
+            Debug.Log("FINISHED SCAN!!!");
+            onFinishedScan?.Invoke(gameObject, EventArgs.Empty);
+        }
     }
 
     public void Test()
@@ -205,20 +210,6 @@ public class GenerateViableFloors : MonoBehaviour
         }
         return true;
     }
-    public bool IsFloorAccessible(Vector2 pos, GameObject[] badFloors)
-    {
-        Debug.Log("japan lol real" + pos);
-        foreach (GameObject floor in badFloors)
-        {
-            Debug.Log("japan lol real check" + floor.transform.position);
-            if (new Vector2(floor.transform.position.x, floor.transform.position.y) == pos)
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public List<GameObject> GetInaccessibleFloors()
     {
         return inacessibleRooms;
