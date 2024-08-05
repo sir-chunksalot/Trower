@@ -60,6 +60,7 @@ public class TowerAdditions : MonoBehaviour
 
     private void CreateAdditions(object sender, EventArgs e)
     {
+        StopAllCoroutines();
         Debug.Log("THE LISTS" + "bridgePosCount" + bridgesPos.Count + "bridges count " + bridges.Count + "startFloors count" + bridgesBeginFloor.Count);
         GameObject[] placedFloors = towerBuilder.GetPlacedFloors().ToArray();
         int index = 0;
@@ -71,7 +72,10 @@ public class TowerAdditions : MonoBehaviour
             index++;
         }
         //DeleteOldBridges();
-        DeleteOldBridges();
+
+        StartCoroutine(DeleteOldBridges(UnityEngine.Random.Range(0,100)));
+        Debug.Log("fuckfart");
+        //StartCoroutine(CheckValidBridgeSpawns());
 
         foreach (Vector3 floorPos in GetFloorLocations())
         {
@@ -110,36 +114,37 @@ public class TowerAdditions : MonoBehaviour
         }
     }
 
-    private void DeleteOldBridges()
+    private IEnumerator DeleteOldBridges(int test)
     {
+        yield return new WaitForSeconds(2.5f);
+        GameObject[] badFloors = genViableFloors.GetInaccessibleFloors().ToArray();
         List<GameObject> validBridges = new List<GameObject>();
         List<Vector3> validBridgePos = new List<Vector3>();
         List<GameObject> validBridgeStarts = new List<GameObject>();
         List<GameObject> validBridgeEnds = new List<GameObject>();
         List<GameObject> deadBridges = new List<GameObject>();
-        foreach(GameObject obj in genViableFloors.GetInaccessibleFloors())
+        foreach(GameObject floor in badFloors)
         {
-            Debug.Log(obj + "ghenlol");
+            Debug.Log("armageddon" + floor + test);
         }
-
         foreach (GameObject bridge in bridges)
         {
             int bridgeIndex = bridges.IndexOf(bridge);
             if (bridge == null || towerBuilder.GetPlacedFloorsPos().Contains(bridge.transform.position)) //bridge overlaps a build
             {
-                deadBridges.Add(bridgesBeginFloor[bridgeIndex]);
+                deadBridges.Add(bridges[bridgeIndex]);
             }
-            else if (genViableFloors.IsFloorAccessible(bridgeEndFloor[bridgeIndex].transform.position) && genViableFloors.IsFloorAccessible(bridgesBeginFloor[bridgeIndex].transform.position)) //bridge is no longer needed
+            else if (genViableFloors.IsFloorAccessible(bridgeEndFloor[bridgeIndex].transform.position, badFloors) && genViableFloors.IsFloorAccessible(bridgesBeginFloor[bridgeIndex].transform.position, badFloors)) //bridge is no longer needed
             {
                 Debug.Log("japan lol" + genViableFloors.IsFloorAccessible(bridgeEndFloor[bridgeIndex].transform.position) + genViableFloors.IsFloorAccessible(bridgesBeginFloor[bridgeIndex].transform.position));
-                deadBridges.Add(bridgesBeginFloor[bridgeIndex]);
+                deadBridges.Add(bridges[bridgeIndex]);
             }
 
         }
         foreach (GameObject bridge in bridges)
         {
             int bridgeIndex = bridges.IndexOf(bridge);
-            if (deadBridges.Contains(bridgesBeginFloor[bridgeIndex])) //connected bridge was destroyed
+            if (deadBridges.Contains(bridge)) //connected bridge was destroyed
             {
                 Destroy(bridges[bridgeIndex]);
             }
@@ -156,14 +161,14 @@ public class TowerAdditions : MonoBehaviour
         bridgesBeginFloor = validBridgeStarts;
         bridgesPos = validBridgePos;
         bridgeEndFloor = validBridgeEnds;
-        StartCoroutine(CheckValidBridgeSpawns());
+        CheckValidBridgeSpawns(badFloors);
     }
 
-    private IEnumerator CheckValidBridgeSpawns()
+    private void CheckValidBridgeSpawns(GameObject[] badFloors)
     {
-        yield return new WaitForSeconds(.5f);
-        GameObject[] floors = genViableFloors.GetInaccessibleFloors().ToArray();
-        foreach (GameObject badFloor in floors)
+        //yield return new WaitForSeconds(5.5f);
+        //GameObject[] badFloors = genViableFloors.GetInaccessibleFloors().ToArray();
+        foreach (GameObject badFloor in badFloors)
         {
             Debug.Log("naht FOUND INACCESSIBLE FLOOR");
             Vector3 endPointLeft = new Vector3(-100, 0, 0);
@@ -191,12 +196,10 @@ public class TowerAdditions : MonoBehaviour
                         }
                     }
                 }
-
-                if (endPointLeft.x != -100) { MakeBridge(badFloor.transform.position, endPointLeft, true, badFloor); }
-                if (endPointRight.x != 100) { MakeBridge(badFloor.transform.position, endPointRight, false, badFloor); }
             }
-
-
+            if (endPointLeft.x != -100) { MakeBridge(badFloor.transform.position, endPointLeft, true, badFloor); }
+            if (endPointRight.x != 100) { MakeBridge(badFloor.transform.position, endPointRight, false, badFloor); }
+            //StartCoroutine(DeleteOldBridges(UnityEngine.Random.Range(0, 100)));
 
         }
     }
@@ -233,10 +236,10 @@ public class TowerAdditions : MonoBehaviour
 
 
         Debug.Log("naht end");
-        if(bridgeCount >= 1)
-        {
-            towerBuilder.BridgeBuilt();
-        }
+        //if(bridgeCount >= 1)
+        //{
+        //    towerBuilder.BridgeBuilt();
+        //}
 
     }
 

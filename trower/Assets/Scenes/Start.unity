@@ -6101,7 +6101,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8253654157315436996, guid: 004f6acf9ea550643b782a7fc6b5ce9a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10497,7 +10497,7 @@ PrefabInstance:
       objectReference: {fileID: 2884292035325809549, guid: 7bfd271190e01fc4188fb81637862257, type: 3}
     - target: {fileID: 2123470133038396305, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
       propertyPath: layerMask.m_Bits
-      value: 262272
+      value: 524288
       objectReference: {fileID: 0}
     - target: {fileID: 4567693808667386942, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
       propertyPath: m_Name
@@ -34346,9 +34346,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5308167991779170460, guid: 722eb66889969894c97a117f81c230ee, type: 3}
+      propertyPath: m_Size.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5308167991779170460, guid: 722eb66889969894c97a117f81c230ee, type: 3}
+      propertyPath: m_Size.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5308167991779170460, guid: 722eb66889969894c97a117f81c230ee, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: cf0e3a6472ee3634da63b87846c1f887, type: 3}
+    - target: {fileID: 5308167991779170460, guid: 722eb66889969894c97a117f81c230ee, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

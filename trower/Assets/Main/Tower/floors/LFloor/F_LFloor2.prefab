@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f4ac5ba8c56e24682415bfc359387c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  floorDestroyed: 0
 --- !u!1 &780370665902242478
 GameObject:
   m_ObjectHideFlags: 0
@@ -296,6 +297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &1308449375099814908
 GameObject:
   m_ObjectHideFlags: 0
@@ -424,6 +426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &1385156028754722302
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,9 +573,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 3057960730889487005}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 21300000, guid: 895b2e55a902be44dbcd68d742d031da, type: 3}
   strength: 0
   sprites: []
+  isBridge: 0
   active: 0
 --- !u!50 &2339690760264850755
 Rigidbody2D:
@@ -613,6 +618,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &1580754514601830900
 GameObject:
   m_ObjectHideFlags: 0
@@ -744,6 +750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &1609034554742258993
 GameObject:
   m_ObjectHideFlags: 0
@@ -960,6 +967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &2202582509240850767
 GameObject:
   m_ObjectHideFlags: 0
@@ -1106,9 +1114,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 5842610976250298063}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 21300000, guid: 895b2e55a902be44dbcd68d742d031da, type: 3}
   strength: 0
   sprites: []
+  isBridge: 0
   active: 0
 --- !u!50 &1819516797207885257
 Rigidbody2D:
@@ -1149,6 +1159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &2457999504270038917
 GameObject:
   m_ObjectHideFlags: 0
@@ -1295,9 +1306,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 7431812576543548193}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 21300000, guid: 895b2e55a902be44dbcd68d742d031da, type: 3}
   strength: 0
   sprites: []
+  isBridge: 0
   active: 0
 --- !u!50 &7169078329534860990
 Rigidbody2D:
@@ -1338,6 +1351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &2848813556584612630
 GameObject:
   m_ObjectHideFlags: 0
@@ -1484,9 +1498,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 8387744632194963409}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
   strength: 0
   sprites: []
+  isBridge: 0
   active: 0
 --- !u!50 &5579256420239699146
 Rigidbody2D:
@@ -1527,6 +1543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &3057960730889487005
 GameObject:
   m_ObjectHideFlags: 0
@@ -1658,6 +1675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &3093794227277869075
 GameObject:
   m_ObjectHideFlags: 0
@@ -1804,9 +1822,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 5857405204321358277}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
   strength: 0
   sprites: []
+  isBridge: 0
   active: 0
 --- !u!50 &3901204969575165457
 Rigidbody2D:
@@ -1847,6 +1867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &3318388088781946227
 GameObject:
   m_ObjectHideFlags: 0
@@ -2158,9 +2179,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 8722294251737076180}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 21300000, guid: 895b2e55a902be44dbcd68d742d031da, type: 3}
   strength: 0
   sprites: []
+  isBridge: 0
   active: 0
 --- !u!50 &1038901013580813701
 Rigidbody2D:
@@ -2201,6 +2224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &4787902775270695960
 GameObject:
   m_ObjectHideFlags: 0
@@ -2347,9 +2371,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 6069330829943140458}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
   strength: 0
   sprites: []
+  isBridge: 0
   active: 0
 --- !u!50 &3538807390571326047
 Rigidbody2D:
@@ -2390,6 +2416,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &4946620011046292168
 GameObject:
   m_ObjectHideFlags: 0
@@ -2536,9 +2563,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 5579370937285670030}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 21300000, guid: 895b2e55a902be44dbcd68d742d031da, type: 3}
   strength: 0
   sprites: []
+  isBridge: 0
   active: 0
 --- !u!50 &5779417122610148488
 Rigidbody2D:
@@ -2579,6 +2608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &5128668032263259716
 GameObject:
   m_ObjectHideFlags: 0
@@ -2745,6 +2775,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &5619894224073433360
 GameObject:
   m_ObjectHideFlags: 0
@@ -3076,6 +3107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &5857405204321358277
 GameObject:
   m_ObjectHideFlags: 0
@@ -3207,6 +3239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &6069330829943140458
 GameObject:
   m_ObjectHideFlags: 0
@@ -3338,6 +3371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &6428722349813096042
 GameObject:
   m_ObjectHideFlags: 0
@@ -3466,6 +3500,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &6569152979660089660
 GameObject:
   m_ObjectHideFlags: 0
@@ -3698,9 +3733,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 1580754514601830900}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
   strength: 0
   sprites: []
+  isBridge: 0
   active: 0
 --- !u!50 &9021634481366421511
 Rigidbody2D:
@@ -3741,6 +3778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &6689994607840491435
 GameObject:
   m_ObjectHideFlags: 0
@@ -3872,6 +3910,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &6757207181020584599
 GameObject:
   m_ObjectHideFlags: 0
@@ -4133,6 +4172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &7059198348398011931
 GameObject:
   m_ObjectHideFlags: 0
@@ -4143,7 +4183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8018161987020830743}
   - component: {fileID: 53349003968552912}
-  m_Layer: 7
+  m_Layer: 19
   m_Name: BottomOfLadder
   m_TagString: BottomOfLadder
   m_Icon: {fileID: 0}
@@ -4356,9 +4396,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 1643624870682937949}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
   strength: 0
   sprites: []
+  isBridge: 0
   active: 0
 --- !u!50 &700216576274577770
 Rigidbody2D:
@@ -4399,6 +4441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &7384171594083879598
 GameObject:
   m_ObjectHideFlags: 0
@@ -4660,6 +4703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &7483437833941518872
 GameObject:
   m_ObjectHideFlags: 0
@@ -4806,9 +4850,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 6689994607840491435}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
   strength: 0
   sprites: []
+  isBridge: 0
   active: 0
 --- !u!50 &1783482320841411339
 Rigidbody2D:
@@ -4849,6 +4895,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &8387744632194963409
 GameObject:
   m_ObjectHideFlags: 0
@@ -4980,6 +5027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &8550698902081519132
 GameObject:
   m_ObjectHideFlags: 0
@@ -5126,9 +5174,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 6801990044524881710}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 21300000, guid: 895b2e55a902be44dbcd68d742d031da, type: 3}
   strength: 0
   sprites: []
+  isBridge: 0
   active: 0
 --- !u!50 &4822046763301785403
 Rigidbody2D:
@@ -5169,6 +5219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &8722294251737076180
 GameObject:
   m_ObjectHideFlags: 0
@@ -5300,6 +5351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 040197d4c7d2349409ac09a8b9f4326b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instaKill: 0
 --- !u!1 &9163589354960354956
 GameObject:
   m_ObjectHideFlags: 0
@@ -5343,6 +5395,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8804720218163219961}
     m_Modifications:
+    - target: {fileID: 486046873204730368, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
+      propertyPath: m_Layer
+      value: 19
+      objectReference: {fileID: 0}
     - target: {fileID: 1341110094942411009, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
       propertyPath: m_Size.x
       value: 6

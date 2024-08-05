@@ -6,27 +6,21 @@ using UnityEngine;
 public class WallCollision : MonoBehaviour
 {
     [SerializeField] GameObject enemyWall;
+    [SerializeField] GameObject raycastWall;
     [SerializeField] Sprite bottomFloorSprite;
     [SerializeField] float strength;
     [SerializeField] List<SpriteRenderer> sprites;
+    [SerializeField] bool isBridge;
+    public int colCount;
     public bool active;
-    GameObject gameManager;
-    BoxCollider2D col;
     BoxCollider2D enemyCollider;
+    BoxCollider2D col;
     EnemyWallCollision enemyWallCollision;
-    TowerBuilder towerBuilder;
     Floor floor;
     bool hasBeenEnabled;
-    private void Start()
+    private void Awake()
     {
         active = true;
-        floor = gameObject.GetComponentInParent<Floor>();
-        towerBuilder = floor.GetTowerBuilder();
-        gameManager = towerBuilder.gameObject;
-        towerBuilder.onTowerPlace += DestroyWalls;
-        towerBuilder.onTowerSell += RegenWalls;
-        towerBuilder.onTowerPlace += RegenWalls;
-        towerBuilder.onBridgeBuild += RegenWalls;
         col = gameObject.GetComponent<BoxCollider2D>();
         if (enemyWall != null)
         {
@@ -39,6 +33,20 @@ public class WallCollision : MonoBehaviour
         {
             sprites.Add(gameObject.GetComponent<SpriteRenderer>());
         }
+
+        floor = gameObject.GetComponentInParent<Floor>();
+
+        if (floor.isPlaced)
+        {
+            StartUp();
+        }
+        else
+        {
+            floor.onFloorPlace += DestroyWalls;
+        }
+
+
+
     }
 
     public BoxCollider2D GetEnemyWall()
@@ -50,24 +58,6 @@ public class WallCollision : MonoBehaviour
         return null;
 
     }
-    private void Update()
-    {
-        if (transform.position.y <= 0 && col.enabled) //runs whenever you try and place walls on the bottom layer
-        {
-            if (gameObject.tag != "Floor")
-            {
-                if (GetEnemyWall() != null)
-                {
-                    GetEnemyWall().gameObject.SetActive(false);
-                    GetEnemyWall().enabled = false;
-                }
-            }
-            if (bottomFloorSprite != null)
-            {
-                gameObject.GetComponent<SpriteRenderer>().sprite = bottomFloorSprite;
-            }
-        }
-    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!active) return;
@@ -75,18 +65,24 @@ public class WallCollision : MonoBehaviour
         {
             if (gameObject != null)
             {
-                if (strength <= collision.gameObject.GetComponent<WallCollision>().strength)
+                WallCollision otherCol = collision.gameObject.GetComponent<WallCollision>();
+                if (strength <= otherCol.strength)
                 {
                     active = false;
+                    if(!otherCol.isBridge && raycastWall != null)
+                    {
+                        raycastWall.SetActive(false);
+                    }
                     if (enemyWall != null && gameObject.name != "Floor1")
                     {
-                        enemyWall.GetComponent<BoxCollider2D>().enabled = false;
+                        enemyCollider.enabled = false;
                         enemyWall.SetActive(false);
                     }
                     foreach (SpriteRenderer sprite in sprites)
                     {
                         sprite.enabled = false;
                     }
+                    colCount++;
                 }
 
             }
@@ -95,62 +91,105 @@ public class WallCollision : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.transform.tag == "FloorMurderer" && gameObject.tag == "Floor")
+        Debug.Log("Collision exit: " + collision.transform.tag +  "fake");
+        if ((collision.transform.tag == "Wall" && gameObject.tag == "Wall") || (collision.transform.tag == "Floor" && gameObject.tag == "Floor") || (collision.transform.tag == "Extension" && gameObject.tag == "Extension") || (collision.transform.tag == "FloorMurderer" && gameObject.tag == "Floor"))
         {
-            enemyCollider.enabled = true;
-            enemyWall.SetActive(true);
-            enemyWallCollision.TurnOn();
-            gameObject.GetComponent<SpriteRenderer>().enabled = true;
+            Debug.Log("Collision exit: " + collision.transform.tag + "real");
+            if (gameObject != null) 
+            {
+                WallCollision otherCol = collision.gameObject.GetComponent<WallCollision>();
+                if (strength <= otherCol.strength)
+                {
+                    colCount--;
+                    Debug.Log("lowered col count"  + colCount);
+                    if (colCount <= 0)
+                    {
+                        Debug.Log("tried to update wall");
+                        RegenWalls();
+                    }
+                }
+
+            }
         }
     }
-
     private void OnDestroy()
     {
-        if (gameManager != null) //i dont remember what this is for but dont remove it
-        {
-            towerBuilder.onTowerPlace -= DestroyWalls;
-            towerBuilder.onTowerSell -= RegenWalls;
-        }
+        floor.onFloorPlace -= DestroyWalls;
     }
 
-    private void RegenWalls(object sender, EventArgs e) //this triggers whenever a build is sold, so all the calculations can be ran again 
+    private void RegenWalls()
     {
-        if(enemyWall != null && hasBeenEnabled && gameObject.activeInHierarchy && !floor.floorDestroyed)
+        active = true;
+        Debug.Log("Renabling!");
+        if (sprites != null)
         {
-            active = true;
-            Debug.Log("REGENERATING WALLS!~!" + sender);
-            //hasBeenEnabled = true;
-            gameObject.SetActive(false); // i have to do this so that the colission detection updates
-            gameObject.SetActive(true);
-
-            StartCoroutine(WaitForColission());
+            foreach (SpriteRenderer sprite in sprites)
+            {
+                sprite.enabled = true;
+            }
         }
-    }
-
-    private IEnumerator WaitForColission()
-    {
-        yield return new WaitForSeconds(.2f);
-        if(active)
+        if (raycastWall != null)
+        {
+            raycastWall.SetActive(true);
+        }
+        if (enemyWall != null)
         {
             enemyCollider.enabled = true;
             enemyWall.SetActive(true);
             enemyWallCollision.TurnOn();
-            gameObject.GetComponent<SpriteRenderer>().enabled = true;
         }
+
+
+        col.enabled = false;
+        col.enabled = true;
+
+        colCount = 0;
     }
 
     private void DestroyWalls(object sender, EventArgs e) //this triggers the first time the wall is placed in the world, this is so that the wall collision script doesnt get fucked as your dragging the wall around
     {
+        StartUp();
+    }
+
+    private void StartUp()
+    {
         if (gameObject != null && !hasBeenEnabled)
         {
             hasBeenEnabled = true;
-            this.GetComponent<BoxCollider2D>().enabled = true;
-            //this.GetComponent<SpriteRenderer>().enabled = true;
 
+            Debug.Log("cumshi!");
+
+            col.enabled = true;
+            //this.GetComponent<SpriteRenderer>().enabled = true;
+            if (raycastWall != null)
+            {
+                raycastWall.SetActive(true);
+            }
             if (enemyWall != null)
             {
                 enemyWallCollision.TurnOn();
             }
+
+            if (transform.position.y <= 0) //runs whenever you try and place walls on the bottom layer
+            {
+                if (gameObject.tag != "Floor")
+                {
+                    if (GetEnemyWall() != null)
+                    {
+                        GetEnemyWall().gameObject.SetActive(false);
+                        GetEnemyWall().enabled = false;
+                    }
+                    if (raycastWall != null)
+                    {
+                        raycastWall.SetActive(false);
+                    }
+                }
+                if (bottomFloorSprite != null)
+                {
+                    gameObject.GetComponent<SpriteRenderer>().sprite = bottomFloorSprite;
+                }
+            }
+
         }
     }
 }

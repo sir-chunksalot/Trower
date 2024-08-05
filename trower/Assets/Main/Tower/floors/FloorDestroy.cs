@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class FloorDestroy : MonoBehaviour
 {
+    [SerializeField] bool instaKill;
     List<Hero> heroes;
     List<GameObject> heroObj;
     Rigidbody2D rb;
     BoxCollider2D col;
 
-    private void Start()
+    private void Awake()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         col = gameObject.GetComponent<BoxCollider2D>();
@@ -17,17 +18,24 @@ public class FloorDestroy : MonoBehaviour
     }
     public void DestroyFloor()
     {
-        if(col != null)
+        if(instaKill)
+        {
+            Destroy(gameObject);
+        }
+        if (col != null)
         {
             col.enabled = false;
         }
 
 
-
-        foreach (Hero hero in heroes)
+        if(heroes != null)
         {
-            Debug.Log("floor made hero super fall wacum");
-            hero.GetComponent<Hero>().StartSuperFall(-1, false);
+            foreach (Hero hero in heroes)
+            {
+                Debug.Log("floor made hero super fall wacum");
+                hero.GetComponent<Hero>().StartSuperFall(-1, false);
+            }
+
         }
 
         gameObject.layer = 31;

@@ -1,16 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Floor : MonoBehaviour
 {
+    [SerializeField] BoxCollider2D[] activateMe;
+    public bool isPlaced;
     List<FloorDestroy> floorDestroyables;
     List<GameObject> followers;
-    private TowerBuilder towerBuilder;
+    public event EventHandler onFloorPlace;
     public bool floorDestroyed;
     private void Awake()
     {
-        towerBuilder = GameObject.FindGameObjectWithTag("GameManager").GetComponent<TowerBuilder>();
         floorDestroyables = new List<FloorDestroy>();
         followers = new List<GameObject>();
         foreach (FloorDestroy floorDestroyable in gameObject.GetComponentsInChildren<FloorDestroy>())
@@ -35,17 +37,21 @@ public class Floor : MonoBehaviour
         StartCoroutine(WaitToDelete());
     }
 
+    public void PlaceFloor()
+    {
+        isPlaced = true;
+        foreach(BoxCollider2D thing in activateMe)
+        {
+            thing.enabled = true;
+        }
+        onFloorPlace?.Invoke(gameObject, EventArgs.Empty);
+    }
+
     private IEnumerator WaitToDelete()
     {
         yield return new WaitForSeconds(5);
         Destroy(gameObject);
     }
-
-    public TowerBuilder GetTowerBuilder()
-    {
-        return towerBuilder;
-    }
-
     public void AddFollower(GameObject follower)
     {
         followers.Add(follower);

@@ -20,6 +20,7 @@ public class TowerBuilder : MonoBehaviour
     [SerializeField] GameObject explosionEffect;
 
     public event EventHandler onTowerPlace;
+    public event EventHandler onTowerPlaceLate;
     public event EventHandler onTowerSell;
     public event EventHandler onBridgeBuild;
 
@@ -108,8 +109,6 @@ public class TowerBuilder : MonoBehaviour
             if (placingFloor)
             {
                 PlaceBuild(currentFloor);
-                //PlaceDoor();
-                Cleanup();
             }
             placingFloor = false;
             if (placingBomb)
@@ -139,10 +138,12 @@ public class TowerBuilder : MonoBehaviour
                 uiManager.UseCard(floorName, true);
                 nextFloorPos = new Vector3(nextFloorPos.x, nextFloorPos.y, 10);
                 GameObject newBuild = Instantiate(build, nextFloorPos, Quaternion.identity, buildDaddy.transform);
+                newBuild.GetComponent<Floor>().PlaceFloor();
                 SetAlpha(newBuild, 1);
                 foreach(Transform floor in newBuild.transform)
                 {
                     AddPlacedFloor(floor.gameObject);
+
                 }
                 particleSpawnPos = newBuild.transform.position;
             }
@@ -161,6 +162,8 @@ public class TowerBuilder : MonoBehaviour
             Destroy(currentFloor);
             Debug.Log("Mission Failed. We'll get em' next time (failed to build structure)");
         }
+
+        Cleanup();
     }
 
     public void CurrentFloor(string floorName) //CALLED FIRST BY THE BUILD SELECT SCRIPT
@@ -665,8 +668,10 @@ public class TowerBuilder : MonoBehaviour
 
     private IEnumerator GenerateNewWalls() //for some reason you have to wait a little bit or it breaks. dont ask me
     {
-        yield return new WaitForSeconds(.01f);
         onTowerPlace?.Invoke(gameObject, EventArgs.Empty);
+        yield return new WaitForSeconds(.3f);
+        onTowerPlaceLate?.Invoke(gameObject, EventArgs.Empty);
+
     }
 
     private void Cleanup()

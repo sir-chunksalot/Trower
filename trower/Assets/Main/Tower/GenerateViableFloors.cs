@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,8 +16,15 @@ public class GenerateViableFloors : MonoBehaviour
         inacessibleRooms = new List<GameObject>();
         inacessibleRoomsPos = new List<Vector3>();
         towerBuilder = gameObject.GetComponent<TowerBuilder>();
+        towerBuilder.onTowerPlaceLate += GenViableFloors;
     }
-
+    public void GenViableFloors(object sender, EventArgs e)
+    {
+        inacessibleRooms.Clear();
+        inacessibleRoomsPos.Clear();
+        upRooms.Clear();
+        ViableFloors();
+    }
     private List<RaycastHit2D> ShootRaycasts(Vector3 startPos)
     {
         RaycastHit2D[] hitsRight = Physics2D.RaycastAll(startPos, transform.TransformDirection(Vector3.right), 100, layerMask);
@@ -88,9 +96,9 @@ public class GenerateViableFloors : MonoBehaviour
                         hits.Add(hit);
                         foundLadder = true;
                     }
-                    if (!upRooms.Contains(hit.collider.gameObject.transform.parent.gameObject))
+                    if (!upRooms.Contains(hit.collider.gameObject.transform.parent.gameObject.transform.parent.gameObject))
                     {
-                        upRooms.Add(hit.collider.gameObject.transform.parent.gameObject);
+                        upRooms.Add(hit.collider.gameObject.transform.parent.gameObject.transform.parent.gameObject);
                     }
                 }
 
@@ -123,6 +131,7 @@ public class GenerateViableFloors : MonoBehaviour
                     {
                         room = hit.collider.gameObject.transform.parent.transform.parent.gameObject;
                     }
+
                     if (!inacessibleRoomsPos.Contains(room.transform.position))
                     {
                         inacessibleRooms.Add(room);
@@ -157,9 +166,9 @@ public class GenerateViableFloors : MonoBehaviour
         GameObject[] ladders = upRooms.ToArray();
         foreach (GameObject ladder in ladders)
         {
-            Vector3 raycastStartPos = new Vector3(ladder.transform.position.x, ladder.transform.position.y + (towerBuilder.GetRoomBounds().y) / 2, ladder.transform.position.z);
+            Vector3 raycastStartPos = new Vector3(ladder.transform.position.x, ladder.transform.position.y + (towerBuilder.GetRoomBounds().y) - 1.5f, ladder.transform.position.z);
 
-            Debug.Log("START POS!! " + raycastStartPos + "candy" + ladder.transform.position.y + (towerBuilder.GetRoomBounds().y) / 2 + "shit" + towerBuilder.GetRoomBounds().y);
+            Debug.Log("START POS!! " + raycastStartPos + "candy" + ladder.transform.position.y + (towerBuilder.GetRoomBounds().y - 1.5f) + "shit" + towerBuilder.GetRoomBounds().y);
             ShootRaycasts(raycastStartPos);
         }
         if (ladderCount < upRooms.Count)
@@ -172,6 +181,8 @@ public class GenerateViableFloors : MonoBehaviour
 
     public void Test()
     {
+        inacessibleRooms.Clear();
+        inacessibleRoomsPos.Clear();
         upRooms.Clear();
         ViableFloors();
         Debug.Log("inacessibleRooms count" + inacessibleRooms.Count);
@@ -194,22 +205,22 @@ public class GenerateViableFloors : MonoBehaviour
         }
         return true;
     }
+    public bool IsFloorAccessible(Vector2 pos, GameObject[] badFloors)
+    {
+        Debug.Log("japan lol real" + pos);
+        foreach (GameObject floor in badFloors)
+        {
+            Debug.Log("japan lol real check" + floor.transform.position);
+            if (new Vector2(floor.transform.position.x, floor.transform.position.y) == pos)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public List<GameObject> GetInaccessibleFloors()
     {
-        if (towerBuilder == null)
-        {
-            Debug.Log("naht tower IS NULL");
-            return null;
-        }
-        upRooms.Clear();
-        inacessibleRooms.Clear();
-        inacessibleRoomsPos.Clear();
-        ViableFloors();
-        foreach (GameObject room in inacessibleRooms)
-        {
-            Debug.Log("inacessibleRooms Room: " + room + "pos" + room.transform.position);
-        }
         return inacessibleRooms;
     }
 
