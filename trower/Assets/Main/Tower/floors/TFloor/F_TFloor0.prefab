@@ -397,7 +397,7 @@ GameObject:
   - component: {fileID: 6060174999419140405}
   m_Layer: 19
   m_Name: Wall1
-  m_TagString: EnemyWall
+  m_TagString: RaycastWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1820,6 +1820,7 @@ MonoBehaviour:
   - {fileID: 6260102366307075266}
   - {fileID: 650507986314732552}
   - {fileID: 5803139961541218315}
+  - {fileID: 916892342499584600}
   isPlaced: 0
   floorDestroyed: 0
 --- !u!1 &2149046644681274089
@@ -2543,7 +2544,7 @@ GameObject:
   - component: {fileID: 5756441043232598445}
   m_Layer: 19
   m_Name: Wall1
-  m_TagString: EnemyWall
+  m_TagString: RaycastWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3462,7 +3463,7 @@ GameObject:
   - component: {fileID: 246135033310406366}
   m_Layer: 19
   m_Name: Wall2
-  m_TagString: EnemyWall
+  m_TagString: RaycastWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3581,7 +3582,7 @@ GameObject:
   - component: {fileID: 3754820590573910205}
   m_Layer: 19
   m_Name: Wall1
-  m_TagString: EnemyWall
+  m_TagString: RaycastWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5977,7 +5978,7 @@ GameObject:
   - component: {fileID: 2426339960116992114}
   m_Layer: 19
   m_Name: Wall1
-  m_TagString: EnemyWall
+  m_TagString: RaycastWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6455,7 +6456,7 @@ GameObject:
   - component: {fileID: 4833016526159578945}
   m_Layer: 19
   m_Name: Wall2
-  m_TagString: EnemyWall
+  m_TagString: RaycastWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7983,7 +7984,7 @@ GameObject:
   - component: {fileID: 394542333289330680}
   m_Layer: 19
   m_Name: Wall2
-  m_TagString: EnemyWall
+  m_TagString: RaycastWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8233,7 +8234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 434d1baa79af46b45a0e0efc04957cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyWall: {fileID: 3984106219558316528}
+  enemyWall: {fileID: 4715769224119569001}
   raycastWall: {fileID: 3984106219558316528}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
   strength: 0
@@ -8776,7 +8777,7 @@ GameObject:
   - component: {fileID: 2276976041629592882}
   m_Layer: 19
   m_Name: Wall2
-  m_TagString: EnemyWall
+  m_TagString: RaycastWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9298,6 +9299,10 @@ PrefabInstance:
       value: ladder 1
       objectReference: {fileID: 0}
     - target: {fileID: 5568277604754997457, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5568277604754997457, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -9342,6 +9347,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6714812073786375690, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
+      propertyPath: m_Size.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714812073786375690, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
+      propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714812073786375690, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714812073786375690, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
       value: 6
       objectReference: {fileID: 0}
@@ -9357,7 +9374,8 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2450352279650288183, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6308778929136000990, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
@@ -9368,5 +9386,10 @@ PrefabInstance:
 --- !u!4 &440213368148724620 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6308778929136000990, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
+  m_PrefabInstance: {fileID: 5879091677586314322}
+  m_PrefabAsset: {fileID: 0}
+--- !u!61 &916892342499584600 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 6714812073786375690, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
   m_PrefabInstance: {fileID: 5879091677586314322}
   m_PrefabAsset: {fileID: 0}

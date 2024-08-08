@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         gameManagerScript = gameObject.GetComponent<GameManager>();
-        gameManagerScript.OnSceneChange += OnSceneLoad;
+        gameManagerScript.OnSceneLoaded += OnSceneLoad;
         trapManager = this.gameObject.GetComponent<TrapManager>();
         waveManager = gameObject.GetComponent<WaveManager>();
         waveManager.OnDefensePhaseStart += DefensePhase;

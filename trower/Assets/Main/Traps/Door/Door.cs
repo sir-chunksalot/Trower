@@ -20,7 +20,7 @@ public class Door : MonoBehaviour
     bool canOpen;
     bool smacking;
     float chargeTime;
-    void Start()
+    void Awake()
     {
         canOpen = true;
         trap = dad.GetComponent<Trap>();
@@ -46,8 +46,15 @@ public class Door : MonoBehaviour
         chargeUI.color = chargeColor;
         StartCoroutine(Charge());
         Debug.Log("fuckcum Start charge!");
-
     }
+
+    public void MoveDoor(Vector3 pos)
+    {
+        if (chargeTransform == null) return;
+        Vector3 newChargeSpawn = new Vector3(pos.x + transform.parent.localPosition.x, pos.y + 3, pos.z);
+        chargeSpawnSpot = newChargeSpawn;
+    }
+
 
     public void Smack(object sender, EventArgs e)
     {
@@ -120,27 +127,26 @@ public class Door : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        Debug.Log("FARTDOOR hit something");
         if (collision.gameObject.layer == 6 && smacking) //hero  layer
         {
-            Debug.Log("FARTDOOR hit a hero");
-
+            Hero hero = collision.GetComponent<Hero>();
+            if (hero == null) return;
 
             if (chargeCount >= 1)
             {
-                collision.GetComponent<Hero>().StartSuperFall(chargeCount * 3, true);
+                hero.StartSuperFall(chargeCount * 3, true);
             }
             else if (chargeCount > .50)
             {
-                collision.GetComponent<Hero>().StartSuperFall(chargeCount * 2, false);
+                hero.StartSuperFall(chargeCount * 2, false);
             }
             else if (chargeCount > .10)
             {
-                collision.GetComponent<Hero>().StartSuperFall(-1, false);
+                hero.StartSuperFall(-1, false);
             }
             else
             {
-                collision.GetComponent<Hero>().Stun(chargeCount * 2);
+                hero.Stun(chargeCount * 2);
             }
 
         }

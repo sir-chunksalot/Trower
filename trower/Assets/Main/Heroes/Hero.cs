@@ -27,6 +27,7 @@ public class Hero : MonoBehaviour
     float superFallDir;
     bool isTouchingGround;
     bool isFalling;
+    int fallCount;
     bool isClimbing;
     bool canClimb;
     bool smashBros;
@@ -105,6 +106,9 @@ public class Hero : MonoBehaviour
         {
             if (!isFalling && canFall)
             {
+                fallCount++;
+                if (fallCount < 5) return;
+                fallCount = 0;
                 isFalling = true;
                 UpdateMove();
             }

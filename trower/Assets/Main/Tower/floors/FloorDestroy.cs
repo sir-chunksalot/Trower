@@ -44,7 +44,7 @@ public class FloorDestroy : MonoBehaviour
         rb.gravityScale = 1;
         rb.freezeRotation = false;
         rb.constraints = RigidbodyConstraints2D.None;
-        rb.angularVelocity = Random.Range(0, 180);
+        rb.angularVelocity = Random.Range(-179, 180);
         rb.velocity = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
     }
 

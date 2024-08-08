@@ -54,7 +54,7 @@ public class WaveManager : MonoBehaviour
         heroManager.OnHeroDeath += EnemyDied;
 
         gameManagerScript = gameObject.GetComponent<GameManager>();
-        gameManagerScript.OnSceneChange += OnSceneLoad;
+        gameManagerScript.OnSceneLoaded += OnSceneLoad;
     }
     private void OnSceneLoad(object sender, EventArgs e)
     {

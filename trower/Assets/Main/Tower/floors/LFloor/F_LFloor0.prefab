@@ -383,7 +383,7 @@ GameObject:
   - component: {fileID: 5891273882620667716}
   m_Layer: 19
   m_Name: Wall1
-  m_TagString: EnemyWall
+  m_TagString: RaycastWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1424,6 +1424,7 @@ MonoBehaviour:
   - {fileID: 6931092094179710348}
   - {fileID: 321475420808818626}
   - {fileID: 875773233808994337}
+  - {fileID: 643223262478724154}
   isPlaced: 0
   floorDestroyed: 0
 --- !u!1 &2225655607173559755
@@ -1578,7 +1579,6 @@ MonoBehaviour:
   sprites: []
   isBridge: 0
   colCount: 0
-  active: 0
 --- !u!50 &789994192618985969
 Rigidbody2D:
   serializedVersion: 4
@@ -2020,7 +2020,6 @@ MonoBehaviour:
   sprites: []
   isBridge: 0
   colCount: 0
-  active: 0
 --- !u!50 &7065369281354945664
 Rigidbody2D:
   serializedVersion: 4
@@ -2314,7 +2313,7 @@ GameObject:
   - component: {fileID: 6671832592595994475}
   m_Layer: 19
   m_Name: Wall2
-  m_TagString: EnemyWall
+  m_TagString: RaycastWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2571,7 +2570,6 @@ MonoBehaviour:
   sprites: []
   isBridge: 0
   colCount: 0
-  active: 0
 --- !u!50 &955085024431245334
 Rigidbody2D:
   serializedVersion: 4
@@ -3292,7 +3290,6 @@ MonoBehaviour:
   sprites: []
   isBridge: 0
   colCount: 0
-  active: 0
 --- !u!50 &723847722403202198
 Rigidbody2D:
   serializedVersion: 4
@@ -3701,7 +3698,6 @@ MonoBehaviour:
   sprites: []
   isBridge: 0
   colCount: 0
-  active: 0
 --- !u!50 &3767684004777789997
 Rigidbody2D:
   serializedVersion: 4
@@ -3929,7 +3925,6 @@ MonoBehaviour:
   sprites: []
   isBridge: 0
   colCount: 0
-  active: 0
 --- !u!50 &3150228395836496076
 Rigidbody2D:
   serializedVersion: 4
@@ -4122,7 +4117,6 @@ MonoBehaviour:
   sprites: []
   isBridge: 0
   colCount: 0
-  active: 0
 --- !u!50 &8882141391674053510
 Rigidbody2D:
   serializedVersion: 4
@@ -4695,7 +4689,6 @@ MonoBehaviour:
   sprites: []
   isBridge: 0
   colCount: 0
-  active: 0
 --- !u!50 &3802080791150447530
 Rigidbody2D:
   serializedVersion: 4
@@ -4888,7 +4881,6 @@ MonoBehaviour:
   sprites: []
   isBridge: 0
   colCount: 0
-  active: 0
 --- !u!50 &4014299915684225182
 Rigidbody2D:
   serializedVersion: 4
@@ -5288,7 +5280,7 @@ GameObject:
   - component: {fileID: 3924988975961854098}
   m_Layer: 19
   m_Name: Wall1
-  m_TagString: EnemyWall
+  m_TagString: RaycastWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5658,7 +5650,7 @@ GameObject:
   - component: {fileID: 1365323128965884008}
   m_Layer: 19
   m_Name: Wall2
-  m_TagString: EnemyWall
+  m_TagString: RaycastWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6047,7 +6039,6 @@ MonoBehaviour:
   sprites: []
   isBridge: 0
   colCount: 0
-  active: 0
 --- !u!50 &7088241436025734036
 Rigidbody2D:
   serializedVersion: 4
@@ -6137,7 +6128,7 @@ GameObject:
   - component: {fileID: 575045295692839047}
   m_Layer: 19
   m_Name: Wall1
-  m_TagString: EnemyWall
+  m_TagString: RaycastWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6423,7 +6414,7 @@ GameObject:
   - component: {fileID: 2004061571832456766}
   m_Layer: 19
   m_Name: Wall2
-  m_TagString: EnemyWall
+  m_TagString: RaycastWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6757,7 +6748,6 @@ MonoBehaviour:
   sprites: []
   isBridge: 0
   colCount: 0
-  active: 0
 --- !u!50 &1893318099076440619
 Rigidbody2D:
   serializedVersion: 4
@@ -6950,7 +6940,6 @@ MonoBehaviour:
   sprites: []
   isBridge: 0
   colCount: 0
-  active: 0
 --- !u!50 &444351127950126036
 Rigidbody2D:
   serializedVersion: 4
@@ -7156,6 +7145,10 @@ PrefabInstance:
       value: ladder
       objectReference: {fileID: 0}
     - target: {fileID: 5568277604754997457, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5568277604754997457, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -7200,6 +7193,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6714812073786375690, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
+      propertyPath: m_Size.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714812073786375690, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
+      propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714812073786375690, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714812073786375690, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
       value: 6
       objectReference: {fileID: 0}
@@ -7215,7 +7220,8 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2450352279650288183, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6308778929136000990, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
@@ -7226,5 +7232,10 @@ PrefabInstance:
 --- !u!4 &166553083686112750 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6308778929136000990, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
+  m_PrefabInstance: {fileID: 6179781082444304944}
+  m_PrefabAsset: {fileID: 0}
+--- !u!61 &643223262478724154 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 6714812073786375690, guid: 407b2ffe1f5693d40b2d4bd3455d0779, type: 3}
   m_PrefabInstance: {fileID: 6179781082444304944}
   m_PrefabAsset: {fileID: 0}

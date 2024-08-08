@@ -42,6 +42,7 @@ TagManager:
   - Extension
   - FloorMurderer
   - BridgeWall
+  - RaycastWall
   layers:
   - Default
   - TransparentFX
@@ -63,7 +64,7 @@ TagManager:
   - TowerExtensions
   - Bridge
   - RaycastWalls
-  - 
+  - Ladder
   - 
   - 
   - 

@@ -18,11 +18,12 @@ public class TowerBuilder : MonoBehaviour
     [SerializeField] GameObject door;
     [SerializeField] GameObject sellBomb;
     [SerializeField] GameObject explosionEffect;
+    [SerializeField] GameObject debugThing;
 
     public event EventHandler onTowerPlace;
     public event EventHandler onTowerPlaceLate;
     public event EventHandler onTowerSell;
-    public event EventHandler onBridgeBuild;
+    public event EventHandler onTowerStart;
 
     GameObject currentFloor;
     GameObject sellBombObject;
@@ -33,6 +34,8 @@ public class TowerBuilder : MonoBehaviour
     private List<GameObject> placedFloors = new List<GameObject>(); //LIST OF PLACED INDIVIDUAL FLOORS
     private List<Vector3> placedFloorsPos = new List<Vector3>(); //LIST OF PLACED INDIVIDUAL FLOOR POSISTIONS
     private List<GameObject> floorPapas = new List<GameObject>(); //LIST OF PLACED GROUPED FLOOR TYPES
+    private List<GameObject> debugFloors = new List<GameObject>();
+    private List<GameObject> debugFloorPos = new List<GameObject>();
     //private List<GameObject> trapTypes = new List<GameObject>();
     private List<GameObject> potentialFloors = new List<GameObject>();//potential spots a floor could spawn (saved as instantiated gameobjects in valid spots, i did this for debugging) ||CLEARED EVERY TOWER PLACE
     private List<Vector3> mapPotentialFloors = new List<Vector3>();//potential spots a floor could spawn (saved as instantiated gameobjects in valid spots, i did this for debugging) ||CLEARED ON LEVEL COMPLETION
@@ -56,7 +59,8 @@ public class TowerBuilder : MonoBehaviour
     private void Awake()
     {
         gameManager = gameObject.GetComponent<GameManager>();
-        gameManager.OnSceneChange += OnSceneLoad;
+        gameManager.OnSceneLoaded += OnSceneLoad;
+        gameManager.OnSceneUnloaded += OnSceneUnloaded;
         floorSpawnZ = 10;
     }
     private void Start()
@@ -69,7 +73,10 @@ public class TowerBuilder : MonoBehaviour
         ladderType = 2;
         cameraController = Camera.main.GetComponent<CameraController>();
     }
+    public void OnSceneUnloaded(object sender, EventArgs e)
+    {
 
+    }
     public void OnSceneLoad(object sender, EventArgs e)
     {
         placedFloorsPos.Clear();
@@ -87,22 +94,17 @@ public class TowerBuilder : MonoBehaviour
             foreach (Transform kid in buildDaddy.transform)
             {
                 floorPapas.Add(kid.gameObject);
+
+
                 foreach (Transform floor in kid)
                 {
                     AddPlacedFloor(floor.gameObject);
                 }
-                Debug.Log("Added Floor:" + kid.gameObject);
+                onTowerPlace.Invoke(kid.gameObject, EventArgs.Empty);
             }
         }
-
-        if (onTowerPlace != null)
-        {
-            onTowerPlace.Invoke(gameObject, EventArgs.Empty);
-            Debug.Log("OnTowerPlaced event invoked.");
-        }
-
         GenerateMapSpawns();
-
+        onTowerStart?.Invoke(gameObject, EventArgs.Empty);
     }
 
     public void Place(InputAction.CallbackContext context) //called when mouse is released
@@ -119,6 +121,7 @@ public class TowerBuilder : MonoBehaviour
     }
     public void PlaceBuild(GameObject build)
     {
+        GameObject newBuild = build;
         if (placingFloor)
         {
             nextFloorPos = ClosestTo(currentFloor.transform.position, (GameObject[])potentialFloors.ToArray().Clone(), true);
@@ -135,7 +138,7 @@ public class TowerBuilder : MonoBehaviour
                 Debug.Log("HELLOW BABY");
                 uiManager.UseCard(floorName, true);
                 nextFloorPos = new Vector3(nextFloorPos.x, nextFloorPos.y, 10);
-                GameObject newBuild = Instantiate(build, nextFloorPos, Quaternion.identity, buildDaddy.transform);
+                newBuild = Instantiate(build, nextFloorPos, Quaternion.identity, buildDaddy.transform);
                 newBuild.GetComponent<Floor>().PlaceFloor();
                 SetAlpha(newBuild, 1);
                 foreach(Transform floor in newBuild.transform)
@@ -143,6 +146,8 @@ public class TowerBuilder : MonoBehaviour
                     AddPlacedFloor(floor.gameObject);
                     Debug.Log("owen klanke is sleepy" + floor);
                     floor.gameObject.name = floor.gameObject.name + "#" + UnityEngine.Random.Range(0, 10000);
+
+                    floor.transform.position = new Vector3(Mathf.Round(floor.transform.position.x), Mathf.Round(floor.transform.position.y), floor.transform.position.z);
                 }
                 particleSpawnPos = newBuild.transform.position;
             }
@@ -162,7 +167,7 @@ public class TowerBuilder : MonoBehaviour
             Debug.Log("Mission Failed. We'll get em' next time (failed to build structure)");
         }
 
-        Cleanup();
+        Cleanup(newBuild);
         StartCoroutine(PlaceDelay());
     }
 
@@ -201,7 +206,7 @@ public class TowerBuilder : MonoBehaviour
     private IEnumerator PlaceDelay()
     {
         canPlace = false;
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.3f);
         canPlace = true;
     }
 
@@ -210,7 +215,7 @@ public class TowerBuilder : MonoBehaviour
         if(placingFloor)
         {
             placingFloor = false;
-            Cleanup();
+            Cleanup(null);
         }
     }
 
@@ -360,8 +365,9 @@ public class TowerBuilder : MonoBehaviour
             Debug.Log("ERROR! TowerBuilder tried to destroy " + floor + " but it does not exist.");
         }
 
-        onTowerSell?.Invoke(gameObject, EventArgs.Empty);
-        Cleanup();
+        onTowerSell?.Invoke(floor, EventArgs.Empty);
+        Cleanup(floor);
+        DestroyPotentialFloors();
     }
 
     private IEnumerator DestroyExplosionEffect(GameObject explosion)
@@ -492,7 +498,7 @@ public class TowerBuilder : MonoBehaviour
     {
         if(cleanup)
         {
-            if(cleanupCount > 8) //WE LOVE 8!!!!
+            if(cleanupCount > 16) //WE LOVE 16!!!!
             {
                 Debug.Log("we gotta late update in here fellas");
                 onTowerPlaceLate?.Invoke(gameObject, EventArgs.Empty);
@@ -625,9 +631,18 @@ public class TowerBuilder : MonoBehaviour
         return placedFloorsPos;
     }
 
-    public void DebugFloorLocations()
+    public void DebugPotentialFloorLocations()
     {
-        Debug.Log("-DEV- floor locations. floor count: " + GetPotentialFloorsPos().Count);
+        foreach(Vector3 placedFloor in placedFloorsPos)
+        {
+            Debug.Log("-DEV- placedFloor pos" + placedFloor);
+        }
+        foreach (Vector3 mapSpawn in mapPotentialFloors)
+        {
+            Debug.Log("-DEV- mapSpawn pos" + mapSpawn);
+        }
+
+        Debug.Log("-DEV- potential floor locations. floor count: " + GetPotentialFloorsPos().Count);
         if (potentialFloors.Count >= 1)
         {
             DestroyPotentialFloors();
@@ -635,6 +650,48 @@ public class TowerBuilder : MonoBehaviour
         else
         {
             NewPotentialFloors();
+        }
+    }
+
+    public void DebugPlacedFloorLocations()
+    {
+        Debug.Log("-DEV- floor locations. floor count: " + debugFloors.Count);
+        if (debugFloors.Count >= 1)
+        {
+            foreach (GameObject floor in debugFloors)
+            {
+                Destroy(floor);
+            }
+            debugFloors.Clear();
+        }
+        else
+        {
+            foreach(GameObject floor in placedFloors)
+            {
+                GameObject debugFloor = Instantiate(debugThing, new Vector3(floor.transform.position.x, floor.transform.position.y, Camera.main.transform.position.z + 1), Quaternion.identity);
+                debugFloors.Add(debugFloor);
+            }
+        }
+    }
+
+    public void DebugPlacedFloorPosLocations()
+    {
+        Debug.Log("-DEV- floor pos. floor count: " + debugFloors.Count);
+        if (debugFloorPos.Count >= 1)
+        {
+            foreach (GameObject floor in debugFloorPos)
+            {
+                Destroy(floor);
+            }
+            debugFloorPos.Clear();
+        }
+        else
+        {
+            foreach (Vector3 floor in placedFloorsPos)
+            {
+                GameObject debugFloor = Instantiate(debugThing, new Vector3(floor.x, floor.y, Camera.main.transform.position.z + 1), Quaternion.identity);
+                debugFloorPos.Add(debugFloor);
+            }
         }
     }
 
@@ -669,27 +726,21 @@ public class TowerBuilder : MonoBehaviour
         return placingFloor;
     }
 
-
-    public void BridgeBuilt()
-    {
-        onBridgeBuild?.Invoke(gameObject, EventArgs.Empty);
-    }
     public void AddPlacedFloor(GameObject floor) //used by other scripts whenever a floor is spawned in the gameworld without this scripts permission. its added to the list so other scripts can see it 
     {
-        Debug.Log("This floor has been added to the scene!" + floor);
         placedFloors.Add(floor);
-        placedFloorsPos.Add(floor.transform.position);
+        placedFloorsPos.Add(new Vector3(Mathf.Round(floor.transform.position.x), Mathf.Round(floor.transform.position.y), Mathf.Round(floor.transform.position.z)));
         if (highestPoint < floor.transform.position.y)
         {
             highestPoint = floor.transform.position.y;
         }
     }
 
-    private void Cleanup()
+    private void Cleanup(GameObject floor)
     {
         DestroyPotentialFloors();
 
-        onTowerPlace?.Invoke(gameObject, EventArgs.Empty);
+        onTowerPlace?.Invoke(floor, EventArgs.Empty);
         cleanup = true;
     }
 

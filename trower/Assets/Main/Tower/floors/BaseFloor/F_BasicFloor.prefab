@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 1824402755713009799}
   m_Layer: 19
   m_Name: Wall2
-  m_TagString: EnemyWall
+  m_TagString: RaycastWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -751,7 +751,6 @@ MonoBehaviour:
   sprites: []
   isBridge: 0
   colCount: 0
-  active: 0
 --- !u!50 &7633351138965333596
 Rigidbody2D:
   serializedVersion: 4
@@ -1325,7 +1324,6 @@ MonoBehaviour:
   sprites: []
   isBridge: 0
   colCount: 0
-  active: 0
 --- !u!50 &6887167106774281841
 Rigidbody2D:
   serializedVersion: 4
@@ -1518,7 +1516,6 @@ MonoBehaviour:
   sprites: []
   isBridge: 0
   colCount: 0
-  active: 0
 --- !u!50 &7364456398486527422
 Rigidbody2D:
   serializedVersion: 4
@@ -2067,7 +2064,6 @@ MonoBehaviour:
   sprites: []
   isBridge: 0
   colCount: 0
-  active: 0
 --- !u!50 &5848817945084060643
 Rigidbody2D:
   serializedVersion: 4
@@ -2122,7 +2118,7 @@ GameObject:
   - component: {fileID: 1094604308309391006}
   m_Layer: 19
   m_Name: Wall1
-  m_TagString: EnemyWall
+  m_TagString: RaycastWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

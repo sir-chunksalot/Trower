@@ -347,7 +347,7 @@ MonoBehaviour:
   sprites:
   - {fileID: 5309288867815874416}
   isBridge: 0
-  active: 0
+  colCount: 0
 --- !u!50 &8253593560583256561
 Rigidbody2D:
   serializedVersion: 4
@@ -525,7 +525,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 1
-  active: 0
+  colCount: 0
 --- !u!50 &1295688216912364600
 Rigidbody2D:
   serializedVersion: 4
@@ -773,7 +773,7 @@ MonoBehaviour:
   - {fileID: 1913559839271840804}
   - {fileID: 723154631753026107}
   isBridge: 0
-  active: 0
+  colCount: 0
 --- !u!50 &5106356088212369579
 Rigidbody2D:
   serializedVersion: 4
@@ -1500,7 +1500,7 @@ MonoBehaviour:
   - {fileID: 6138004118856327986}
   - {fileID: 8774237692355649663}
   isBridge: 0
-  active: 0
+  colCount: 0
 --- !u!50 &7574001721807621412
 Rigidbody2D:
   serializedVersion: 4
@@ -1675,7 +1675,7 @@ Transform:
   m_GameObject: {fileID: 7238261064063437891}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.1, z: 10}
+  m_LocalPosition: {x: 0, y: -1.1, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1797,7 +1797,7 @@ MonoBehaviour:
   sprites:
   - {fileID: 8900838082635596532}
   isBridge: 0
-  active: 0
+  colCount: 0
 --- !u!50 &7117820999367466100
 Rigidbody2D:
   serializedVersion: 4
@@ -1837,9 +1837,9 @@ GameObject:
   - component: {fileID: 6021458642275631750}
   - component: {fileID: 9201992000119580730}
   - component: {fileID: 3917505864611139827}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: FloorEnemyCol
-  m_TagString: Floor
+  m_TagString: EnemyFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1866,7 +1866,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7440774218977977953}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -1902,7 +1902,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 1, y: 2.1}
   m_EdgeRadius: 0
 --- !u!50 &9201992000119580730
 Rigidbody2D:
@@ -2178,7 +2178,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 1
-  active: 0
+  colCount: 0
 --- !u!50 &3676933881922870630
 Rigidbody2D:
   serializedVersion: 4
@@ -2260,6 +2260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f4ac5ba8c56e24682415bfc359387c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activateMe: []
   isPlaced: 0
   floorDestroyed: 0
 --- !u!1 &8344653618825716615

@@ -4,7 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public event EventHandler OnSceneChange;
+    public event EventHandler OnSceneLoaded;
+    public event EventHandler OnSceneUnloaded;
 
     LevelLoader levelLoader;
     LevelDetails levelDetails;
@@ -19,7 +20,8 @@ public class GameManager : MonoBehaviour
     private bool first;
     private void OnEnable()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneLoaded += OnNewScene;
+        SceneManager.sceneUnloaded += OnLeaveScene;
     }
 
     private void Awake()
@@ -45,7 +47,7 @@ public class GameManager : MonoBehaviour
         cashManager = gameObject.GetComponent<CashManager>();
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    void OnNewScene(Scene scene, LoadSceneMode mode)
     {
         DontDestroyOnLoad(this.gameObject);
 
@@ -53,8 +55,11 @@ public class GameManager : MonoBehaviour
         levelLoader = GameObject.FindGameObjectWithTag("LevelLoader").GetComponent<LevelLoader>();
         Debug.Log("LevelDetails" + levelDetails);
 
-        OnSceneChange?.Invoke(gameObject, EventArgs.Empty);
-
+        OnSceneLoaded?.Invoke(gameObject, EventArgs.Empty);
+    }
+    void OnLeaveScene(Scene scene)
+    {
+        OnSceneUnloaded?.Invoke(gameObject, EventArgs.Empty);
     }
 
     public void UnlockItem(string item)
@@ -84,7 +89,7 @@ public class GameManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded -= OnNewScene;
     }
 
 }

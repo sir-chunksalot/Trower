@@ -39,6 +39,7 @@ public class Crossbow : MonoBehaviour
         reset = true;
     }
 
+
     private IEnumerator ShootDelay()
     {
         yield return new WaitForSeconds(1.25f);

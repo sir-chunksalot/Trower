@@ -33,22 +33,32 @@ public class Arrow : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.layer == 6)
         {
-            //collision.gameObject.GetComponent<Hero>().ChangeHealth(-10, false);
+            Hero hero = collision.gameObject.GetComponent<Hero>();
+            if(hero != null)
+            {
+                hero.KillMe();
+            } 
+            
         }
-        else if(collision.gameObject.tag == "EnemyWall")
+        else if (collision.gameObject.tag == "EnemyWall")
         {
             rb.velocity = Vector2.zero;
             anim.enabled = false;
             col.enabled = false;
         }
-        else if(collision.gameObject.tag == "EnemyFloor")
+        else if (collision.gameObject.tag == "EnemyFloor")
         {
             rb.velocity = Vector2.zero;
             anim.SetTrigger("HitFloor");
             col.enabled = false;
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+
     }
 
     private IEnumerator LifeSpan()

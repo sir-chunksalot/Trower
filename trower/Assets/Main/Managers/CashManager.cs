@@ -10,7 +10,7 @@ public class CashManager : MonoBehaviour
         waveManager = gameObject.GetComponent<WaveManager>();
         Debug.Log("adam 12" + waveManager);
         GameManager gameManager = gameObject.GetComponent<GameManager>();
-        gameManager.OnSceneChange += OnSceneLoad;
+        gameManager.OnSceneLoaded += OnSceneLoad;
         waveManager.OnNewWave += GainCoins;
     }
 

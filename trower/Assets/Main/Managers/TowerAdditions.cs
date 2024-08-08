@@ -22,7 +22,7 @@ public class TowerAdditions : MonoBehaviour
     void Start()
     {
         gameManager = gameObject.GetComponent<GameManager>();
-        gameManager.OnSceneChange += OnSceneLoad;
+        gameManager.OnSceneLoaded += OnSceneLoad;
         towerBuilder = gameObject.GetComponent<TowerBuilder>();
         genViableFloors = gameObject.GetComponent<GenerateViableFloors>();
         towerBuilder.onTowerPlace += CreateAdditions;
@@ -52,7 +52,6 @@ public class TowerAdditions : MonoBehaviour
     private void CreateAdditions(object sender, EventArgs e)
     {
         StopAllCoroutines();
-        Debug.Log("THE LISTS" + "bridgePosCount" + bridgesPos.Count + "bridges count " + bridges.Count + "startFloors count" + bridgesBeginFloor.Count);
         GameObject[] placedFloors = CopyToArray(towerBuilder.GetPlacedFloors());
         int index = 0;
         Vector3[] placedFloorsPos = CopyToArray(towerBuilder.GetPlacedFloorsPos());
@@ -90,20 +89,7 @@ public class TowerAdditions : MonoBehaviour
                 }
             }
         }
-        foreach(GameObject bridge in bridges)
-        {
-            if (bridge == null) continue;
-            GameObject[] currentFrills = CopyToArray(addedFrills);
-            foreach (GameObject additions in currentFrills)
-            {
-                if (additions == null) continue;
-                if(Vector2.Distance(additions.transform.position, bridge.transform.position) < 7)
-                {
-                    Destroy(additions);
-                    addedFrills.Remove(additions);
-                }
-            }
-        }
+
     }
 
     private void DeleteOldBridges()
@@ -152,6 +138,7 @@ public class TowerAdditions : MonoBehaviour
         bridgesPos = validBridgePos;
         bridgeEndFloor = validBridgeEnds;
         CheckValidBridgeSpawns();
+        MurderStuffNearBridge();
     }
 
     private void CheckValidBridgeSpawns()
@@ -201,13 +188,24 @@ public class TowerAdditions : MonoBehaviour
         float dir = -1;
         GameObject endFloorObj = towerBuilder.GetPlacedFloor(endFloor);
 
-        if (Mathf.Abs(startFloor.x - endFloor.x) == 10) return;
-
         if (goLeft) dir = 1;
-        Debug.Log("naht TRIED TO MAKE BRIDGE" + "endfloor" + endFloor + "startfloor" + startFloor + "isLeft" + goLeft);
+       
         while (!bridgeComplete && count < 10)
         {
-            if (endFloor.x + (towerBuilder.GetRoomBounds().x * dir) == spawnPos.x || endFloor.x - (towerBuilder.GetRoomBounds().x * dir) == spawnPos.x) bridgeComplete = true;
+            Debug.Log("log that shiz" + (Mathf.Floor(endFloor.x + (towerBuilder.GetRoomBounds().x * dir)) == Mathf.Floor(spawnPos.x) || Mathf.Floor(endFloor.x - (towerBuilder.GetRoomBounds().x * dir)) == Mathf.Floor(spawnPos.x)));
+            if(count > 8)
+            {
+                Debug.Log("naht TRIED TO MAKE BRIDGE" + "endfloor" + endFloor + "startfloor" + startFloor + "isLeft" + goLeft + "fart" + (towerBuilder.GetRoomBounds().x * dir) + "shit" + (Mathf.Floor(endFloor.x + (towerBuilder.GetRoomBounds().x * dir)) == Mathf.Floor(spawnPos.x)) + "cum" + spawnPos.x);
+            }
+            if (count == 0)
+            {
+                Debug.Log("naht TRIED TO MAKE BRIDGE FIRSTFIRSTFIRST" + "endfloor" + endFloor + "startfloor" + startFloor + "isLeft" + goLeft + "fart" + (towerBuilder.GetRoomBounds().x * dir) + "shit" + (Mathf.Floor(endFloor.x + (towerBuilder.GetRoomBounds().x * dir)) == Mathf.Floor(spawnPos.x)) + "cum" + spawnPos.x);
+            }
+            if ((Mathf.Floor(endFloor.x + (towerBuilder.GetRoomBounds().x * dir)) == Mathf.Floor(spawnPos.x) || Mathf.Floor(endFloor.x - (towerBuilder.GetRoomBounds().x * dir)) == Mathf.Floor(spawnPos.x)))
+            {
+                bridgeComplete = true;
+                continue;
+            }
             count++;
             spawnPos -= new Vector3(towerBuilder.GetRoomBounds().x, 0, 0) * dir;
             if (bridgesPos.Contains(spawnPos) || towerBuilder.GetPlacedFloorsPos().Contains(spawnPos))
@@ -219,31 +217,46 @@ public class TowerAdditions : MonoBehaviour
             {
                 bridgesPos.Add(spawnPos);
                 bridgeCount++;
-                StartCoroutine(InstantiateBridge(spawnPos, currentFloor, endFloorObj));
+                InstantiateBridge(spawnPos, currentFloor, endFloorObj);
                 Debug.Log("naht spawned bridge" + "spawnPos" + spawnPos + "count" + count);
             }
         }
 
 
         Debug.Log("naht end");
-        //if(bridgeCount >= 1)
-        //{
-        //    towerBuilder.BridgeBuilt();
-        //}
 
     }
 
-    private IEnumerator InstantiateBridge(Vector3 spawnPos, GameObject startFloor, GameObject endFloor)
+    private void InstantiateBridge(Vector3 spawnPos, GameObject startFloor, GameObject endFloor)
     {
         Instantiate(smokeEffect, spawnPos, Quaternion.identity);
-        yield return new WaitForSeconds(.2f);
         GameObject newBridge = Instantiate(bridge, spawnPos, Quaternion.identity, buildDaddy.transform);
         endFloor.transform.parent.GetComponent<Floor>().AddFollower(newBridge);
         startFloor.transform.parent.GetComponent<Floor>().AddFollower(newBridge);
         bridges.Add(newBridge);
         bridgesBeginFloor.Add(startFloor);
         bridgeEndFloor.Add(endFloor);
+        MurderStuffNearBridge();
+    }
 
+
+    private void MurderStuffNearBridge()
+    {
+        foreach (GameObject bridge in bridges)
+        {
+            if (bridge == null) continue;
+            GameObject[] currentFrills = CopyToArray(addedFrills);
+            foreach (GameObject additions in currentFrills)
+            {
+                if (additions == null) continue;
+                if (Vector2.Distance(additions.transform.position, bridge.transform.position) < 5.5f)
+                {
+                    Destroy(additions);
+                    Debug.Log("bridge murdered frill");
+                    addedFrills.Remove(additions);
+                }
+            }
+        }
     }
 
     public void DebugSpawnAdditions()
@@ -276,62 +289,63 @@ public class TowerAdditions : MonoBehaviour
     private void RoofExtensions(Vector3 floorPos, GameObject currentFloor)
     {
         Vector3[] floorLocations = CopyToArray(towerBuilder.GetPlacedFloorsPos());
-
+        
         float yOffSet = 3.07f;
         float xOffSet = 5;
-        bool canPlace = false;
         Vector3 spawnPos = new Vector3();
         Vector3 sideFloorPos = new Vector3();
         foreach (Vector3 pos in floorLocations)
         {
             if (floorPos.y == pos.y && floorPos.x == pos.x + 10)
             {
-                canPlace = true;
                 sideFloorPos = pos;
+                GameObject sideFloor = towerBuilder.GetPlacedFloor(sideFloorPos);
                 spawnPos = new Vector3(floorPos.x - xOffSet, floorPos.y + yOffSet, floorPos.z + .5f);
+
+                PlaceRoofExtension(currentFloor, sideFloor, spawnPos);
             }
             if (floorPos.y == pos.y && floorPos.x == pos.x - 10)
             {
-                canPlace = true;
                 sideFloorPos = pos;
+                GameObject sideFloor = towerBuilder.GetPlacedFloor(sideFloorPos);
                 spawnPos = new Vector3(floorPos.x + xOffSet, floorPos.y + yOffSet, floorPos.z + .5f);
+
+                PlaceRoofExtension(currentFloor, sideFloor, spawnPos);
             }
         }
+    }
 
+    private void PlaceRoofExtension(GameObject currentFloor, GameObject sideFloor, Vector3 spawnPos)
+    {
         foreach (GameObject frills in addedFrills)
         {
             if (frills != null && frills.transform.position == spawnPos)
             {
-                canPlace = false;
+                return;
             }
         }
+        Floor floor1 = currentFloor.transform.parent.GetComponent<Floor>();
+        Floor floor2 = sideFloor.transform.parent.GetComponent<Floor>();
+        GameObject newBuild = Instantiate(roofExtension, spawnPos, Quaternion.identity, buildDaddy.transform);
+        Debug.Log("SPAWNPOS FOR ROOF EXTENSION" + spawnPos);
+        floor1.AddFollower(newBuild);
+        floor2.AddFollower(newBuild);
 
-        GameObject sideFloor = towerBuilder.GetPlacedFloor(sideFloorPos);
-       
+        newBuild.GetComponent<SpriteRenderer>().color = currentFloor.GetComponentInChildren<SpriteRenderer>().color;
 
-        if (canPlace)
+        addedFrills.Add(newBuild);
+
+        if (spawnPos.y - 6.14f > 0)
         {
-            Floor floor1 = currentFloor.transform.parent.GetComponent<Floor>();
-            Floor floor2 = sideFloor.transform.parent.GetComponent<Floor>();
-            GameObject newBuild = Instantiate(roofExtension, spawnPos, Quaternion.identity, buildDaddy.transform);
-            floor1.AddFollower(newBuild);
-            floor2.AddFollower(newBuild);
+            GameObject newBuild2 = Instantiate(roofExtension, spawnPos - new Vector3(0, 6.14f), Quaternion.identity, buildDaddy.transform);
+            Debug.Log("SPAWNPOS FOR ROOF EXTENSION" + (spawnPos - new Vector3(0, 6.14f)));
+            floor1.AddFollower(newBuild2);
+            floor2.AddFollower(newBuild2);
 
-            newBuild.GetComponent<SpriteRenderer>().color = currentFloor.GetComponentInChildren<SpriteRenderer>().color;
+            newBuild2.GetComponent<SpriteRenderer>().color = currentFloor.GetComponentInChildren<SpriteRenderer>().color;
+            newBuild2.GetComponent<SpriteRenderer>().flipY = true;
 
-            addedFrills.Add(newBuild);
-
-            if (spawnPos.y - 6.14f > 0)
-            {
-                GameObject newBuild2 = Instantiate(roofExtension, spawnPos - new Vector3(0, 6.14f), Quaternion.identity, buildDaddy.transform);
-                floor1.AddFollower(newBuild2);
-                floor2.AddFollower(newBuild2);
-
-                newBuild2.GetComponent<SpriteRenderer>().color = currentFloor.GetComponentInChildren<SpriteRenderer>().color;
-                newBuild2.GetComponent<SpriteRenderer>().flipY = true;
-
-                addedFrills.Add(newBuild2);
-            }
+            addedFrills.Add(newBuild2);
         }
     }
 

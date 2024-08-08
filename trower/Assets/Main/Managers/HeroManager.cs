@@ -33,12 +33,13 @@ public class HeroManager : MonoBehaviour
     List<Vector2> delay;
     List<bool> cooldownTracker;
     bool finalWave;
+    int heroCount;
     int killCount;
 
     private void Awake()
     {
         gameManagerScript = gameObject.GetComponent<GameManager>();
-        gameManagerScript.OnSceneChange += OnSceneLoad;
+        gameManagerScript.OnSceneLoaded += OnSceneLoad;
         waveManager = gameObject.GetComponent<WaveManager>();
         waveManager.OnDefensePhaseStart += StopSpawning;
         waveManager.OnNewWave += StartSpawning;
@@ -276,6 +277,7 @@ public class HeroManager : MonoBehaviour
         Vector3 spawnpos = spawnSpots[spawnDoor].transform.position;
 
         GameObject newHero = Instantiate(hero, spawnpos, Quaternion.identity, heroDaddy.transform);
+        newHero.GetComponent<SpriteRenderer>().sortingOrder = heroCount;
 
         SpawnSpot spawnSpot = spawnSpots[spawnDoor].GetComponent<SpawnSpot>();
         Hero heroScript = newHero.GetComponent<Hero>();
@@ -299,7 +301,7 @@ public class HeroManager : MonoBehaviour
         {
             SpawnHero(hero, minDelay, maxDelay, newGroupSize);
         }
-
+        heroCount++;
 
     }
 

@@ -372,7 +372,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
-  active: 0
+  colCount: 0
 --- !u!61 &153769589
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2173,6 +2173,7 @@ MonoBehaviour:
   hideProgressbar: 0
   hideBuildMenu: 0
   hideCoinCount: 0
+  useDoor: 1
   trapDaddy: {fileID: 1685589561}
   roundDaddy: {fileID: 1166054892}
   spawnSpots:
@@ -2884,7 +2885,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1077815400}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: BuildDad
   m_TagString: BuildDaddy
   m_Icon: {fileID: 0}
@@ -3216,7 +3217,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
-  active: 0
+  colCount: 0
 --- !u!61 &1233217520
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3496,6 +3497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f4ac5ba8c56e24682415bfc359387c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activateMe: []
   isPlaced: 1
   floorDestroyed: 0
 --- !u!1 &1408937031
@@ -3579,7 +3581,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
-  active: 0
+  colCount: 0
 --- !u!61 &1408937035
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3806,7 +3808,7 @@ MonoBehaviour:
   strength: 0
   sprites: []
   isBridge: 0
-  active: 0
+  colCount: 0
 --- !u!61 &1435091538
 BoxCollider2D:
   m_ObjectHideFlags: 0

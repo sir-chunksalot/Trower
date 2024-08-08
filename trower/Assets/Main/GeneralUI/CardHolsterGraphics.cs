@@ -227,8 +227,6 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
     private void UpdateCount(int charge)
     {
         count += charge;
-        Debug.Log("WE ARE WE ARE " + gameObject + activeSprite);
-        Debug.Log("PHASE" + activeSprite.Length);
         chargeImage.sprite = activeSprite[count];
     }
 

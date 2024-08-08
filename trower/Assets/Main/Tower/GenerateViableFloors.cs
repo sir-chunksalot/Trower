@@ -7,15 +7,17 @@ public class GenerateViableFloors : MonoBehaviour
     [SerializeField] LayerMask layerMask;
     List<GameObject> upRooms;
     List<GameObject> inacessibleRooms;
+    List<GameObject> totalRooms;
     List<Vector3> inacessibleRoomsPos;
     TowerBuilder towerBuilder;
+    int safetyCount;
 
     public event EventHandler onFinishedScan;
     void Start()
     {
         upRooms = new List<GameObject>();
-        Debug.Log("naht initialized");
         inacessibleRooms = new List<GameObject>();
+        totalRooms = new List<GameObject>();
         inacessibleRoomsPos = new List<Vector3>();
         towerBuilder = gameObject.GetComponent<TowerBuilder>();
         towerBuilder.onTowerPlaceLate += GenViableFloors;
@@ -24,6 +26,8 @@ public class GenerateViableFloors : MonoBehaviour
     {
         inacessibleRooms.Clear();
         inacessibleRoomsPos.Clear();
+        totalRooms.Clear();
+        safetyCount = 0;
         upRooms.Clear();
         ViableFloors();
     }
@@ -39,18 +43,16 @@ public class GenerateViableFloors : MonoBehaviour
         Vector2 lefttWallPos = new Vector2(-100 + startPos.x, 0);
         foreach (RaycastHit2D hit in hitsRight)
         {
-            if (hit.collider.gameObject.tag == "EnemyWall" && !foundWall)
+            if (hit.collider.gameObject.tag == "RaycastWall" && !foundWall)
             {
                 Debug.Log("right hit collision" + hit.collider.gameObject + " " + hit.collider.gameObject.tag + " " + hit.collider.gameObject.transform.parent.gameObject.transform.parent.transform.parent.name);
                 hits.Add(hit);
                 foundWall = true;
                 rightWallPos = hit.transform.position;
             }
-            if(hit.collider.gameObject.tag == "BridgeWall" && !foundWall)
+            else if(hit.collider.gameObject.tag == "Wall" && !foundWall)
             {
                 hits.Add(hit);
-                foundWall = true;
-                rightWallPos = hit.transform.position;
             }
             else if (hit.collider.gameObject.tag == "BottomOfLadder")
             {
@@ -74,18 +76,16 @@ public class GenerateViableFloors : MonoBehaviour
         foundWall = false;
         foreach (RaycastHit2D hit in hitsLeft) //confirms that there isnt a wall seperating this ladder and the start pos
         {
-            if (hit.collider.gameObject.tag == "EnemyWall" && !foundWall)
+            if (hit.collider.gameObject.tag == "RaycastWall" && !foundWall)
             {
                 Debug.Log("left hit collision" + hit.collider.gameObject + " " + hit.collider.gameObject.tag + " " + hit.collider.gameObject.transform.parent.gameObject.transform.parent.transform.parent.name);
                 hits.Add(hit);
                 foundWall = true;
                 lefttWallPos = hit.transform.position;
             }
-            if (hit.collider.gameObject.tag == "BridgeWall" && !foundWall)
+            else if (hit.collider.gameObject.tag == "Wall" && !foundWall)
             {
                 hits.Add(hit);
-                foundWall = true;
-                lefttWallPos = hit.transform.position;
             }
             else if (hit.collider.gameObject.tag == "BottomOfLadder")
             {
@@ -121,26 +121,20 @@ public class GenerateViableFloors : MonoBehaviour
         {
             if (hit.collider != null)
             {
+                GameObject room = hit.collider.gameObject.transform.parent.transform.parent.gameObject;
                 if (foundLadder == false)
                 {
-                    GameObject room = this.gameObject; //default value
-                    if (hit.collider.gameObject.tag == "BridgeWall")
-                    {
-                        Vector3 floorPos = towerBuilder.ClosestTo(hit.collider.transform.position, towerBuilder.GetPlacedFloors().ToArray(), false);
-                        room = towerBuilder.GetPlacedFloor(floorPos);
-                    }
-                    else
-                    {
-                        room = hit.collider.gameObject.transform.parent.transform.parent.gameObject;
-                    }
-
                     if (!inacessibleRoomsPos.Contains(room.transform.position))
                     {
                         inacessibleRooms.Add(room);
                         inacessibleRoomsPos.Add(room.transform.position);
                     }
-
                 }
+                if (!totalRooms.Contains(room))
+                {
+                    totalRooms.Add(room);
+                }
+                
 
                 Debug.Log(hit.transform.position.x + "hit here" + transform.TransformDirection(Vector3.right) * Mathf.Sign(hit.transform.position.x - startPos.x) * hit.distance);
                 Debug.DrawRay(startPos, transform.TransformDirection(Vector3.right) * Mathf.Sign(hit.transform.position.x - startPos.x) * hit.distance, color, 2);
@@ -159,27 +153,23 @@ public class GenerateViableFloors : MonoBehaviour
 
     private void ViableFloors()
     {
-        int ladderCount = upRooms.Count;
-        if (ladderCount == 0)
+        GameObject[] towerBuilderFloors = (GameObject[])towerBuilder.GetPlacedFloors().ToArray().Clone();
+        safetyCount++;
+        foreach (GameObject floors in towerBuilderFloors)
         {
-            Vector3 raycastStartPos = Vector3.zero;
-            ShootRaycasts(raycastStartPos);
+            if (!totalRooms.Contains(floors))
+            {
+                Vector3 raycastStartPos = new Vector3(floors.transform.position.x, floors.transform.position.y - 1, floors.transform.position.z);
+                ShootRaycasts(raycastStartPos);
+            }
         }
-        GameObject[] ladders = upRooms.ToArray();
-        foreach (GameObject ladder in ladders)
-        {
-            Vector3 raycastStartPos = new Vector3(ladder.transform.position.x, ladder.transform.position.y + (towerBuilder.GetRoomBounds().y) - 1.5f, ladder.transform.position.z);
-
-            Debug.Log("START POS!! " + raycastStartPos + "candy" + ladder.transform.position.y + (towerBuilder.GetRoomBounds().y - 1.5f) + "shit" + towerBuilder.GetRoomBounds().y);
-            ShootRaycasts(raycastStartPos);
-        }
-        if (ladderCount < upRooms.Count)
+        if (totalRooms.Count < towerBuilderFloors.Length && safetyCount < 100)
         {
             ViableFloors();
         }
         else
         {
-            Debug.Log("FINISHED SCAN!!!");
+            Debug.Log("FINISHED SCAN!!!" + safetyCount);
             onFinishedScan?.Invoke(gameObject, EventArgs.Empty);
         }
     }
@@ -188,6 +178,8 @@ public class GenerateViableFloors : MonoBehaviour
     {
         inacessibleRooms.Clear();
         inacessibleRoomsPos.Clear();
+        totalRooms.Clear();
+        safetyCount = 0;
         upRooms.Clear();
         ViableFloors();
         Debug.Log("inacessibleRooms count" + inacessibleRooms.Count);

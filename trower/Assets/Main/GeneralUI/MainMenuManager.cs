@@ -33,7 +33,7 @@ public class MainMenuManager : MonoBehaviour
         GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
         optionsManager = gameManager.GetComponent<OptionsManager>();
         gameManagerScript = gameManager.GetComponent<GameManager>();
-        gameManagerScript.OnSceneChange += OnSceneLoad;
+        gameManagerScript.OnSceneLoaded += OnSceneLoad;
         selectedLevel = 1;
         selectedWorld = 1;
         amogusButton = amogusButtonObj.GetComponent<Button>();

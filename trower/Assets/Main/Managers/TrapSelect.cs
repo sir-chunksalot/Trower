@@ -28,7 +28,6 @@ public class TrapSelect : MonoBehaviour
         foreach (GameObject builds in potentialTraps)
         {
             buildNames.Add(builds.name);
-            Debug.Log(builds.name + "zorogori og");
         }
 
     }
@@ -46,16 +45,8 @@ public class TrapSelect : MonoBehaviour
     public void OnItemClicked(string buttonName)
     {
         if (!canDoShit) return;
-        //trapSprites[selectedTrap].image.color = Color.white;
         selectedTrap = buildNames.FindIndex(x => x.Equals(buttonName));
-        Debug.Log(selectedTrap + buttonName + "zorogori");
         currentBuild = potentialTraps[selectedTrap];
-        if (currentBuild.name.StartsWith("F"))
-        {
-            Debug.Log("Grabbed Floor");
-        }
-        //trapSprites[selectedTrap].image.color = selectedColor;
-        Debug.Log(buttonName + "BUTTON WAS CLICKED");
 
         GetCurrentTrap();
     }

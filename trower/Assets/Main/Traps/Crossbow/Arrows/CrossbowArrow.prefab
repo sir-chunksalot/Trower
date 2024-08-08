@@ -174,7 +174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrowSpeed: 2000
   lifeSpan: 7
-  gravity: 100
+  gravity: 200
 --- !u!95 &5187263947274764851
 Animator:
   serializedVersion: 5
