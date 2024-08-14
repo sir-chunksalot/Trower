@@ -2430,7 +2430,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 1600833314}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
+  strength: 0
+  sprites: []
+  isBridge: 0
+  colCount: 0
 --- !u!61 &220173071
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3828,6 +3833,127 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &319619814
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 319619815}
+  - component: {fileID: 319619818}
+  - component: {fileID: 319619817}
+  - component: {fileID: 319619816}
+  m_Layer: 5
+  m_Name: BuildPhase (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &319619815
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319619814}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1117092195}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 120, y: 120}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &319619816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319619814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73ca319d54f72a548bdc7a5b4378841b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildPhase: 1
+  finalWave: 0
+  requiredKills: {x: 14, y: 14}
+  waveLength: {x: 0, y: 0}
+  earnedCoins: 1000
+  prisonGuardSprite: {fileID: 21300000, guid: 13d93f45e2251bb448cf6f884402d4dd, type: 3}
+  prisonGuard:
+    canSpawn: 1
+    spawnRate: {x: 0.43, y: 0.49508423}
+    groupSize: {x: 1, y: 5}
+    cooldown: {x: 0, y: 0}
+    delay: {x: 0, y: 0.30028072}
+  doorSmackGuardSprite: {fileID: 0}
+  doorSmackGuard:
+    canSpawn: 0
+    spawnRate: {x: 0, y: 0}
+    groupSize: {x: 0, y: 0}
+    cooldown: {x: 0, y: 0}
+    delay: {x: 0, y: 0}
+  knightSprite: {fileID: 1232669640, guid: 279b347605c6dc54585dad7193194edd, type: 3}
+  knight:
+    canSpawn: 0
+    spawnRate: {x: 0, y: 0}
+    groupSize: {x: 0, y: 0}
+    cooldown: {x: 0, y: 0}
+    delay: {x: 0, y: 0}
+  archerSprite: {fileID: 21300000, guid: e278b96f004e57c47b16ccd3ba9f0556, type: 3}
+  ranger:
+    canSpawn: 0
+    spawnRate: {x: 0, y: 0}
+    groupSize: {x: 0, y: 0}
+    cooldown: {x: 0, y: 0}
+    delay: {x: 0, y: 0}
+--- !u!114 &319619817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319619814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 8ed80f4418ea8c0418f700f9e923ab2f, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &319619818
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319619814}
+  m_CullTransparentMesh: 1
 --- !u!1 &322008866
 GameObject:
   m_ObjectHideFlags: 0
@@ -3913,6 +4039,127 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &346091594
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 346091595}
+  - component: {fileID: 346091598}
+  - component: {fileID: 346091597}
+  - component: {fileID: 346091596}
+  m_Layer: 5
+  m_Name: BuildPhase (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &346091595
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346091594}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1117092195}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 120, y: 120}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &346091596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346091594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73ca319d54f72a548bdc7a5b4378841b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildPhase: 1
+  finalWave: 0
+  requiredKills: {x: 14, y: 14}
+  waveLength: {x: 0, y: 0}
+  earnedCoins: 1000
+  prisonGuardSprite: {fileID: 21300000, guid: 13d93f45e2251bb448cf6f884402d4dd, type: 3}
+  prisonGuard:
+    canSpawn: 1
+    spawnRate: {x: 0.43, y: 0.49508423}
+    groupSize: {x: 1, y: 5}
+    cooldown: {x: 0, y: 0}
+    delay: {x: 0, y: 0.30028072}
+  doorSmackGuardSprite: {fileID: 0}
+  doorSmackGuard:
+    canSpawn: 0
+    spawnRate: {x: 0, y: 0}
+    groupSize: {x: 0, y: 0}
+    cooldown: {x: 0, y: 0}
+    delay: {x: 0, y: 0}
+  knightSprite: {fileID: 1232669640, guid: 279b347605c6dc54585dad7193194edd, type: 3}
+  knight:
+    canSpawn: 0
+    spawnRate: {x: 0, y: 0}
+    groupSize: {x: 0, y: 0}
+    cooldown: {x: 0, y: 0}
+    delay: {x: 0, y: 0}
+  archerSprite: {fileID: 21300000, guid: e278b96f004e57c47b16ccd3ba9f0556, type: 3}
+  ranger:
+    canSpawn: 0
+    spawnRate: {x: 0, y: 0}
+    groupSize: {x: 0, y: 0}
+    cooldown: {x: 0, y: 0}
+    delay: {x: 0, y: 0}
+--- !u!114 &346091597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346091594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 8ed80f4418ea8c0418f700f9e923ab2f, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &346091598
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346091594}
+  m_CullTransparentMesh: 1
 --- !u!1 &354793604
 GameObject:
   m_ObjectHideFlags: 0
@@ -6348,6 +6595,90 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &607825102
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 607825104}
+  - component: {fileID: 607825103}
+  m_Layer: 0
+  m_Name: BloodMoon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!212 &607825103
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607825102}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: 16a86a7f581fc4dfb953e0df8ad3ecac, type: 3}
+  m_Color: {r: 0.5849056, g: 0.123602666, b: 0.18183964, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.28, y: 1.28}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!4 &607825104
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607825102}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -7.6, y: 10.22, z: 26.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &618388155
 GameObject:
   m_ObjectHideFlags: 0
@@ -6779,6 +7110,10 @@ MonoBehaviour:
   hideProgressbar: 0
   hideBuildMenu: 0
   hideCoinCount: 0
+  useDoor: 0
+  canMoveDoor: 0
+  enemiesCanWin: 0
+  isEndScene: 0
   trapDaddy: {fileID: 912327891}
   roundDaddy: {fileID: 2054904627}
   spawnSpots:
@@ -7183,7 +7518,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 1257750344}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 0}
+  strength: 0
+  sprites: []
+  isBridge: 0
+  colCount: 0
 --- !u!61 &645944872
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9432,7 +9772,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 359778731}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
+  strength: 0
+  sprites: []
+  isBridge: 0
+  colCount: 0
 --- !u!61 &802870789
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9900,7 +10245,7 @@ SpriteRenderer:
   m_Size: {x: 3, y: 1.68}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1001 &841842185
@@ -11503,7 +11848,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 2121103840}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 0}
+  strength: 0
+  sprites: []
+  isBridge: 0
+  colCount: 0
 --- !u!61 &1034419374
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11630,8 +11980,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f4ac5ba8c56e24682415bfc359387c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 100
-  enemyCol: {fileID: 0}
+  activateMe: []
+  isPlaced: 0
+  floorDestroyed: 0
 --- !u!4 &1044291052
 Transform:
   m_ObjectHideFlags: 0
@@ -12218,6 +12569,8 @@ Transform:
   m_Children:
   - {fileID: 2095885745}
   - {fileID: 213286727}
+  - {fileID: 346091595}
+  - {fileID: 319619815}
   - {fileID: 821101824}
   m_Father: {fileID: 2054904628}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -20208,7 +20561,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 2960572487586931017}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 0}
+  strength: 0
+  sprites: []
+  isBridge: 0
+  colCount: 0
 --- !u!1 &1495352577164826181
 GameObject:
   m_ObjectHideFlags: 0
@@ -21592,7 +21950,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 1935031970379926976}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
+  strength: 0
+  sprites: []
+  isBridge: 0
+  colCount: 0
 --- !u!114 &7240072985232642260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21884,7 +22247,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 66851839970990155}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 21300000, guid: 607eb373f86807546bb3fcc562362a13, type: 3}
+  strength: 0
+  sprites: []
+  isBridge: 0
+  colCount: 0
 --- !u!114 &8634564573408074918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21897,8 +22265,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f4ac5ba8c56e24682415bfc359387c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 100
-  enemyCol: {fileID: 0}
+  activateMe: []
+  isPlaced: 0
+  floorDestroyed: 0
 --- !u!1 &8752846283059968035
 GameObject:
   m_ObjectHideFlags: 0
@@ -22045,7 +22414,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyWall: {fileID: 1495352577164826181}
+  raycastWall: {fileID: 0}
   bottomFloorSprite: {fileID: 0}
+  strength: 0
+  sprites: []
+  isBridge: 0
+  colCount: 0
 --- !u!114 &9166124940820940607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22085,6 +22459,7 @@ SceneRoots:
   - {fileID: 893736175}
   - {fileID: 1015865275}
   - {fileID: 1460003244}
+  - {fileID: 607825104}
   - {fileID: 161488293}
   - {fileID: 560505211}
   - {fileID: 631230011}

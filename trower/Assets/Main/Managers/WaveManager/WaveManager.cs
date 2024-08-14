@@ -217,8 +217,8 @@ public class WaveManager : MonoBehaviour
             else
             {
                 Debug.Log("ENDING LEVEL");
-                endLevelParticles.SetActive(true);
-                StartCoroutine(EndLevelParticlesLifetime());
+                //endLevelParticles.SetActive(true);
+                //StartCoroutine(EndLevelParticlesLifetime());
             }
         }
         else
@@ -357,11 +357,6 @@ public class WaveManager : MonoBehaviour
     public bool GetIsDefensePhase()
     {
         return defensePhase;
-    }
-
-    private void NotActive()
-    {
-        Debug.Log("ERROR! Tried to call a 'WaveManager' method while the script was inactive");
     }
 
 

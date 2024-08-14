@@ -114,7 +114,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void PlayMinigame(string game)
     {
-        levelLoader.PlayMinigame(game);
+        levelLoader.ChangeScene(game);
     }
 
     public void ToggleOptions()
@@ -126,8 +126,6 @@ public class MainMenuManager : MonoBehaviour
 
     public void Continue()
     {
-        levelLoader.SetCurrentLevel(selectedLevel);
-        levelLoader.SetCurrentLevel(selectedWorld);
         levelLoader.ChangeLevel(selectedWorld, selectedLevel);
     }
 

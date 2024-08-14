@@ -27,6 +27,7 @@ public class TowerAdditions : MonoBehaviour
         genViableFloors = gameObject.GetComponent<GenerateViableFloors>();
         towerBuilder.onTowerPlace += CreateAdditions;
         towerBuilder.onTowerSell += CreateAdditions;
+        towerBuilder.onTowerStart += CreateAdditions;
         genViableFloors.onFinishedScan += CreateBridges;
         addedFrills = new List<GameObject>();
         bridgesPos = new List<Vector3>();
@@ -43,14 +44,22 @@ public class TowerAdditions : MonoBehaviour
         bridgesBeginFloor.Clear();
         bridgeEndFloor.Clear();
         bridges.Clear();
-        buildDaddy = gameManager.GetCurrentLevelDetails().GetBuildDaddy();
     }
     private void CreateBridges(object sender, EventArgs e)
     {
         DeleteOldBridges();
     }
+
+    private void SetBuildDaddy()
+    {
+        buildDaddy = gameManager.GetCurrentLevelDetails().GetBuildDaddy();
+    }
     private void CreateAdditions(object sender, EventArgs e)
     {
+        if(buildDaddy == null)
+        {
+            SetBuildDaddy();
+        }
         StopAllCoroutines();
         GameObject[] placedFloors = CopyToArray(towerBuilder.GetPlacedFloors());
         int index = 0;
@@ -317,6 +326,7 @@ public class TowerAdditions : MonoBehaviour
 
     private void PlaceRoofExtension(GameObject currentFloor, GameObject sideFloor, Vector3 spawnPos)
     {
+        if (buildDaddy == null) return;
         foreach (GameObject frills in addedFrills)
         {
             if (frills != null && frills.transform.position == spawnPos)

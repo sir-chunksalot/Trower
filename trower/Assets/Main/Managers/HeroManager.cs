@@ -21,6 +21,7 @@ public class HeroManager : MonoBehaviour
     GameObject heroDaddy;
 
     WaveManager waveManager;
+    DoorManager doorManager;
     public event EventHandler OnHeroDeath;
 
     List<AudioSource> bloodSounds;
@@ -41,6 +42,7 @@ public class HeroManager : MonoBehaviour
         gameManagerScript = gameObject.GetComponent<GameManager>();
         gameManagerScript.OnSceneLoaded += OnSceneLoad;
         waveManager = gameObject.GetComponent<WaveManager>();
+        doorManager = gameObject.GetComponent<DoorManager>();
         waveManager.OnDefensePhaseStart += StopSpawning;
         waveManager.OnNewWave += StartSpawning;
         bloodSounds = new List<AudioSource>();
@@ -79,43 +81,32 @@ public class HeroManager : MonoBehaviour
         blood.Clear();
 
     }
+
+    public Vector3 GetDoorPos()
+    {
+        return doorManager.GetDoorPos();
+    }
     public void KillHero(GameObject hero, float bloodSize = 1, float bloodFadeTime = 0)
     {
-        if (finalWave) //rn it does the same thing as if it were a regular wave, later add a cooler effect
-        {
-            Debug.Log("hero is being killed :sob:");
-            Vector3 spawnPos = hero.transform.position;
-            spawnPos = new Vector3(spawnPos.x, spawnPos.y, spawnPos.z + .1f); //puts it behind heroes 
-            hero.GetComponent<BoxCollider2D>().enabled = false;
-            hero.GetComponent<SpriteRenderer>().enabled = false;
-            GameObject blood = Instantiate(bloodAnim, spawnPos, Quaternion.identity, bloodDaddy.transform);
-            StartCoroutine(BloodAnim(blood, spawnPos, bloodFadeTime));
-            StartCoroutine(DestroyObjectAfterTime(hero));
-            heroes.Remove(hero);
-            killCount++;
-            OnHeroDeath?.Invoke(gameObject, EventArgs.Empty);
-        }
-        else
-        {
-            Debug.Log("hero is being killed :sob:");
-            Vector3 spawnPos = hero.transform.position;
-            spawnPos = new Vector3(spawnPos.x, spawnPos.y, spawnPos.z + .1f); //puts it behind heroes 
-            hero.GetComponent<BoxCollider2D>().enabled = false;
-            hero.GetComponent<SpriteRenderer>().enabled = false;
 
-            int max = bloodSounds.Count;
-            int index = UnityEngine.Random.Range(0, max);
-            Debug.Log("nick12" + bloodSounds[index] + " " + bloodSounds.Count);
-            bloodSounds[index].Play();
+        Debug.Log("hero is being killed :sob:");
+        Vector3 spawnPos = hero.transform.position;
+        spawnPos = new Vector3(spawnPos.x, spawnPos.y, spawnPos.z + .1f); //puts it behind heroes 
+        hero.GetComponent<BoxCollider2D>().enabled = false;
+        hero.GetComponent<SpriteRenderer>().enabled = false;
 
-            GameObject blood = Instantiate(bloodAnim, spawnPos, Quaternion.identity, bloodDaddy.transform);
-            blood.transform.localScale = blood.transform.localScale * bloodSize;
-            StartCoroutine(BloodAnim(blood, spawnPos, bloodFadeTime));
-            StartCoroutine(DestroyObjectAfterTime(hero));
-            heroes.Remove(hero);
-            killCount++;
-            OnHeroDeath?.Invoke(gameObject, EventArgs.Empty);
-        }
+        int max = bloodSounds.Count;
+        int index = UnityEngine.Random.Range(0, max);
+        Debug.Log("nick12" + bloodSounds[index] + " " + bloodSounds.Count);
+        bloodSounds[index].Play();
+
+        GameObject blood = Instantiate(bloodAnim, spawnPos, Quaternion.identity, bloodDaddy.transform);
+        blood.transform.localScale = blood.transform.localScale * bloodSize;
+        StartCoroutine(BloodAnim(blood, spawnPos, bloodFadeTime));
+        StartCoroutine(DestroyObjectAfterTime(hero));
+        heroes.Remove(hero);
+        killCount++;
+        OnHeroDeath?.Invoke(gameObject, EventArgs.Empty);
 
     }
 

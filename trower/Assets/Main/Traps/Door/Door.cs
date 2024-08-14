@@ -19,6 +19,7 @@ public class Door : MonoBehaviour
     private float chargeCount;
     bool canOpen;
     bool smacking;
+    bool allowEntry;
     float chargeTime;
     void Awake()
     {
@@ -42,6 +43,7 @@ public class Door : MonoBehaviour
         Debug.Log("open door");
         if ((int)sender != parentID) { return; }
         if (!canOpen) { return; }
+        if(!gameObject.activeInHierarchy) { return; }
         chargeTransform.transform.position = chargeSpawnSpot;
         chargeUI.color = chargeColor;
         StartCoroutine(Charge());
@@ -73,6 +75,11 @@ public class Door : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(LengthOfAttack());
         Debug.Log("smacked ! fuckcum");
+    }
+
+    public void AllowEnemyEntry(bool value)
+    {
+        allowEntry = value;
     }
 
     public void CloseDoor(object sender, EventArgs e)
@@ -124,6 +131,8 @@ public class Door : MonoBehaviour
         chargeUI.fillAmount = 0;
         trap.CooldownOn();
     }
+
+
 
     private void OnTriggerStay2D(Collider2D collision)
     {

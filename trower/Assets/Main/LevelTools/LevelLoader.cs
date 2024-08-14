@@ -10,8 +10,6 @@ public class LevelLoader : MonoBehaviour
 
     private void Awake()
     {
-        currentWorld = 1;
-        currentLevel = 1;
         int index = SceneManager.GetActiveScene().buildIndex;
         for (int i = 0; i < index; i += 10)
         {
@@ -31,30 +29,24 @@ public class LevelLoader : MonoBehaviour
         return currentWorld;
     }
 
-    public void SetCurrentWorld(int world)
-    {
-        currentWorld = world;
-    }
-
     public int GetCurrentLevel()
     {
         return currentLevel;
     }
 
-    public void SetCurrentLevel(int level)
-    {
-        currentLevel = level;
-    }
-
     public void ChangeLevel(int world, int level)
     {
         int sceneIndex = level * world;
+        currentLevel = level;
+        currentWorld = world;
         StartCoroutine(CrossFade(sceneIndex));
     }
 
-    public void PlayMinigame(string game)
+    public void ChangeScene(string sceneName)
     {
-        StartCoroutine(CrossFade(game));
+        currentLevel = 99;
+        currentWorld = 99;
+        StartCoroutine(CrossFade(sceneName));
     }
 
     private IEnumerator CrossFade(int sceneIndex)

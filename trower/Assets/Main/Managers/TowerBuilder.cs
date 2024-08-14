@@ -398,6 +398,11 @@ public class TowerBuilder : MonoBehaviour
         }
     }
 
+    public float GetHighestPoint()
+    {
+        return highestPoint;
+    }
+
     private void GenerateMapSpawns()
     {
         Vector3 right = new Vector3(GetRoomBounds().x, 0, 0);

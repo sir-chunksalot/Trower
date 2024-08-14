@@ -25,7 +25,7 @@ public static class Coins
         else
         {
             Debug.Log("INVOKING COIN");
-            onChangeCoin?.Invoke((count + "|"), EventArgs.Empty);
+            onChangeCoin?.Invoke(("-" + count + "|"), EventArgs.Empty);
         }
     }
 

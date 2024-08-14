@@ -2174,6 +2174,8 @@ MonoBehaviour:
   hideBuildMenu: 0
   hideCoinCount: 0
   useDoor: 1
+  canMoveDoor: 0
+  enemiesCanWin: 0
   trapDaddy: {fileID: 1685589561}
   roundDaddy: {fileID: 1166054892}
   spawnSpots:
@@ -4735,9 +4737,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildPhase: 0
   finalWave: 0
-  requiredKills: {x: 14, y: 14}
+  requiredKills: {x: 1, y: 1}
   waveLength: {x: 0, y: 0}
-  earnedCoins: 1200
+  earnedCoins: 25000
   prisonGuardSprite: {fileID: 21300000, guid: 13d93f45e2251bb448cf6f884402d4dd, type: 3}
   prisonGuard:
     canSpawn: 1

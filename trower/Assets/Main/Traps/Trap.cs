@@ -1,4 +1,4 @@
-using System;
+    using System;
 using System.Collections;
 using UnityEngine;
 
@@ -103,10 +103,10 @@ public class Trap : MonoBehaviour
     }
     private void TrapDeactivated(object sender, EventArgs e)
     {
+        spaceEffect.GetComponent<SpriteRenderer>().sprite = pressSpace;
         if (active)
         {
             Debug.Log("can attack CRIMINAL");
-            spaceEffect.GetComponent<SpriteRenderer>().sprite = pressSpace;
             if (canAttack)
             {
                 onDeactivate?.Invoke(objectID, EventArgs.Empty);

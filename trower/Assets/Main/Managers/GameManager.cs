@@ -17,7 +17,13 @@ public class GameManager : MonoBehaviour
     private WaveManager waveManager;
     private CashManager cashManager;
 
+    Statsheet statsheet;
+
     private bool first;
+    private bool endScene;
+
+    //STAT SHEET
+
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnNewScene;
@@ -31,6 +37,9 @@ public class GameManager : MonoBehaviour
             first = true; //only called by the OG game manager
             UnlockItem("T_Spears");
             UnlockItem("F_BasicFloor"); //base unlocks
+            UnlockItem("F_LFloor"); //base unlocks
+            UnlockItem("F_TFloor"); //base unlocks
+            UnlockItem("T_Crossbow"); //base unlocks
         }
         else
         {
@@ -55,6 +64,13 @@ public class GameManager : MonoBehaviour
         levelLoader = GameObject.FindGameObjectWithTag("LevelLoader").GetComponent<LevelLoader>();
         Debug.Log("LevelDetails" + levelDetails);
 
+
+        if(levelDetails.isEndScene)
+        {
+            EndManager endManager = GameObject.FindGameObjectWithTag("EndManager").GetComponent<EndManager>();
+            endManager.DisplayStats(statsheet);
+        }
+
         OnSceneLoaded?.Invoke(gameObject, EventArgs.Empty);
     }
     void OnLeaveScene(Scene scene)
@@ -66,6 +82,16 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Tried to unlock!");
         UnlockManager.Unlock(item);
+    }
+
+    public void EndLevel()
+    {
+        statsheet = new Statsheet();
+        statsheet.kills = heroManager.GetKillCount();
+        statsheet.cashSpent = cashManager.GetCashSpent();
+
+        levelLoader.ChangeScene("EndLevel");
+
     }
 
     public LevelDetails GetCurrentLevelDetails()
@@ -81,8 +107,6 @@ public class GameManager : MonoBehaviour
     public void GoToMainMenu()
     {
         Time.timeScale = 1;
-        levelLoader.SetCurrentLevel(0);
-        levelLoader.SetCurrentWorld(0);
         levelLoader.ChangeLevel(0, 0);
     }
 

@@ -43,6 +43,7 @@ TagManager:
   - FloorMurderer
   - BridgeWall
   - RaycastWall
+  - EndManager
   layers:
   - Default
   - TransparentFX
@@ -65,7 +66,7 @@ TagManager:
   - Bridge
   - RaycastWalls
   - Ladder
-  - 
+  - Blackhole
   - 
   - 
   - 

@@ -267,6 +267,7 @@ public class UIManager : MonoBehaviour
     private void MoveCooldownTimer()
     {
         if (cooldownTimerTransform == null) { return; }
+        if(Camera.main == null) { return; }
 
         GameObject trap = trapManager.GetSelectedTrap();
         Vector3 spawnPos = new Vector3(10000, 10000);

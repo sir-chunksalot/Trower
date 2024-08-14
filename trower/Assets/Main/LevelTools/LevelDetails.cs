@@ -8,6 +8,9 @@ public class LevelDetails : MonoBehaviour
     [SerializeField] public bool hideBuildMenu;
     [SerializeField] public bool hideCoinCount;
     [SerializeField] public bool useDoor;
+    [SerializeField] public bool canMoveDoor;
+    [SerializeField] public bool enemiesCanWin;
+    [SerializeField] public bool isEndScene;
     [SerializeField] public GameObject trapDaddy;
     [SerializeField] public GameObject roundDaddy;
     [SerializeField] public Transform[] spawnSpots;

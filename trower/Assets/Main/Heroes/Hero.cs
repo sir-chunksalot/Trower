@@ -20,6 +20,8 @@ public class Hero : MonoBehaviour
     Animator anim;
     SpriteRenderer spriteRenderer;
 
+    Vector3 doorPos;
+
     List<GameObject> touchedLadders;
     bool attackPhase;
     bool facingLeft;
@@ -31,6 +33,7 @@ public class Hero : MonoBehaviour
     bool isClimbing;
     bool canClimb;
     bool smashBros;
+    bool gameOver;
     float currentSpeed;
     float rotation;
     private void Awake()
@@ -74,10 +77,15 @@ public class Hero : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (smashBros)
+        if(gameOver)
+        {  
+            RotateMe();
+            rb.AddForce((doorPos - gameObject.transform.position).normalized * 10);
+        }
+        else if (smashBros)
         {
             rb.velocity = Vector2.zero;
-            gameObject.transform.Rotate(0, 0, Mathf.Abs(rotation));
+            RotateMe(); 
             gameObject.transform.localScale += new Vector3(.04f, .04f, 00);
         }
         else if (isSuperFalling)
@@ -115,6 +123,12 @@ public class Hero : MonoBehaviour
 
         }
     }
+
+    public void RotateMe()
+    {
+        gameObject.transform.Rotate(0, 0, Mathf.Abs(rotation));
+    }
+
     public void FlipRight()
     {
         facingLeft = false;
@@ -215,6 +229,7 @@ public class Hero : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (gameOver) return;
         Debug.Log("FLUMBERG hero hit " + collision.gameObject);
         if (collision.gameObject.tag == "EnemyWall")
         {
@@ -235,6 +250,7 @@ public class Hero : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (gameOver) return;
         if (collision.gameObject.tag == "Ladder" && collision.gameObject.transform.position.y > transform.position.y && canClimb)
         {
             if (!touchedLadders.Contains(collision.gameObject))
@@ -249,6 +265,7 @@ public class Hero : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        if (gameOver) return;
         if (collision.gameObject.tag == "Ladder")
         {
             touchedLadders.Remove(collision.gameObject);
@@ -343,9 +360,21 @@ public class Hero : MonoBehaviour
 
     public void Surrender(object sender, EventArgs e)
     {
-        //add something cooler here later
-        KillMe();
+        rb.velocity = Vector2.zero;
+        doorPos = heroManager.GetDoorPos();
+        gameOver = true;
+        heroFeet.gameObject.SetActive(false);
+        rb.isKinematic = false;
+        gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
     }
+
+    //private IEnumerator Test()
+    //{
+    //    yield return new WaitForSeconds(.2f);
+        
+    //    StartCoroutine(Test());
+    //}
+
 
     public void KillMe()
     {
