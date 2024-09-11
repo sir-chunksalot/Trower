@@ -52,7 +52,7 @@ TagManager:
   - Water
   - UI
   - Heroes
-  - Walls
+  - EnemyWalls
   - MouseHover
   - Arrows
   - TowerWalls
@@ -67,7 +67,7 @@ TagManager:
   - RaycastWalls
   - Ladder
   - Blackhole
-  - 
+  - PostProcessing
   - 
   - 
   - 
@@ -78,12 +78,15 @@ TagManager:
   - 
   - Void
   m_SortingLayers:
+  - name: BG
+    uniqueID: 1355120543
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Hero
-    uniqueID: 1458228695
-    locked: 0
   - name: Floor
     uniqueID: 1966772407
+    locked: 0
+  - name: Hero
+    uniqueID: 1458228695
     locked: 0

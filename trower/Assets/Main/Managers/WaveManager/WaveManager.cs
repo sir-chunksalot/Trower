@@ -152,6 +152,12 @@ public class WaveManager : MonoBehaviour
         progressbarIncrement = (1.0f / length) / (activeRound.Length - 1);
     }
 
+    public void ManuallySetWave(Wave wave)
+    {
+        activeWave = wave;
+        OnNewWave?.Invoke(gameObject, EventArgs.Empty);
+    }
+
     public Wave GetCurrentWave()
     {
         return activeWave;

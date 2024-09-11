@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Trap : MonoBehaviour
 {
-    [SerializeField] float yOffset;
+    [SerializeField] float damageAmount;
+    [SerializeField] Vector3 offset; //trap builder uses this
     [SerializeField] bool hasAbility;
     [SerializeField] bool isLarge;
+    [SerializeField] bool isWallTrap;
     [SerializeField] float cooldown;
     [SerializeField] GameObject spaceEffect;
     [SerializeField] bool active;
@@ -20,6 +22,7 @@ public class Trap : MonoBehaviour
     RectTransform cooldownTimerTransform;
     TrapManager trapManager;
     WaveManager waveManager;
+    StatusEffect statusEffect;
     public event EventHandler onActivate;
     public event EventHandler onDeactivate;
     public event EventHandler onMouseLeave;
@@ -46,6 +49,8 @@ public class Trap : MonoBehaviour
         waveManager.OnDefensePhaseStart += DefensePhase;
         defensePhase = waveManager.GetIsDefensePhase();
         attackPhase = waveManager.GetIsAttackPhase();
+
+        statusEffect = gameObject.GetComponent<StatusEffect>();
 
         objectID = gameObject.GetInstanceID();
         Debug.Log("gameObject parent " + gameObject + "id" + objectID);
@@ -116,6 +121,21 @@ public class Trap : MonoBehaviour
 
     }
 
+    public void TryDamage(GameObject target)
+    {
+        IDamageable damage = target.GetComponent<IDamageable>();
+        if (damage != null)
+        {
+            if (statusEffect != null)
+            {
+                statusEffect.ApplyStatusEffect(target);
+            }
+            damage.Damage(damageAmount);
+        }
+
+
+    }
+
     public void CooldownOn() //called by specific trap script, tells this script wether or not the trap is on or off 
     {
         if (cooldownCount <= 0)
@@ -143,9 +163,9 @@ public class Trap : MonoBehaviour
 
     }
 
-    public float GetYOffset()
+    public Vector3 GetOffset()
     {
-        return yOffset;
+        return offset;
     }
 
     public float GetCurrentCooldown()
@@ -168,23 +188,42 @@ public class Trap : MonoBehaviour
         Debug.Log("gonzales" + trapManager);
 
         active = true;
-        //gameObject.transform.position = new Vector3(transform.position.x, transform.position.y + yOffset, transform.position.z);
     }
-    public void Rotate()
+
+    public bool GetIsFacingLeft()
     {
-        trapObj.transform.localRotation = new Quaternion(0, 180, 0, 0);
-        trapSprite.transform.localRotation = new Quaternion(0, 180, 0, 0);
+        return trapSprite.transform.rotation.y == 1;
+    }
+
+    public void Rotate(bool left)
+    {
+        if(left)
+        {
+            trapObj.transform.localRotation = new Quaternion(0, 180, 0, 0);
+            trapSprite.transform.localRotation = new Quaternion(0, 180, 0, 0);
+        }
+        else
+        {
+            trapObj.transform.localRotation = new Quaternion(0, 0, 0, 0);
+            trapSprite.transform.localRotation = new Quaternion(0, 0, 0, 0);
+        }
+
         Debug.Log("fartfartafrt");
     }
 
-    public float GetRotation()
+    public Vector3 GetRotation()
     {
-        return trapObj.transform.rotation.y;
+        return new Vector3(trapObj.transform.localEulerAngles.x, trapObj.transform.localEulerAngles.y, trapObj.transform.localEulerAngles.z);
     }
     public bool GetTrapSize()
     {
         return isLarge;
     }
+    public bool GetIsWallTrap()
+    {
+        return isWallTrap;
+    }
+
 
     public bool GetIsArmed()
     {

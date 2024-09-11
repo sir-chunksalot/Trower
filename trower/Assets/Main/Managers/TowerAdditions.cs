@@ -181,8 +181,9 @@ public class TowerAdditions : MonoBehaviour
                     }
                 }
             }
+            if(badFloor.transform.position.y < 2) { return; }
             if (endPointLeft.x != -100) { MakeBridge(badFloor.transform.position, endPointLeft, true, badFloor); }
-            if (endPointRight.x != 100) { MakeBridge(badFloor.transform.position, endPointRight, false, badFloor); }
+            if (endPointRight.x != 100) { MakeBridge(badFloor.transform.position, endPointRight, false, badFloor); } 
             //StartCoroutine(DeleteOldBridges(UnityEngine.Random.Range(0, 100)));
 
         }
@@ -238,7 +239,8 @@ public class TowerAdditions : MonoBehaviour
 
     private void InstantiateBridge(Vector3 spawnPos, GameObject startFloor, GameObject endFloor)
     {
-        Instantiate(smokeEffect, spawnPos, Quaternion.identity);
+        Vector3 smokeSpawnPos = new Vector3(spawnPos.x, spawnPos.y, spawnPos.z - 20);
+        Instantiate(smokeEffect, smokeSpawnPos, Quaternion.identity);
         GameObject newBridge = Instantiate(bridge, spawnPos, Quaternion.identity, buildDaddy.transform);
         endFloor.transform.parent.GetComponent<Floor>().AddFollower(newBridge);
         startFloor.transform.parent.GetComponent<Floor>().AddFollower(newBridge);

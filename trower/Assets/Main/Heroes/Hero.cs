@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hero : MonoBehaviour
+public class Hero : MonoBehaviour, IDamageable, IBurnable
 {
     [SerializeField] float speed;
     [SerializeField] float zOffset;
@@ -23,6 +23,10 @@ public class Hero : MonoBehaviour
     Vector3 doorPos;
 
     List<GameObject> touchedLadders;
+    float onFireDuration;
+    float fireDamageInterval;
+    float fireDamage;
+    float timePassed;
     bool attackPhase;
     bool facingLeft;
     bool isSuperFalling;
@@ -77,6 +81,16 @@ public class Hero : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if(onFireDuration >= 0)
+        {
+            timePassed += Time.deltaTime;
+            onFireDuration -= Time.deltaTime;
+            if(timePassed >= fireDamageInterval)
+            {
+                timePassed = 0;
+                Damage(fireDamage);
+            }
+        }
         if(gameOver)
         {  
             RotateMe();
@@ -388,6 +402,17 @@ public class Hero : MonoBehaviour
         waveManager.OnFinalWave -= Surrender;
     }
 
+    public void Damage(float amount)
+    {
+        Debug.Log("IM BURNING AHHH" + fireDamage + " | " + fireDamageInterval + " | "+ onFireDuration);
+    }
+
+    public void Burn(float length, float damage, float damageInterval)
+    {
+        onFireDuration = length;
+        fireDamageInterval = damageInterval;
+        fireDamage = damage;
+    }
 
 
 

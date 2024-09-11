@@ -47,6 +47,15 @@ public class Wave : MonoBehaviour
 
         [MinMaxSlider(0.0f, 20.0f)]
         public Vector2 delay;
+
+        public void SetCanSpawn(bool state)
+        {
+            canSpawn = state;
+        }
+        public bool GetCanSpawn()
+        {
+            return canSpawn;
+        }
     }
     //---------------------------------------------------------------------------------------------//
     [PreviewSprite]

@@ -22,6 +22,7 @@ public class TowerBuilder : MonoBehaviour
 
     public event EventHandler onTowerPlace;
     public event EventHandler onTowerPlaceLate;
+    public event EventHandler onTowerPlaceLast;
     public event EventHandler onTowerSell;
     public event EventHandler onTowerStart;
 
@@ -507,6 +508,10 @@ public class TowerBuilder : MonoBehaviour
             {
                 Debug.Log("we gotta late update in here fellas");
                 onTowerPlaceLate?.Invoke(gameObject, EventArgs.Empty);
+            }
+            if(cleanupCount > 32)
+            {
+                onTowerPlaceLast.Invoke(gameObject, EventArgs.Empty);
                 cleanup = false;
                 cleanupCount = 0;
             }

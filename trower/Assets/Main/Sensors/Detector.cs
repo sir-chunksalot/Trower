@@ -4,7 +4,7 @@ using UnityEngine;
 public class Detector : MonoBehaviour
 {
     [SerializeField] GameObject bolt;
-    [SerializeField] float yOffset;
+    [SerializeField] Vector3 offset;
     [SerializeField] GameObject detectorContainer;
     [SerializeField] Animator anim;
     float roomSizeX;
@@ -21,9 +21,9 @@ public class Detector : MonoBehaviour
         roomSizeX = towerBuilder.GetRoomBounds().x;
         roomSizeY = towerBuilder.GetRoomBounds().y;
     }
-    public float GetYOffset()
+    public Vector3 GetOffset()
     {
-        return yOffset;
+        return offset;
     }
 
     public void DisableSensor()
@@ -36,9 +36,17 @@ public class Detector : MonoBehaviour
         active = false;
     }
 
-    public void Rotate()
+    public void Rotate(bool left)
     {
-        detectorContainer.transform.localRotation = new Quaternion(0, 180, 0, 0);
+        if(left)
+        {
+            detectorContainer.transform.localRotation = new Quaternion(0, 180, 0, 0);
+        }
+        else
+        {
+            detectorContainer.transform.localRotation = new Quaternion(0, 0, 0, 0);
+        }
+
         Debug.Log("fartfartafrt");
     }
 
