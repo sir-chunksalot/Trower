@@ -228,7 +228,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f26140c356110e419a16d65c290d835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: -0.8, z: 0}
+  damageAmount: 0
+  offset: {x: 0, y: -0.8, z: -10}
   hasAbility: 0
   isLarge: 0
   isWallTrap: 0

@@ -188,6 +188,19 @@ public class HeroManager : MonoBehaviour
         StopAllCoroutines();
     }
 
+    public GameObject GetHero(string heroName)
+    {
+        foreach(GameObject hero in heroTypes)
+        {
+            Debug.Log("NATALIE  " + heroName + "   |   " + hero.name);
+            if(hero.name == heroName)
+            {
+                return hero;
+            }
+        }
+        return null;
+    }
+
     public void StartSpawning(object sender, EventArgs e) //called when a wave starts
     {
         if (waveManager.GetCurrentWave() == null) return;
@@ -294,6 +307,14 @@ public class HeroManager : MonoBehaviour
         }
         heroCount++;
 
+    }
+
+    public void SpawnHero(GameObject hero, int amount)
+    {
+        for(int i = 0; i < amount; i++)
+        {
+            StartCoroutine(SpawnHero(hero, 0, 0, amount));
+        }
     }
 
     private IEnumerator Cooldown(float cooldown, int index)

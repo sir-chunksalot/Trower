@@ -28342,6 +28342,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FlameEffect
       objectReference: {fileID: 0}
+    - target: {fileID: 5913582069520655683, guid: 5e6b020b0678955478f760bea43bd5ef, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -5,10 +5,11 @@ using UnityEngine;
 public class Sandbox : MonoBehaviour
 {
     [SerializeField] Wave wave;
+    GameObject gameManager;
     WaveManager waveManager;
     private void Start()
     {
-        GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        gameManager = GameObject.FindGameObjectWithTag("GameManager");
         waveManager = gameManager.GetComponent<WaveManager>();
     }
 
@@ -22,5 +23,12 @@ public class Sandbox : MonoBehaviour
         }
 
         waveManager.ManuallySetWave(wave);    
+    }
+
+    public void SpawnEnemy(string enemyType)
+    {
+        HeroManager heroManager = gameManager.GetComponent<HeroManager>();
+        GameObject hero = heroManager.GetHero(enemyType);
+        heroManager.SpawnHero(hero,1);
     }
 }

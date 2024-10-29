@@ -41,14 +41,5 @@ public class FlameBreath : MonoBehaviour
     {
         if (trap == null || !canDamage) return;
         trap.TryDamage(collision.gameObject);
-        StartCoroutine(DamageCooldown());
-    }
-
-    private IEnumerator DamageCooldown()
-    {
-        canDamage = false;
-        yield return new WaitForSeconds(cooldown);
-        canDamage = true;
-
     }
 }
