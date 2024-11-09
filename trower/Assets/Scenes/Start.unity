@@ -10757,10 +10757,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4444674350173590026, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: moveTrapEffect
-      value: 
-      objectReference: {fileID: 7755429151598107657, guid: 2f755cb12133345499f3cb2e2a062a9f, type: 3}
     - target: {fileID: 4567693808667386942, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -10804,6 +10800,14 @@ PrefabInstance:
     - target: {fileID: 6482091635249231417, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8860940943420892392, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8860940943420892392, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1966772407
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -28,7 +28,7 @@ public class TowerAdditions : MonoBehaviour
         towerBuilder.onTowerPlace += CreateAdditions;
         towerBuilder.onTowerSell += CreateAdditions;
         towerBuilder.onTowerStart += CreateAdditions;
-        genViableFloors.onFinishedScan += CreateBridges;
+        genViableFloors.onFinishedScan += BridgePhase;
         addedFrills = new List<GameObject>();
         bridgesPos = new List<Vector3>();
         bridges = new List<GameObject>();
@@ -45,7 +45,7 @@ public class TowerAdditions : MonoBehaviour
         bridgeEndFloor.Clear();
         bridges.Clear();
     }
-    private void CreateBridges(object sender, EventArgs e)
+    private void BridgePhase(object sender, EventArgs e)
     {
         DeleteOldBridges();
     }
@@ -101,7 +101,7 @@ public class TowerAdditions : MonoBehaviour
 
     }
 
-    private void DeleteOldBridges()
+    private void DeleteOldBridges() //validates current bridges
     {
         List<GameObject> validBridges = new List<GameObject>();
         List<Vector3> validBridgePos = new List<Vector3>();
@@ -111,7 +111,8 @@ public class TowerAdditions : MonoBehaviour
         foreach(GameObject floor in genViableFloors.GetInaccessibleFloors())
         {
             Debug.Log("armageddon" + floor.name);
-        }
+        } 
+        Debug.Log("This number should not be above 100 |" + genViableFloors.GetInaccessibleFloors().Count);
         foreach (GameObject bridge in bridges)
         {
             int bridgeIndex = bridges.IndexOf(bridge);
@@ -146,14 +147,15 @@ public class TowerAdditions : MonoBehaviour
         bridgesBeginFloor = validBridgeStarts;
         bridgesPos = validBridgePos;
         bridgeEndFloor = validBridgeEnds;
-        CheckValidBridgeSpawns();
+        CheckValidBridgeSpawns(); //makes new bridges
         MurderStuffNearBridge();
     }
 
     private void CheckValidBridgeSpawns()
     {
-        foreach (GameObject badFloor in genViableFloors.GetInaccessibleFloors())
+        foreach (GameObject badFloor in genViableFloors.GetInaccessibleFloors()) //the blue raycasts when debugging are the inaccessible floors
         {
+            Debug.Log("Inaccessible Floor Being tested: Posistion: " + badFloor.transform.position + " Name: " + badFloor.transform.name);
             Debug.Log("naht FOUND INACCESSIBLE FLOOR");
             Vector3 endPointLeft = new Vector3(-100, 0, 0);
             Vector3 endPointRight = new Vector3(100, 0, 0);
@@ -181,7 +183,7 @@ public class TowerAdditions : MonoBehaviour
                     }
                 }
             }
-            if(badFloor.transform.position.y < 2) { return; }
+            if(badFloor.transform.position.y < 2) { continue; } //dont spawn floors on the ground
             if (endPointLeft.x != -100) { MakeBridge(badFloor.transform.position, endPointLeft, true, badFloor); }
             if (endPointRight.x != 100) { MakeBridge(badFloor.transform.position, endPointRight, false, badFloor); } 
             //StartCoroutine(DeleteOldBridges(UnityEngine.Random.Range(0, 100)));
@@ -260,7 +262,7 @@ public class TowerAdditions : MonoBehaviour
             foreach (GameObject additions in currentFrills)
             {
                 if (additions == null) continue;
-                if (Vector2.Distance(additions.transform.position, bridge.transform.position) < 5.5f)
+                if (Vector2.Distance(additions.transform.position, bridge.transform.position) < 5.2f)
                 {
                     Destroy(additions);
                     Debug.Log("bridge murdered frill");

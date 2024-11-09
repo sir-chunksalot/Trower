@@ -23690,7 +23690,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1458228695
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e51be5d690fd01644acb5ab09120763e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -31334,7 +31334,6 @@ MonoBehaviour:
   sideMapBounds: 6
   topMapBounds: 6
   reqMouseDistanceToPlace: 7
-  door: {fileID: 0}
   sellBomb: {fileID: 3739258763285040365, guid: 8ef687b515dd6b244874cf3208e07eed, type: 3}
   explosionEffect: {fileID: 2884292035325809549, guid: 7bfd271190e01fc4188fb81637862257, type: 3}
   debugThing: {fileID: 2897999405613458430, guid: a783be2b275152e40bac6d95a76a8472, type: 3}
@@ -31358,6 +31357,7 @@ MonoBehaviour:
   - {fileID: 3970329861125110645, guid: 7cd155742edc52840b00f1c5a5b4d6f3, type: 3}
   - {fileID: 5274708482457128098, guid: 722eb66889969894c97a117f81c230ee, type: 3}
   particle: {fileID: 3229972062015352657}
+  moveTrapEffect: {fileID: 7755429151598107657, guid: 2f755cb12133345499f3cb2e2a062a9f, type: 3}
   debugTrap: {fileID: 982966721451128144, guid: a07aa3409a36e724ba0d56e50ab4cddb, type: 3}
   reqMouseDistanceToPlace: 7
   opacity: 0.4
@@ -51581,7 +51581,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1458228695
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: dd746dcafd897a7498f53de2ee48b9da, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -62966,6 +62966,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1989897185525088926, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
+      propertyPath: m_SortingLayer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1989897185525088926, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1394856877
+      objectReference: {fileID: 0}
     - target: {fileID: 2675803273436122779, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayer
       value: 1
@@ -62976,11 +62984,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3256083825644388851, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3256083825644388851, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayerID
-      value: 1966772407
+      value: -1394856877
+      objectReference: {fileID: 0}
+    - target: {fileID: 3914858704719968294, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
+      propertyPath: m_SortingLayer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3914858704719968294, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1394856877
       objectReference: {fileID: 0}
     - target: {fileID: 4061443179379112759, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayer
@@ -62997,6 +63013,22 @@ PrefabInstance:
     - target: {fileID: 5253298538473364775, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayerID
       value: 1966772407
+      objectReference: {fileID: 0}
+    - target: {fileID: 5693719459234896768, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5693719459234896768, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1966772407
+      objectReference: {fileID: 0}
+    - target: {fileID: 5930258913366506419, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
+      propertyPath: m_SortingLayer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5930258913366506419, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1394856877
       objectReference: {fileID: 0}
     - target: {fileID: 6965570765859738390, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_Name

@@ -4551,7 +4551,7 @@ MonoBehaviour:
   hideBuildMenu: 0
   hideCoinCount: 0
   useDoor: 1
-  canMoveDoor: 0
+  canMoveDoor: 1
   enemiesCanWin: 0
   isEndScene: 0
   trapDaddy: {fileID: 1685589561}

@@ -15,7 +15,6 @@ public class TowerBuilder : MonoBehaviour
     [SerializeField] float sideMapBounds;
     [SerializeField] float topMapBounds;
     [SerializeField] float reqMouseDistanceToPlace;
-    [SerializeField] GameObject door;
     [SerializeField] GameObject sellBomb;
     [SerializeField] GameObject explosionEffect;
     [SerializeField] GameObject debugThing;
@@ -54,7 +53,8 @@ public class TowerBuilder : MonoBehaviour
     private bool placingFloor;
     private bool placingBomb;
     private int ladderType;
-    private bool cleanup;
+    private bool cleanupLate;
+    private bool cleanupLast;
     private int cleanupCount;
     private int totalPlacedFloorsCount;
     private void Awake()
@@ -420,18 +420,6 @@ public class TowerBuilder : MonoBehaviour
             spawnPos = spawnPos - (right * sideMapBounds) - right;
         }
     }
-
-    //private void PlaceDoor()
-    //{
-    //    foreach (GameObject floor in placedFloors)
-    //    {
-    //        if (floor.transform.position.y > highestPoint.y)
-    //        {
-    //            highestPoint = floor.transform.position;
-    //            door.transform.position = new Vector3(highestPoint.x, highestPoint.y, door.transform.position.z);
-    //        }
-    //    }
-    //}
     private void FixedUpdate()
     {
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -502,17 +490,18 @@ public class TowerBuilder : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(cleanup)
+        if(cleanupLast)
         {
-            if(cleanupCount > 16) //WE LOVE 16!!!!
+            if(cleanupCount > 16 && cleanupLate) //WE LOVE 16!!!!
             {
                 Debug.Log("we gotta late update in here fellas");
                 onTowerPlaceLate?.Invoke(gameObject, EventArgs.Empty);
+                cleanupLate = false;
             }
             if(cleanupCount > 32)
             {
                 onTowerPlaceLast.Invoke(gameObject, EventArgs.Empty);
-                cleanup = false;
+                cleanupLast = false;
                 cleanupCount = 0;
             }
             cleanupCount++;
@@ -715,12 +704,6 @@ public class TowerBuilder : MonoBehaviour
         return potentialFloorsPos;
     }
 
-    public Vector3 GetDoorPos()
-    {
-        Debug.Log("door pos" + door.transform.position + gameObject);
-        return door.transform.position;
-    }
-
     public Vector3 GetInitialFloorPos()
     {
         return placedFloors[0].transform.position;
@@ -751,7 +734,8 @@ public class TowerBuilder : MonoBehaviour
         DestroyPotentialFloors();
 
         onTowerPlace?.Invoke(floor, EventArgs.Empty);
-        cleanup = true;
+        cleanupLast = true;
+        cleanupLate = true;
     }
 
 

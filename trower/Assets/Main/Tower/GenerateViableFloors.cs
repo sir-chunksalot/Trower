@@ -7,7 +7,7 @@ public class GenerateViableFloors : MonoBehaviour
     [SerializeField] LayerMask layerMask;
     List<GameObject> upRooms;
     List<GameObject> walls;
-    List<GameObject> inacessibleRooms;
+    List<GameObject> inaccessibleRooms;
     List<GameObject> totalRooms;
     List<Vector3> inacessibleRoomsPos;
     TowerBuilder towerBuilder;
@@ -18,7 +18,7 @@ public class GenerateViableFloors : MonoBehaviour
     {
         upRooms = new List<GameObject>();
         walls = new List<GameObject>();
-        inacessibleRooms = new List<GameObject>();
+        inaccessibleRooms = new List<GameObject>();
         totalRooms = new List<GameObject>();
         inacessibleRoomsPos = new List<Vector3>();
         towerBuilder = gameObject.GetComponent<TowerBuilder>();
@@ -26,7 +26,7 @@ public class GenerateViableFloors : MonoBehaviour
     }
     public void GenViableFloors(object sender, EventArgs e)
     {
-        inacessibleRooms.Clear();
+        inaccessibleRooms.Clear();
         inacessibleRoomsPos.Clear();
         totalRooms.Clear();
         walls.Clear();
@@ -143,7 +143,8 @@ public class GenerateViableFloors : MonoBehaviour
                 {
                     if (!inacessibleRoomsPos.Contains(room.transform.position))
                     {
-                        inacessibleRooms.Add(room);
+                        inaccessibleRooms.Add(room);
+                        Debug.Log(room.name + " Oooh Boy! I hit a room!");
                         inacessibleRoomsPos.Add(room.transform.position);
                     }
                 }
@@ -193,15 +194,15 @@ public class GenerateViableFloors : MonoBehaviour
 
     public void Test()
     {
-        inacessibleRooms.Clear();
+        inaccessibleRooms.Clear();
         inacessibleRoomsPos.Clear();
         totalRooms.Clear();
         walls.Clear();
         safetyCount = 0;
         upRooms.Clear();
         ViableFloors();
-        Debug.Log("inacessibleRooms count" + inacessibleRooms.Count);
-        foreach (GameObject room in inacessibleRooms)
+        Debug.Log("inacessibleRooms count" + inaccessibleRooms.Count);
+        foreach (GameObject room in inaccessibleRooms)
         {
             Debug.Log("inacessibleRooms Room: " + room + "pos" + room.transform.position);
         }
@@ -222,7 +223,8 @@ public class GenerateViableFloors : MonoBehaviour
     }
     public List<GameObject> GetInaccessibleFloors()
     {
-        return inacessibleRooms;
+        Debug.Log("AUPIN PEREP" + inaccessibleRooms.Count);
+        return inaccessibleRooms;
     }
 
     public List<GameObject> GetWalls()
