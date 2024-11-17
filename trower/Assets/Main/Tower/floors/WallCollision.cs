@@ -34,11 +34,11 @@ public class WallCollision : MonoBehaviour
 
         floor = gameObject.GetComponentInParent<Floor>();
 
-        if (floor.isPlaced)
+        if (floor.isPlaced) //is floor already placed down?
         {
             StartUp();
         }
-        else
+        else //if not, wait for it to be placed
         {
             floor.onFloorPlace += DestroyWalls;
         }

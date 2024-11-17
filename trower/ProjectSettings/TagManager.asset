@@ -78,11 +78,14 @@ TagManager:
   - 
   - Void
   m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
   - name: BG
     uniqueID: 1355120543
     locked: 0
-  - name: Default
-    uniqueID: 0
+  - name: Ground
+    uniqueID: 3494177535
     locked: 0
   - name: Floor
     uniqueID: 1966772407
@@ -92,6 +95,9 @@ TagManager:
     locked: 0
   - name: Hero
     uniqueID: 1458228695
+    locked: 0
+  - name: Foreground
+    uniqueID: 2567660867
     locked: 0
   - name: UI
     uniqueID: 2900110419
