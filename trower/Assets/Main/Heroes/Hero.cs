@@ -11,7 +11,10 @@ public class Hero : MonoBehaviour, IDamageable, IBurnable
     [SerializeField] bool faceRight;
     [SerializeField] bool paralyzed;
     [SerializeField] bool canFall;
+    [SerializeField] bool canBurn;
+    [SerializeField] float maxHealth;
 
+    FlashEffect flash;
     WaveManager waveManager;
     HeroManager heroManager;
     Rigidbody2D rb;
@@ -40,9 +43,11 @@ public class Hero : MonoBehaviour, IDamageable, IBurnable
     bool gameOver;
     float currentSpeed;
     float rotation;
+    float currentHealth;
     private void Awake()
     {
         rotation = 15;
+        currentHealth = maxHealth;
         touchedLadders = new List<GameObject>();
         heroFeet = gameObject.GetComponentInChildren<HeroFeet>();
         anim = gameObject.GetComponent<Animator>();
@@ -54,6 +59,7 @@ public class Hero : MonoBehaviour, IDamageable, IBurnable
         waveManager.OnDefensePhaseStart += DefensePhase;
         waveManager.OnFinalWave += Surrender;
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        flash = gameObject.GetComponent<FlashEffect>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         currentSpeed = speed;
         transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + zOffset);
@@ -393,6 +399,7 @@ public class Hero : MonoBehaviour, IDamageable, IBurnable
     public void KillMe()
     {
         Debug.Log("killed me");
+        paralyzed = true;
         heroManager.KillHero(gameObject);
     }
     private void OnDestroy()
@@ -404,11 +411,21 @@ public class Hero : MonoBehaviour, IDamageable, IBurnable
 
     public void Damage(float amount)
     {
-        Debug.Log("IM BURNING AHHH" + fireDamage + " | " + fireDamageInterval + " | "+ onFireDuration);
+        currentHealth -= amount;
+        if(currentHealth <= 0)
+        {
+            KillMe();
+        }
+        if(amount > 0)
+        {
+            flash.Flash();
+        }
+        Debug.Log("IM BURNING AHHH" + fireDamage + " | " + fireDamageInterval + " | "+ onFireDuration + " | Remaining Health" + currentHealth);
     }
 
     public void Burn(float length, float damage, float damageInterval)
     {
+        if (!canBurn) return;
         onFireDuration = length;
         fireDamageInterval = damageInterval;
         fireDamage = damage;

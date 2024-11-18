@@ -5124,6 +5124,67 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 328014629}
   m_CullTransparentMesh: 1
+--- !u!1001 &330665713
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4355562346852659191, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355562346852659191, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355562346852659191, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355562346852659191, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355562346852659191, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355562346852659191, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355562346852659191, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355562346852659191, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355562346852659191, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4355562346852659191, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6215878957425261870, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: m_Name
+      value: PrisonGuard
+      objectReference: {fileID: 0}
+    - target: {fileID: 6215878957425261870, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
 --- !u!1 &333339824
 GameObject:
   m_ObjectHideFlags: 0
@@ -10757,10 +10818,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3535202803095317245, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: heroTypes.Array.data[2]
-      value: 
-      objectReference: {fileID: 2627877736827926891, guid: fd6b92aaa023f6c4ca95185873d1c43a, type: 3}
     - target: {fileID: 4567693808667386942, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -10804,14 +10861,6 @@ PrefabInstance:
     - target: {fileID: 6482091635249231417, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8860940943420892392, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: m_SortingLayer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8860940943420892392, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 1966772407
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17558,7 +17607,7 @@ GameObject:
   - component: {fileID: 1109727844}
   m_Layer: 5
   m_Name: SquareFinal
-  m_TagString: Untagged
+  m_TagString: Wave
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17599,21 +17648,21 @@ MonoBehaviour:
   requiredKills: {x: 0, y: 0}
   waveLength: {x: 0, y: 0}
   earnedCoins: 0
-  prisonGuardSprite: {fileID: 21300000, guid: 13d93f45e2251bb448cf6f884402d4dd, type: 3}
+  prisonGuardSprite: {fileID: 21300000, guid: 6343bf7f60328e54a9c63914d27b83f4, type: 3}
   prisonGuard:
     canSpawn: 0
     spawnRate: {x: 0, y: 0}
     groupSize: {x: 0, y: 0}
     cooldown: {x: 0, y: 0}
     delay: {x: 0, y: 0}
-  doorSmackGuardSprite: {fileID: 0}
+  doorSmackGuardSprite: {fileID: 21300000, guid: 6343bf7f60328e54a9c63914d27b83f4, type: 3}
   doorSmackGuard:
     canSpawn: 0
     spawnRate: {x: 0, y: 0}
     groupSize: {x: 0, y: 0}
     cooldown: {x: 0, y: 0}
     delay: {x: 0, y: 0}
-  knightSprite: {fileID: 1232669640, guid: 279b347605c6dc54585dad7193194edd, type: 3}
+  knightSprite: {fileID: 21300000, guid: 32633d3091093b04eb58c45b4c5cb4f9, type: 3}
   knight:
     canSpawn: 0
     spawnRate: {x: 0, y: 0}
@@ -19359,7 +19408,7 @@ GameObject:
   - component: {fileID: 1175692175}
   m_Layer: 5
   m_Name: BuildPhase
-  m_TagString: Untagged
+  m_TagString: Wave
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19400,21 +19449,21 @@ MonoBehaviour:
   requiredKills: {x: 14, y: 14}
   waveLength: {x: 0, y: 0}
   earnedCoins: 1000
-  prisonGuardSprite: {fileID: 21300000, guid: 13d93f45e2251bb448cf6f884402d4dd, type: 3}
+  prisonGuardSprite: {fileID: 21300000, guid: 6343bf7f60328e54a9c63914d27b83f4, type: 3}
   prisonGuard:
     canSpawn: 1
     spawnRate: {x: 0.43, y: 0.49508423}
     groupSize: {x: 1, y: 5}
     cooldown: {x: 0, y: 0}
     delay: {x: 0, y: 0.30028072}
-  doorSmackGuardSprite: {fileID: 0}
+  doorSmackGuardSprite: {fileID: 21300000, guid: 6343bf7f60328e54a9c63914d27b83f4, type: 3}
   doorSmackGuard:
     canSpawn: 0
     spawnRate: {x: 0, y: 0}
     groupSize: {x: 0, y: 0}
     cooldown: {x: 0, y: 0}
     delay: {x: 0, y: 0}
-  knightSprite: {fileID: 1232669640, guid: 279b347605c6dc54585dad7193194edd, type: 3}
+  knightSprite: {fileID: 21300000, guid: 32633d3091093b04eb58c45b4c5cb4f9, type: 3}
   knight:
     canSpawn: 0
     spawnRate: {x: 0, y: 0}
@@ -30535,7 +30584,7 @@ GameObject:
   - component: {fileID: 1870298709}
   m_Layer: 5
   m_Name: Square
-  m_TagString: Untagged
+  m_TagString: Wave
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30576,21 +30625,21 @@ MonoBehaviour:
   requiredKills: {x: 14, y: 14}
   waveLength: {x: 0, y: 0}
   earnedCoins: 100
-  prisonGuardSprite: {fileID: 21300000, guid: 13d93f45e2251bb448cf6f884402d4dd, type: 3}
+  prisonGuardSprite: {fileID: 21300000, guid: 6343bf7f60328e54a9c63914d27b83f4, type: 3}
   prisonGuard:
     canSpawn: 0
     spawnRate: {x: 0.27, y: 0.33878672}
     groupSize: {x: 1, y: 2}
     cooldown: {x: 0, y: 0}
     delay: {x: 0, y: 0.5852945}
-  doorSmackGuardSprite: {fileID: 0}
+  doorSmackGuardSprite: {fileID: 21300000, guid: 6343bf7f60328e54a9c63914d27b83f4, type: 3}
   doorSmackGuard:
     canSpawn: 0
     spawnRate: {x: 0, y: 0}
     groupSize: {x: 0, y: 0}
     cooldown: {x: 0, y: 0}
     delay: {x: 0, y: 0}
-  knightSprite: {fileID: 1232669640, guid: 279b347605c6dc54585dad7193194edd, type: 3}
+  knightSprite: {fileID: 21300000, guid: e07c82472d8791b46a7729f8c306e83e, type: 3}
   knight:
     canSpawn: 0
     spawnRate: {x: 0, y: 0}
@@ -34655,6 +34704,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1514437608995258934}
+  - {fileID: 330665713}
   - {fileID: 625120780}
   - {fileID: 1018161094}
   - {fileID: 1183537690}

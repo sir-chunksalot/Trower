@@ -95,6 +95,7 @@ public class HeroManager : MonoBehaviour
         spawnPos = new Vector3(spawnPos.x, spawnPos.y, spawnPos.z + .1f); //puts it behind heroes 
         hero.GetComponent<BoxCollider2D>().enabled = false;
         hero.GetComponent<SpriteRenderer>().enabled = false;
+        hero.transform.position = new Vector3(999, 999, 999);
 
         int max = bloodSounds.Count;
         int index = UnityEngine.Random.Range(0, max);
@@ -200,6 +201,11 @@ public class HeroManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public GameObject[] GetAllHeroes()
+    {
+        return heroTypes.ToArray();
     }
 
     public void StartSpawning(object sender, EventArgs e) //called when a wave starts

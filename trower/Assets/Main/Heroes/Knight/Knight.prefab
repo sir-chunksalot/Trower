@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 4969021847053320406}
   - component: {fileID: 9072895444956252480}
   - component: {fileID: 2910943316218153007}
+  - component: {fileID: 2152117554858856086}
   - component: {fileID: 4798052279518765243}
   m_Layer: 6
   m_Name: Knight
@@ -263,6 +264,22 @@ MonoBehaviour:
   faceRight: 0
   paralyzed: 0
   canFall: 1
+  canBurn: 1
+  maxHealth: 50
+--- !u!114 &2152117554858856086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2627877736827926891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e920b13ecc2401447aca70ab64e7d9ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: 749b9069dc4742c5bfa5c74644049926, type: 2}
+  duration: 0.15
 --- !u!50 &4798052279518765243
 Rigidbody2D:
   serializedVersion: 4

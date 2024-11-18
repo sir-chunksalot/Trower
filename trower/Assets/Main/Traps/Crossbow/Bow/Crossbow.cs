@@ -18,7 +18,7 @@ public class Crossbow : MonoBehaviour
         spawnPos = new Vector3(gameObject.transform.position.x, 2.5f + gameObject.transform.position.y, gameObject.transform.position.z);
         trap = dad.GetComponent<Trap>();
         trap.onActivate += Shoot;
-        trap.onCooldownOver += Reset;
+        trap.onCooldownOver += Rearm;
         parentID = dad.GetInstanceID();
         reset = true;
     }
@@ -33,7 +33,7 @@ public class Crossbow : MonoBehaviour
         reset = false;
         
     }
-    public void Reset(object sender, EventArgs e)
+    public void Rearm(object sender, EventArgs e)
     {
         anim.SetBool("TrapActivated", false);
         reset = true;

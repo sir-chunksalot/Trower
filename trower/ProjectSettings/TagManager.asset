@@ -45,6 +45,7 @@ TagManager:
   - RaycastWall
   - EndManager
   - Knight
+  - Wave
   layers:
   - Default
   - TransparentFX

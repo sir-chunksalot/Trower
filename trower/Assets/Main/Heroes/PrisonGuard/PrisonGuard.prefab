@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 1837540618360291876}
   - component: {fileID: 905086728056799329}
   - component: {fileID: 8047761438625529104}
+  - component: {fileID: 1198629834417705958}
   - component: {fileID: 5350226766651682763}
   m_Layer: 6
   m_Name: PrisonGuard
@@ -263,6 +264,22 @@ MonoBehaviour:
   faceRight: 0
   paralyzed: 0
   canFall: 1
+  canBurn: 1
+  maxHealth: 20
+--- !u!114 &1198629834417705958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6215878957425261870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e920b13ecc2401447aca70ab64e7d9ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: 749b9069dc4742c5bfa5c74644049926, type: 2}
+  duration: 0.15
 --- !u!50 &5350226766651682763
 Rigidbody2D:
   serializedVersion: 4

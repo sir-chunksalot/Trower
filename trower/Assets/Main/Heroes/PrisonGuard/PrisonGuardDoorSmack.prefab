@@ -167,9 +167,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1458228695
-  m_SortingLayer: 1
+  m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6343bf7f60328e54a9c63914d27b83f4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: df8cce94dd84d384c8a80495c7ff8acf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -190,7 +190,7 @@ Animator:
   m_GameObject: {fileID: 7222950896151015518}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2c96ecf4b857255429b531b6a270aec3, type: 2}
+  m_Controller: {fileID: 9100000, guid: d2957d49e1cfa6d468a5faccf10185c8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -237,7 +237,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 4, y: 4}
+    oldSize: {x: 3, y: 3}
     newSize: {x: 3, y: 3}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -264,6 +264,8 @@ MonoBehaviour:
   faceRight: 0
   paralyzed: 0
   canFall: 0
+  canBurn: 1
+  maxHealth: 20
 --- !u!50 &9080641651910418669
 Rigidbody2D:
   serializedVersion: 4

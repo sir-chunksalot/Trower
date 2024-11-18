@@ -10,9 +10,11 @@ public class Arrow : MonoBehaviour
     BoxCollider2D col;
     Animator anim;
     Rigidbody2D rb;
+    Trap trap;
     private void Awake()
     {
         Vector2 dir;
+        trap = gameObject.GetComponentInParent<Trap>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         anim = gameObject.GetComponent<Animator>();
         col = gameObject.GetComponent<BoxCollider2D>();
@@ -38,7 +40,7 @@ public class Arrow : MonoBehaviour
             Hero hero = collision.gameObject.GetComponent<Hero>();
             if(hero != null)
             {
-                hero.KillMe();
+                trap.TryDamage(hero.gameObject);
             } 
             
         }

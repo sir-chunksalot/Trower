@@ -31008,6 +31008,7 @@ GameObject:
   - component: {fileID: 4517704556212472011}
   - component: {fileID: 4856981356536170885}
   - component: {fileID: 7292028687842150981}
+  - component: {fileID: 809276099687349188}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -31499,7 +31500,7 @@ MonoBehaviour:
   heroTypes:
   - {fileID: 6215878957425261870, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
   - {fileID: 7222950896151015518, guid: f82ea38255b5fc24983d7f90d4460c37, type: 3}
-  - {fileID: 7222950896151015518, guid: f82ea38255b5fc24983d7f90d4460c37, type: 3}
+  - {fileID: 2627877736827926891, guid: fd6b92aaa023f6c4ca95185873d1c43a, type: 3}
   bloodAnim: {fileID: 8426482433493308510, guid: 878cbb6e5eab62e4ea5e109d68815ff6, type: 3}
   bloodEffect: {fileID: 3796739076783467533, guid: f8df15a2aa1494548adb97721451ae4f, type: 3}
   bloodEffects:
@@ -31564,6 +31565,18 @@ MonoBehaviour:
   doorZ: 0
   useDoor: 0
   canMoveDoor: 0
+--- !u!114 &809276099687349188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4567693808667386942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 719e019a77353af45bf4becb4436bbd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4591077182376257624
 GameObject:
   m_ObjectHideFlags: 0
@@ -62985,11 +62998,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3256083825644388851, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayer
-      value: 7
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3256083825644388851, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayerID
-      value: -1394856877
+      value: 1966772407
       objectReference: {fileID: 0}
     - target: {fileID: 3914858704719968294, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayer

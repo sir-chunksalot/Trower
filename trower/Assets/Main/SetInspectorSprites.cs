@@ -5,13 +5,23 @@ using UnityEngine;
 public class SetInspectorSprites : MonoBehaviour
 {
     HeroManager heroManager;
-
-    private void Run()
+#if(UNITY_EDITOR) 
+    [ContextMenu("SetInspectorSprites")]
+    void Run()
     {
         GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
         heroManager = gameManager.GetComponent<HeroManager>();
 
-        Wave[] waves = GameObject.FindGameObjectsWithTag.
+        GameObject[] wavesObj = GameObject.FindGameObjectsWithTag("Wave");
+        Wave[] waves = new Wave[wavesObj.Length];
+        int count = 0;
+        foreach(GameObject wave in wavesObj)
+        {
+            waves[count] = wave.GetComponent<Wave>();
+            count++;
+        }
+
+        SetWaveHeroSprites(heroManager.GetAllHeroes(), waves);
     }
     private void SetWaveHeroSprites(GameObject[] heroes, Wave[] waves)
     {
@@ -24,4 +34,5 @@ public class SetInspectorSprites : MonoBehaviour
         }
         
     }
+#endif
 }

@@ -64,13 +64,13 @@ public class Stab : MonoBehaviour
             {
                 if (hero.GetFallingStatus())
                 {
-                    hero.KillMe();
+                    trap.TryDamage(hero.gameObject);//maybe make something cooler happen here at some point
                 }
             }
             else
             {
-                Debug.Log("sunfloewr miss");
-                hero.KillMe();
+                Debug.Log("sunfloewr miss"); 
+                trap.TryDamage(hero.gameObject);
             }
         }
     }

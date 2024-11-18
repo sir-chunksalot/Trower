@@ -2222,7 +2222,7 @@ GameObject:
   - component: {fileID: 213286728}
   m_Layer: 5
   m_Name: BuildPhase
-  m_TagString: Untagged
+  m_TagString: Wave
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3508,7 +3508,7 @@ GameObject:
   - component: {fileID: 319619816}
   m_Layer: 5
   m_Name: BuildPhase (2)
-  m_TagString: Untagged
+  m_TagString: Wave
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3713,7 +3713,7 @@ GameObject:
   - component: {fileID: 346091596}
   m_Layer: 5
   m_Name: BuildPhase (1)
-  m_TagString: Untagged
+  m_TagString: Wave
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9194,7 +9194,7 @@ GameObject:
   - component: {fileID: 821101825}
   m_Layer: 5
   m_Name: SquareFinal
-  m_TagString: Untagged
+  m_TagString: Wave
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18422,7 +18422,7 @@ GameObject:
   - component: {fileID: 2095885746}
   m_Layer: 5
   m_Name: Square
-  m_TagString: Untagged
+  m_TagString: Wave
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
