@@ -23690,7 +23690,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1458228695
-  m_SortingLayer: 3
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e51be5d690fd01644acb5ab09120763e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -31002,8 +31002,8 @@ GameObject:
   - component: {fileID: 7311355743681043134}
   - component: {fileID: 2123470133038396305}
   - component: {fileID: 501793869944572823}
-  - component: {fileID: 3535202803095317245}
   - component: {fileID: 8602316411795097209}
+  - component: {fileID: 3535202803095317245}
   - component: {fileID: 3043218179902012151}
   - component: {fileID: 4517704556212472011}
   - component: {fileID: 4856981356536170885}
@@ -31465,31 +31465,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meatSack: {fileID: 2304337549401619201, guid: 1e21f44ba83c24847843aa99db88fcea, type: 3}
---- !u!114 &3535202803095317245
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4567693808667386942}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12eb890ae30c25d4e978edbb5c9eef10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  heroTypes:
-  - {fileID: 6215878957425261870, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
-  - {fileID: 7222950896151015518, guid: f82ea38255b5fc24983d7f90d4460c37, type: 3}
-  bloodAnim: {fileID: 8426482433493308510, guid: 878cbb6e5eab62e4ea5e109d68815ff6, type: 3}
-  bloodEffect: {fileID: 3796739076783467533, guid: f8df15a2aa1494548adb97721451ae4f, type: 3}
-  bloodEffects:
-  - {fileID: 21300000, guid: 02e8c3f5255635c418676b6167a45c94, type: 3}
-  - {fileID: 21300000, guid: 8ce9c3f7345363f409b0266b1d8a892e, type: 3}
-  - {fileID: 21300000, guid: 5e8138d0487eec2428103bf3cabd91c9, type: 3}
-  - {fileID: 21300000, guid: 9faba029b33183b43911b01916918eaf, type: 3}
-  - {fileID: 21300000, guid: cf4413e2ddc6cba44a132327107fbbf6, type: 3}
-  - {fileID: 21300000, guid: 300f8106083311c42a8f7f9304a57f4a, type: 3}
-  bloodDaddy: {fileID: 8412087632783406731}
 --- !u!114 &8602316411795097209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31509,6 +31484,32 @@ MonoBehaviour:
   defensePhaseEffect: {fileID: 6273928838940178212}
   bar: {fileID: 5809115012789286232, guid: 0eee1a6d7be195140be4f3f32390a8da, type: 3}
   endLevelParticles: {fileID: 2106082979963230231}
+--- !u!114 &3535202803095317245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4567693808667386942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12eb890ae30c25d4e978edbb5c9eef10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heroTypes:
+  - {fileID: 6215878957425261870, guid: d5adc1d9e059c5249b5bf4e694a7f8fd, type: 3}
+  - {fileID: 7222950896151015518, guid: f82ea38255b5fc24983d7f90d4460c37, type: 3}
+  - {fileID: 7222950896151015518, guid: f82ea38255b5fc24983d7f90d4460c37, type: 3}
+  bloodAnim: {fileID: 8426482433493308510, guid: 878cbb6e5eab62e4ea5e109d68815ff6, type: 3}
+  bloodEffect: {fileID: 3796739076783467533, guid: f8df15a2aa1494548adb97721451ae4f, type: 3}
+  bloodEffects:
+  - {fileID: 21300000, guid: 02e8c3f5255635c418676b6167a45c94, type: 3}
+  - {fileID: 21300000, guid: 8ce9c3f7345363f409b0266b1d8a892e, type: 3}
+  - {fileID: 21300000, guid: 5e8138d0487eec2428103bf3cabd91c9, type: 3}
+  - {fileID: 21300000, guid: 9faba029b33183b43911b01916918eaf, type: 3}
+  - {fileID: 21300000, guid: cf4413e2ddc6cba44a132327107fbbf6, type: 3}
+  - {fileID: 21300000, guid: 300f8106083311c42a8f7f9304a57f4a, type: 3}
+  bloodDaddy: {fileID: 8412087632783406731}
 --- !u!114 &3043218179902012151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51581,7 +51582,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1458228695
-  m_SortingLayer: 3
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: dd746dcafd897a7498f53de2ee48b9da, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -62968,7 +62969,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1989897185525088926, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayer
-      value: 4
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1989897185525088926, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayerID
@@ -62976,7 +62977,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2675803273436122779, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2675803273436122779, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayerID
@@ -62984,7 +62985,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3256083825644388851, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayer
-      value: 4
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3256083825644388851, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayerID
@@ -62992,7 +62993,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3914858704719968294, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayer
-      value: 4
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3914858704719968294, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayerID
@@ -63000,7 +63001,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4061443179379112759, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4061443179379112759, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayerID
@@ -63008,7 +63009,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5253298538473364775, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5253298538473364775, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayerID
@@ -63016,7 +63017,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5693719459234896768, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5693719459234896768, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayerID
@@ -63024,7 +63025,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5930258913366506419, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayer
-      value: 4
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5930258913366506419, guid: 3b58f0541b538d64fb9509f91cdd7feb, type: 3}
       propertyPath: m_SortingLayerID

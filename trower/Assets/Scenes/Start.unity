@@ -10757,6 +10757,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3535202803095317245, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
+      propertyPath: heroTypes.Array.data[2]
+      value: 
+      objectReference: {fileID: 2627877736827926891, guid: fd6b92aaa023f6c4ca95185873d1c43a, type: 3}
     - target: {fileID: 4567693808667386942, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -10803,7 +10807,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8860940943420892392, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8860940943420892392, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
       propertyPath: m_SortingLayerID

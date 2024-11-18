@@ -80,6 +80,7 @@ public class HeroManager : MonoBehaviour
         }
         blood.Clear();
 
+
     }
 
     public Vector3 GetDoorPos()
@@ -192,7 +193,7 @@ public class HeroManager : MonoBehaviour
     {
         foreach(GameObject hero in heroTypes)
         {
-            Debug.Log("NATALIE  " + heroName + "   |   " + hero.name);
+            Debug.Log(heroName + "   |   " + hero.name);
             if(hero.name == heroName)
             {
                 return hero;

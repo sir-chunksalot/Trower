@@ -30,6 +30,22 @@ public class Wave : MonoBehaviour
                 return null;
         }
     }
+     
+    public void SetHeroSprite(string name, Sprite sprite)
+    {
+        switch (name)
+        {
+            case "PrisonGuard":
+                prisonGuardSprite = sprite;
+                break;
+            case "DoorSmackGuard":
+                doorSmackGuardSprite = sprite;
+                break;
+            case "Knight":
+                knightSprite = sprite;
+                break;
+        }
+    }
 
     public class Hero
     {
