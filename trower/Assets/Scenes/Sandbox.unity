@@ -4606,6 +4606,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68df598ca9f52b34f80e8bdd1f5de476, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridSize: {x: 3, y: 5}
+  fixedCamera: 0
+  sceneCamera: {fileID: 1777591902}
   startAttackPhase: 0
   startDefensePhase: 1
   hideProgressbar: 1

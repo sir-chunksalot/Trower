@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     private HeroManager heroManager;
     private WaveManager waveManager;
     private CashManager cashManager;
+    private GridManager gridManager;
 
     Statsheet statsheet;
 
@@ -54,6 +55,7 @@ public class GameManager : MonoBehaviour
         heroManager = gameObject.GetComponent<HeroManager>();
         waveManager = gameObject.GetComponent<WaveManager>();
         cashManager = gameObject.GetComponent<CashManager>();
+        gridManager = gameObject.GetComponent<GridManager>();
     }
 
     void OnNewScene(Scene scene, LoadSceneMode mode)
@@ -114,6 +116,19 @@ public class GameManager : MonoBehaviour
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnNewScene;
+    }
+
+    private void Update()
+    {
+        if(gridManager.GetIsGridUpdated())
+        {
+            if (!levelDetails.fixedCamera)
+            {
+                Vector2 center = gridManager.GetCenterOfGrid();
+                GetCurrentLevelDetails().sceneCamera.transform.position = new Vector3(center.x, center.y, -20);
+            }
+            gridManager.SetIsGridUpdated(false);
+        }
     }
 
 }

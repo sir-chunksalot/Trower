@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class LevelDetails : MonoBehaviour
 {
+    [SerializeField] public Vector2Int gridSize;
+    [SerializeField] public bool fixedCamera;
+    [SerializeField] public GameObject sceneCamera;
     [SerializeField] public bool startAttackPhase;
     [SerializeField] public bool startDefensePhase;
     [SerializeField] public bool hideProgressbar;

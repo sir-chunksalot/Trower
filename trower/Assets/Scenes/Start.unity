@@ -10865,7 +10865,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4567693808667386942, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 2114602048}
   m_SourcePrefab: {fileID: 100100000, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
 --- !u!1 &627037594
 GameObject:
@@ -16123,6 +16126,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68df598ca9f52b34f80e8bdd1f5de476, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridSize: {x: 4, y: 4}
+  fixedCamera: 0
+  sceneCamera: {fileID: 0}
   startAttackPhase: 0
   startDefensePhase: 0
   hideProgressbar: 1
@@ -33910,6 +33916,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2111899170}
   m_CullTransparentMesh: 1
+--- !u!1 &2114602029 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4567693808667386942, guid: bd869e5f0c1454749a5dc462f0a5fe0d, type: 3}
+  m_PrefabInstance: {fileID: 625120780}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2114602048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2114602029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 854e2687fe99f90498eeae196f39d8ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGridUpdated: 0
 --- !u!1 &2128585975
 GameObject:
   m_ObjectHideFlags: 0
