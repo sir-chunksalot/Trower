@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public event EventHandler OnSceneLoadedAwake;
     public event EventHandler OnSceneLoaded;
     public event EventHandler OnSceneUnloaded;
 
@@ -73,6 +74,7 @@ public class GameManager : MonoBehaviour
             endManager.DisplayStats(statsheet);
         }
 
+        OnSceneLoadedAwake?.Invoke(gameObject, EventArgs.Empty);
         OnSceneLoaded?.Invoke(gameObject, EventArgs.Empty);
     }
     void OnLeaveScene(Scene scene)

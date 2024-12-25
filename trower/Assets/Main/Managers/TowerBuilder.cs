@@ -29,6 +29,8 @@ public class TowerBuilder : MonoBehaviour
     GameObject sellBombObject;
     GameObject buildDaddy;
     CameraController cameraController;
+    GridManager gridManager;
+    LevelDetails levelDetails;
     UIManager uiManager;
 
     private List<GameObject> placedFloors = new List<GameObject>(); //LIST OF PLACED INDIVIDUAL FLOORS
@@ -46,7 +48,6 @@ public class TowerBuilder : MonoBehaviour
     float floorSpawnZ;
     Vector2 mousePos;
 
-    private string floorName;
     private bool goingUp;
     private bool canUndo;
     private bool canPlace;
@@ -60,6 +61,7 @@ public class TowerBuilder : MonoBehaviour
     private void Awake()
     {
         gameManager = gameObject.GetComponent<GameManager>();
+        gridManager = gameObject.GetComponent<GridManager>();
         gameManager.OnSceneLoaded += OnSceneLoad;
         gameManager.OnSceneUnloaded += OnSceneUnloaded;
         floorSpawnZ = 10;
@@ -85,27 +87,61 @@ public class TowerBuilder : MonoBehaviour
         potentialFloors.Clear();
         mapPotentialFloors.Clear();
         buildDaddy = gameManager.GetCurrentLevelDetails().GetBuildDaddy();
+        levelDetails = gameManager.GetCurrentLevelDetails();
         foreach (GameObject floor in placedFloors)
         {
             Destroy(floor);
         }
         placedFloors.Clear();
-        if (buildDaddy != null)
+        GenerateMapSpawns();
+        SpawnExistingFloors();
+        onTowerStart?.Invoke(gameObject, EventArgs.Empty);
+    }
+
+    private void SpawnExistingFloors()
+    {
+        if (buildDaddy == null) return;
+        for (int y = 0; y < levelDetails.gridSize.y; y++)
         {
-            foreach (Transform kid in buildDaddy.transform)
+            for (int x = 0; x < levelDetails.gridSize.x; x++)
             {
-                floorPapas.Add(kid.gameObject);
-
-
-                foreach (Transform floor in kid)
-                {
-                    AddPlacedFloor(floor.gameObject);
-                }
-                onTowerPlace.Invoke(kid.gameObject, EventArgs.Empty);
+                //Debug.Log(levelDetails.existingFloors.rows[y].row[x] + "INDEX:" + x + "," + y);
+                GridSpace cell = gridManager.GetGridSpace(x, y);
+                Debug.Log("france" + gridManager.GetGridSize());
+                Debug.Log("achilles " + cell);
+                if(levelDetails.existingFloors.rows[y].row[x]) { MakeFloor(cell.GetPos()); Debug.Log("Spawning Starting Floor"); }
             }
         }
-        GenerateMapSpawns();
-        onTowerStart?.Invoke(gameObject, EventArgs.Empty);
+    }
+
+    private void MakeFloor(Vector2 pos)
+    {
+        MakeFloor(floors[0], pos);
+    }
+    private void MakeFloor(GameObject build, Vector3 spawnPos)
+    {
+        floorPapas.Add(build);
+        Debug.Log("HELLOW BABY");
+        uiManager.UseCard(build.name, true);
+        spawnPos = new Vector3(spawnPos.x, spawnPos.y, 10);
+        build = Instantiate(build, spawnPos, Quaternion.identity, buildDaddy.transform);
+        build.GetComponent<Floor>().PlaceFloor();
+
+        SetAlpha(build, 1);
+        foreach (Transform floor in build.transform)
+        {
+            AddPlacedFloor(floor.gameObject);
+            Debug.Log("owen klanke is sleepy" + floor);
+            floor.gameObject.name = floor.gameObject.name + "#" + UnityEngine.Random.Range(0, 10000);
+
+            floor.transform.position = new Vector3(Mathf.Round(floor.transform.position.x), Mathf.Round(floor.transform.position.y), floor.transform.position.z);
+            gridManager.GetGridSpace(floor.transform.position).SetCurrentFloor(floor.gameObject);
+        }
+        Vector3 particleSpawnPos = build.transform.position;
+
+        particle.gameObject.transform.position = new Vector3(particleSpawnPos.x, particleSpawnPos.y, particleSpawnPos.z - 2);
+        particle.GetComponent<ParticleSystem>().Clear();
+        particle.GetComponent<ParticleSystem>().Play();
     }
 
     public void Place(InputAction.CallbackContext context) //called when mouse is released
@@ -123,47 +159,16 @@ public class TowerBuilder : MonoBehaviour
     public void PlaceBuild(GameObject build)
     {
         GameObject newBuild = build;
-        if (placingFloor)
+        GridSpace currentGridSpace = gridManager.GetClosestGridSpace(currentFloor.transform.position, true, false);
+        nextFloorPos = currentGridSpace.GetPos();
+        Debug.Log("CUMSLURP" + (gridManager.GetAdjacentCells(currentGridSpace)[1].GetCurrentFloor() == null) );
+        if (gridManager.DoesCellHaveNeighbor(currentGridSpace))
         {
-            nextFloorPos = ClosestTo(currentFloor.transform.position, (GameObject[])potentialFloors.ToArray().Clone(), true);
-        }
-
-
-        if (Vector2.Distance(nextFloorPos, mousePos) < reqMouseDistanceToPlace)
-        {
-            Vector3 particleSpawnPos = Vector3.zero;
-
-            if (placingFloor)
-            {
-                floorPapas.Add(build);
-                Debug.Log("HELLOW BABY");
-                uiManager.UseCard(floorName, true);
-                nextFloorPos = new Vector3(nextFloorPos.x, nextFloorPos.y, 10);
-                newBuild = Instantiate(build, nextFloorPos, Quaternion.identity, buildDaddy.transform);
-                newBuild.GetComponent<Floor>().PlaceFloor();
-                SetAlpha(newBuild, 1);
-                foreach(Transform floor in newBuild.transform)
-                {
-                    AddPlacedFloor(floor.gameObject);
-                    Debug.Log("owen klanke is sleepy" + floor);
-                    floor.gameObject.name = floor.gameObject.name + "#" + UnityEngine.Random.Range(0, 10000);
-
-                    floor.transform.position = new Vector3(Mathf.Round(floor.transform.position.x), Mathf.Round(floor.transform.position.y), floor.transform.position.z);
-                }
-                particleSpawnPos = newBuild.transform.position;
-            }
-            else
-            {
-                uiManager.UseCard(floorName, false);
-            }
-
-            particle.gameObject.transform.position = new Vector3(particleSpawnPos.x, particleSpawnPos.y, particleSpawnPos.z - 2);
-            particle.GetComponent<ParticleSystem>().Clear();
-            particle.GetComponent<ParticleSystem>().Play();
+            MakeFloor(newBuild, currentGridSpace.GetPos());
         }
         else
         {
-            uiManager.UseCard(floorName, false);
+            uiManager.UseCard(newBuild.name, false);
             Destroy(currentFloor);
             Debug.Log("Mission Failed. We'll get em' next time (failed to build structure)");
         }
@@ -188,10 +193,11 @@ public class TowerBuilder : MonoBehaviour
                 activeFloor = Instantiate(floor, new Vector3(mousePos.x, mousePos.y, 20), Quaternion.identity);
             }
         }
-        this.floorName = floorName.Substring(0, floorName.Length - 7);
+        string newName = floorName.Substring(0, floorName.Length - 7);
         if (currentFloor != null) { currentFloor.SetActive(false); }
 
         currentFloor = activeFloor;
+        currentFloor.name = newName;
         floorSpawnSpots.Clear();
         foreach (Transform child in currentFloor.GetComponentInChildren<Transform>())
         {
@@ -422,12 +428,23 @@ public class TowerBuilder : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        Debug.Log("france" + gridManager.GetGridSize());
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 closestFloor = ClosestTo(mousePos, (GameObject[])potentialFloors.ToArray().Clone(), true);
-        if (Vector2.Distance(closestFloor, mousePos) > reqMouseDistanceToPlace)
+        Debug.Log(gridManager);
+        GridSpace gridSpace = gridManager.GetClosestGridSpace(mousePos, true, false);
+        Vector2 closestGridSpace;
+        if (gridSpace != null)
         {
-            closestFloor.x = mousePos.x;
-            closestFloor.y = mousePos.y;
+            closestGridSpace = gridSpace.GetPos();
+
+            
+        }
+        else { closestGridSpace = mousePos; }
+        
+        if (gridManager.DoesCellHaveNeighbor(gridSpace))
+        {
+            closestGridSpace.x = mousePos.x;
+            closestGridSpace.y = mousePos.y;
         }
 
 
@@ -442,7 +459,7 @@ public class TowerBuilder : MonoBehaviour
         {
             if (currentFloor != null)
             {
-                currentFloor.transform.position = new Vector3(closestFloor.x, closestFloor.y, 9);
+                currentFloor.transform.position = new Vector3(closestGridSpace.x, closestGridSpace.y, 9);
             }
         }
 

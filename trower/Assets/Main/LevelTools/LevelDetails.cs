@@ -3,6 +3,7 @@ using UnityEngine;
 public class LevelDetails : MonoBehaviour
 {
     [SerializeField] public Vector2Int gridSize;
+    public ArrayLayout existingFloors;
     [SerializeField] public bool fixedCamera;
     [SerializeField] public GameObject sceneCamera;
     [SerializeField] public bool startAttackPhase;
@@ -19,6 +20,7 @@ public class LevelDetails : MonoBehaviour
     [SerializeField] public Transform[] spawnSpots;
     [SerializeField] public GameObject heroDaddy;
     [SerializeField] public GameObject buildDaddy;
+
 
     public GameObject GetRoundDaddy()
     {
@@ -49,5 +51,22 @@ public class LevelDetails : MonoBehaviour
         if (buildDaddy == null) return null;
         return buildDaddy;
     }
+
+#if (UNITY_EDITOR)
+    [ContextMenu("UpdateGrid")]
+    void Run()
+    {
+        existingFloors.xBounds = gridSize.x;
+        existingFloors.yBounds = gridSize.y;
+
+        Test();
+    }
+    void Test()
+    {
+        
+    }
+
+#endif
+
 
 }
