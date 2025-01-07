@@ -7,453 +7,193 @@ public class TowerAdditions : MonoBehaviour
 {
     [SerializeField] GameObject woodenTriangle;
     [SerializeField] GameObject roofExtension;
+    [SerializeField] GameObject door;
     [SerializeField] GameObject bridge;
     [SerializeField] GameObject smokeEffect;
     TowerBuilder towerBuilder;
     GameManager gameManager;
-    GameObject buildDaddy;
+    GridManager gridManager;
     List<GameObject> addedFrills;
-    List<Vector3> bridgesPos;
-    List<GameObject> bridgesBeginFloor;
-    List<GameObject> bridgeEndFloor;
-    List<GameObject> bridges;
-    List<GameObject> debugThings;
-    GenerateViableFloors genViableFloors;
+    GridSpace[,] gameGrid;
+    float zValue;
     void Start()
     {
         gameManager = gameObject.GetComponent<GameManager>();
         gameManager.OnSceneLoaded += OnSceneLoad;
         towerBuilder = gameObject.GetComponent<TowerBuilder>();
-        genViableFloors = gameObject.GetComponent<GenerateViableFloors>();
         towerBuilder.onTowerPlace += CreateAdditions;
-        towerBuilder.onTowerSell += CreateAdditions;
-        towerBuilder.onTowerStart += CreateAdditions;
-        genViableFloors.onFinishedScan += BridgePhase;
+        gridManager = gameObject.GetComponent<GridManager>();
+
         addedFrills = new List<GameObject>();
-        bridgesPos = new List<Vector3>();
-        bridges = new List<GameObject>();
-        bridgesBeginFloor = new List<GameObject>();
-        debugThings = new List<GameObject>();
-        bridgeEndFloor = new List<GameObject>();
+        zValue = 15;
     }
 
     private void OnSceneLoad(object sender, EventArgs e)
     {
         addedFrills.Clear();
-        bridgesPos.Clear();
-        bridgesBeginFloor.Clear();
-        bridgeEndFloor.Clear();
-        bridges.Clear();
-    }
-    private void BridgePhase(object sender, EventArgs e)
-    {
-        DeleteOldBridges();
+        gameGrid = gridManager.GetGrid();
     }
 
-    private void SetBuildDaddy()
+    public void CreateAdditions(object floor, EventArgs e)
     {
-        buildDaddy = gameManager.GetCurrentLevelDetails().GetBuildDaddy();
-    }
-    private void CreateAdditions(object sender, EventArgs e)
-    {
-        if(buildDaddy == null)
-        {
-            SetBuildDaddy();
-        }
-        StopAllCoroutines();
-        GameObject[] placedFloors = CopyToArray(towerBuilder.GetPlacedFloors());
-        int index = 0;
-        Vector3[] placedFloorsPos = CopyToArray(towerBuilder.GetPlacedFloorsPos());
-        foreach (Vector3 floorPos in placedFloorsPos)
-        {
+        if (gameGrid == null) { return; }
 
-            WoodenTriangle(floorPos, placedFloors[index]);
-            RoofExtensions(floorPos, placedFloors[index]);
-            index++;
-        }
-        //DeleteOldBridges();
-        //StartCoroutine(CheckValidBridgeSpawns());
-
-        foreach (Vector3 floorPos in placedFloorsPos)
+        foreach (GridSpace cell in gameGrid)
         {
-            foreach (GameObject additions in addedFrills)
-            {
-                if (additions == null)
-                {
-                    addedFrills.Remove(additions);
-                    break;
-                }
-                else if (additions.transform.position == floorPos)
-                {
-                    addedFrills.Remove(additions);
-                    Destroy(additions);
-                    break;
-                }
-                else if (additions.tag == "roofExtension" && Mathf.Abs(floorPos.y - additions.transform.position.y) < 2)
-                {
-                    Debug.Log("COYT");
-                    Destroy(additions);
-                    addedFrills.Remove(additions);
-                    break;
-                }
-            }
-        }
+            //gets existing frills on this cell (if they exist)
+            GameObject OG_bridge = cell.GetFrill("bridge");
+            GameObject OG_leftTriangle = cell.GetFrill("leftTriangle");
+            GameObject OG_rightTriangle = cell.GetFrill("rightTriangle");
+            GameObject OG_roofExtension = cell.GetFrill("roofExtension");
+            GameObject OG_roomDoor = cell.GetFrill("roomDoor");
 
-    }
+            //do checks
+            bool makeBridge = Bridge(cell);
+            bool makeLeftTriangle = LeftTriangle(cell);
+            bool makeRightTriangle = RightTriangle(cell);
+            bool makeRoofExtension = RoofExtensions(cell);
+            bool makeDoor = RoomDoor(cell);
 
-    private void DeleteOldBridges() //validates current bridges
-    {
-        List<GameObject> validBridges = new List<GameObject>();
-        List<Vector3> validBridgePos = new List<Vector3>();
-        List<GameObject> validBridgeStarts = new List<GameObject>();
-        List<GameObject> validBridgeEnds = new List<GameObject>();
-        List<GameObject> deadBridges = new List<GameObject>();
-        foreach(GameObject floor in genViableFloors.GetInaccessibleFloors())
-        {
-            Debug.Log("armageddon" + floor.name);
-        } 
-        Debug.Log("This number should not be above 100 |" + genViableFloors.GetInaccessibleFloors().Count);
-        foreach (GameObject bridge in bridges)
-        {
-            int bridgeIndex = bridges.IndexOf(bridge);
-            if (bridge == null || towerBuilder.GetPlacedFloorsPos().Contains(bridge.transform.position)) //bridge overlaps a build
-            {
-                deadBridges.Add(bridges[bridgeIndex]);
-            }
-            else if (genViableFloors.IsFloorAccessible(bridgeEndFloor[bridgeIndex].transform.position) && genViableFloors.IsFloorAccessible(bridgesBeginFloor[bridgeIndex].transform.position)) //bridge is no longer needed
-            {
-                Debug.Log("japan lol" + genViableFloors.IsFloorAccessible(bridgeEndFloor[bridgeIndex].transform.position) + genViableFloors.IsFloorAccessible(bridgesBeginFloor[bridgeIndex].transform.position));
-                deadBridges.Add(bridges[bridgeIndex]);
-            }
+            //if a frill is on a cell and it shouldnt be, destroy it
+            if (!makeBridge) { DestroyFrill(OG_bridge, cell); }
+            if (!makeLeftTriangle) { DestroyFrill(OG_leftTriangle, cell); }
+            if (!makeRightTriangle) { DestroyFrill(OG_rightTriangle, cell); }
+            if (!makeRoofExtension) { DestroyFrill(OG_roofExtension, cell); }
+            if (!makeDoor) { DestroyFrill(OG_roomDoor, cell); }
 
-        }
-        foreach (GameObject bridge in bridges)
-        {
-            int bridgeIndex = bridges.IndexOf(bridge);
-            if (deadBridges.Contains(bridge)) //connected bridge was destroyed
-            {
-                Destroy(bridges[bridgeIndex]);
-            }
-            else //keep the bridge
-            {
-                validBridges.Add(bridges[bridgeIndex]);
-                validBridgeStarts.Add(bridgesBeginFloor[bridgeIndex]);
-                validBridgeEnds.Add(bridgeEndFloor[bridgeIndex]);
-                validBridgePos.Add(bridges[bridgeIndex].transform.position);
-            }
-        }
-
-        bridges = validBridges;
-        bridgesBeginFloor = validBridgeStarts;
-        bridgesPos = validBridgePos;
-        bridgeEndFloor = validBridgeEnds;
-        CheckValidBridgeSpawns(); //makes new bridges
-        MurderStuffNearBridge();
-    }
-
-    private void CheckValidBridgeSpawns()
-    {
-        foreach (GameObject badFloor in genViableFloors.GetInaccessibleFloors()) //the blue raycasts when debugging are the inaccessible floors
-        {
-            Debug.Log("Inaccessible Floor Being tested: Posistion: " + badFloor.transform.position + " Name: " + badFloor.transform.name);
-            Debug.Log("naht FOUND INACCESSIBLE FLOOR");
-            Vector3 endPointLeft = new Vector3(-100, 0, 0);
-            Vector3 endPointRight = new Vector3(100, 0, 0);
-            Vector3[] placedFloorsPos = CopyToArray(towerBuilder.GetPlacedFloorsPos());
-            foreach (Vector3 floorPos in placedFloorsPos)
-            {
-                Debug.Log("naht getting floors");
-                if (floorPos.y == badFloor.transform.position.y)
-                {
-                    if (floorPos.x < badFloor.transform.position.x) //left bridge
-                    {
-                        Debug.Log("naht FOUND INACCESSIBLE FLOOR LEFT");
-                        if (badFloor.transform.position.x - floorPos.x < badFloor.transform.position.x - endPointLeft.x)
-                        {
-                            endPointLeft = floorPos;
-                        }
-                    }
-                    else if (floorPos.x > badFloor.transform.position.x) //right bridge
-                    {
-                        Debug.Log("naht FOUND INACCESSIBLE RIGHT");
-                        if (badFloor.transform.position.x - floorPos.x > badFloor.transform.position.x - endPointRight.x)
-                        {
-                            endPointRight = floorPos;
-                        }
-                    }
-                }
-            }
-            if(badFloor.transform.position.y < 2) { continue; } //dont spawn floors on the ground
-            if (endPointLeft.x != -100) { MakeBridge(badFloor.transform.position, endPointLeft, true, badFloor); }
-            if (endPointRight.x != 100) { MakeBridge(badFloor.transform.position, endPointRight, false, badFloor); } 
-            //StartCoroutine(DeleteOldBridges(UnityEngine.Random.Range(0, 100)));
+            //if there isnt a frill on a cell and its allowed to be there, make one
+            if (OG_bridge == null && makeBridge) { MakeFrill(bridge, "bridge", cell, new Vector2(0, 0), false, true); }
+            if (OG_leftTriangle == null && makeLeftTriangle) { MakeFrill(woodenTriangle, "leftTriangle", cell, new Vector2(1f, 0), false); }
+            if (OG_rightTriangle == null && makeRightTriangle) { MakeFrill(woodenTriangle, "rightTriangle", cell, new Vector2(-1f, 0), true); }
+            if (OG_roofExtension == null && makeRoofExtension) { MakeFrill(roofExtension, "roofExtension", cell, new Vector3(5, 3.07f, -15f), false); }
+            if (OG_roomDoor == null && makeDoor) { MakeFrill(door, "roomDoor", cell, new Vector3(5f, 0, -15f), false); }
 
         }
     }
-    private void MakeBridge(Vector3 startFloor, Vector3 endFloor, bool goLeft, GameObject currentFloor)
+
+    private bool RightTriangle(GridSpace cell)
     {
+        if (cell.GetCurrentFloor() != null) { return false; }
+        if (cell.GetFrill("bridge") != null) { return false; }
 
-        bool bridgeComplete = false;
-        Vector3 spawnPos = startFloor;
-        float count = 0;
-        float bridgeCount = 0;
-        float dir = -1;
-        GameObject endFloorObj = towerBuilder.GetPlacedFloor(endFloor);
-
-        if (goLeft) dir = 1;
-       
-        while (!bridgeComplete && count < 10)
+        GridSpace up = gridManager.GetCellNeighbor(cell, 0);
+        GridSpace left = gridManager.GetCellNeighbor(cell, 1);
+        if (up != null && left != null)
         {
-            Debug.Log("log that shiz" + (Mathf.Floor(endFloor.x + (towerBuilder.GetRoomBounds().x * dir)) == Mathf.Floor(spawnPos.x) || Mathf.Floor(endFloor.x - (towerBuilder.GetRoomBounds().x * dir)) == Mathf.Floor(spawnPos.x)));
-            if(count > 8)
-            {
-                Debug.Log("naht TRIED TO MAKE BRIDGE" + "endfloor" + endFloor + "startfloor" + startFloor + "isLeft" + goLeft + "fart" + (towerBuilder.GetRoomBounds().x * dir) + "shit" + (Mathf.Floor(endFloor.x + (towerBuilder.GetRoomBounds().x * dir)) == Mathf.Floor(spawnPos.x)) + "cum" + spawnPos.x);
-            }
-            if (count == 0)
-            {
-                Debug.Log("naht TRIED TO MAKE BRIDGE FIRSTFIRSTFIRST" + "endfloor" + endFloor + "startfloor" + startFloor + "isLeft" + goLeft + "fart" + (towerBuilder.GetRoomBounds().x * dir) + "shit" + (Mathf.Floor(endFloor.x + (towerBuilder.GetRoomBounds().x * dir)) == Mathf.Floor(spawnPos.x)) + "cum" + spawnPos.x);
-            }
-            if ((Mathf.Floor(endFloor.x + (towerBuilder.GetRoomBounds().x * dir)) == Mathf.Floor(spawnPos.x) || Mathf.Floor(endFloor.x - (towerBuilder.GetRoomBounds().x * dir)) == Mathf.Floor(spawnPos.x)))
-            {
-                bridgeComplete = true;
-                continue;
-            }
-            count++;
-            spawnPos -= new Vector3(towerBuilder.GetRoomBounds().x, 0, 0) * dir;
-            if (bridgesPos.Contains(spawnPos) || towerBuilder.GetPlacedFloorsPos().Contains(spawnPos))
-            {
-                Debug.Log("naht there is a build already at" + spawnPos);
-                continue;
-            }
-            else
-            {
-                bridgesPos.Add(spawnPos);
-                bridgeCount++;
-                InstantiateBridge(spawnPos, currentFloor, endFloorObj);
-                Debug.Log("naht spawned bridge" + "spawnPos" + spawnPos + "count" + count);
-            }
-        }
-
-
-        Debug.Log("naht end");
-
-    }
-
-    private void InstantiateBridge(Vector3 spawnPos, GameObject startFloor, GameObject endFloor)
-    {
-        Vector3 smokeSpawnPos = new Vector3(spawnPos.x, spawnPos.y, spawnPos.z - 20);
-        Instantiate(smokeEffect, smokeSpawnPos, Quaternion.identity);
-        GameObject newBridge = Instantiate(bridge, spawnPos, Quaternion.identity, buildDaddy.transform);
-        endFloor.transform.parent.GetComponent<Floor>().AddFollower(newBridge);
-        startFloor.transform.parent.GetComponent<Floor>().AddFollower(newBridge);
-        bridges.Add(newBridge);
-        bridgesBeginFloor.Add(startFloor);
-        bridgeEndFloor.Add(endFloor);
-        MurderStuffNearBridge();
-    }
-
-
-    private void MurderStuffNearBridge()
-    {
-        foreach (GameObject bridge in bridges)
-        {
-            if (bridge == null) continue;
-            GameObject[] currentFrills = CopyToArray(addedFrills);
-            foreach (GameObject additions in currentFrills)
-            {
-                if (additions == null) continue;
-                if (Vector2.Distance(additions.transform.position, bridge.transform.position) < 5.2f)
-                {
-                    Destroy(additions);
-                    Debug.Log("bridge murdered frill");
-                    addedFrills.Remove(additions);
-                }
-            }
-        }
-    }
-
-    public void DebugSpawnAdditions()
-    {
-        Debug.Log("ronald chan counted " + addedFrills.Count);
-        if(debugThings.Count > 0)
-        {
-            Debug.Log("ronald chan killed the frills");
-            foreach (GameObject additions in debugThings)
-            {
-                Destroy(additions);
-            }
-            debugThings.Clear();
-        }
-        else
-        {
-            foreach (GameObject additions in addedFrills)
-            {
-                if (additions == null) continue;
-                Debug.Log("ronald chan made frill at " + additions.transform.position);
-                GameObject debugThing = Instantiate(roofExtension, new Vector3(additions.transform.position.x, additions.transform.position.y, Camera.main.transform.position.z + 1), Quaternion.identity) ;
-                debugThing.GetComponent<SpriteRenderer>().color = Color.black;
-                debugThings.Add(debugThing);
-            }
-        }
-
-    }
-
-
-    private void RoofExtensions(Vector3 floorPos, GameObject currentFloor)
-    {
-        Vector3[] floorLocations = CopyToArray(towerBuilder.GetPlacedFloorsPos());
-        
-        float yOffSet = 3.07f;
-        float xOffSet = 5;
-        Vector3 spawnPos = new Vector3();
-        Vector3 sideFloorPos = new Vector3();
-        foreach (Vector3 pos in floorLocations)
-        {
-            if (floorPos.y == pos.y && floorPos.x == pos.x + 10)
-            {
-                sideFloorPos = pos;
-                GameObject sideFloor = towerBuilder.GetPlacedFloor(sideFloorPos);
-                spawnPos = new Vector3(floorPos.x - xOffSet, floorPos.y + yOffSet, floorPos.z + .5f);
-
-                PlaceRoofExtension(currentFloor, sideFloor, spawnPos);
-            }
-            if (floorPos.y == pos.y && floorPos.x == pos.x - 10)
-            {
-                sideFloorPos = pos;
-                GameObject sideFloor = towerBuilder.GetPlacedFloor(sideFloorPos);
-                spawnPos = new Vector3(floorPos.x + xOffSet, floorPos.y + yOffSet, floorPos.z + .5f);
-
-                PlaceRoofExtension(currentFloor, sideFloor, spawnPos);
-            }
-        }
-    }
-
-    private void PlaceRoofExtension(GameObject currentFloor, GameObject sideFloor, Vector3 spawnPos)
-    {
-        if (buildDaddy == null) return;
-        foreach (GameObject frills in addedFrills)
-        {
-            if (frills != null && frills.transform.position == spawnPos)
-            {
-                return;
-            }
-        }
-        Floor floor1 = currentFloor.transform.parent.GetComponent<Floor>();
-        Floor floor2 = sideFloor.transform.parent.GetComponent<Floor>();
-        GameObject newBuild = Instantiate(roofExtension, spawnPos, Quaternion.identity, buildDaddy.transform);
-        Debug.Log("SPAWNPOS FOR ROOF EXTENSION" + spawnPos);
-        floor1.AddFollower(newBuild);
-        floor2.AddFollower(newBuild);
-
-        newBuild.GetComponent<SpriteRenderer>().color = currentFloor.GetComponentInChildren<SpriteRenderer>().color;
-
-        addedFrills.Add(newBuild);
-
-        if (spawnPos.y - 6.14f > 0)
-        {
-            GameObject newBuild2 = Instantiate(roofExtension, spawnPos - new Vector3(0, 6.14f), Quaternion.identity, buildDaddy.transform);
-            Debug.Log("SPAWNPOS FOR ROOF EXTENSION" + (spawnPos - new Vector3(0, 6.14f)));
-            floor1.AddFollower(newBuild2);
-            floor2.AddFollower(newBuild2);
-
-            newBuild2.GetComponent<SpriteRenderer>().color = currentFloor.GetComponentInChildren<SpriteRenderer>().color;
-            newBuild2.GetComponent<SpriteRenderer>().flipY = true;
-
-            addedFrills.Add(newBuild2);
-        }
-    }
-
-    private void WoodenTriangle(Vector3 floorPos, GameObject currentFloor)
-    {
-        Vector3[] floorLocations = CopyToArray(towerBuilder.GetPlacedFloorsPos());
-
-        float xDistance = towerBuilder.GetRoomBounds().x;
-        float yDistance = towerBuilder.GetRoomBounds().y;
-
-        Vector3 newTriangle = new Vector3(floorPos.x, floorPos.y - yDistance, floorPos.z);
-        bool canPlace = true;
-        bool nextToLeftWall = false;
-        bool nextToRightWall = false;
-        GameObject roofRoom = towerBuilder.GetPlacedFloor(floorPos);
-
-        foreach (Vector3 pos in floorLocations)
-        {
-            if (newTriangle.x == pos.x)
-            {
-                if (newTriangle.y == pos.y) //triangle is in the same spot as another room
-                {
-                    canPlace = false;
-                }
-                if (newTriangle.y - yDistance == pos.y) //triangle is right above another room
-                {
-                    canPlace = false;
-                }
-            }
-
-            if (newTriangle.y == pos.y)
-            {
-                if (newTriangle.x - xDistance == pos.x)//only generates if its next to left wall
-                {
-                    nextToLeftWall = true;
-                    currentFloor = towerBuilder.GetPlacedFloor(new Vector3(pos.x, pos.y, pos.z));
-                }
-                if (newTriangle.x + xDistance == pos.x)//only generates if next to right wall
-                {
-                    nextToRightWall = true;
-                    currentFloor = towerBuilder.GetPlacedFloor(new Vector3(pos.x, pos.y, pos.z));
-                }
-            }
-        }
-
-        float firstFloorOffsetX = 0;
-        if (newTriangle.y == 0)
-        {
-            firstFloorOffsetX = 2;
-        }
-
-        if (canPlace && nextToLeftWall)
-        {
-            newTriangle = newTriangle - new Vector3(1 + firstFloorOffsetX, 0, -3);
-            if (!AlreadyThere(newTriangle))
-            {
-                GameObject newBuild = Instantiate(woodenTriangle, newTriangle, Quaternion.identity, buildDaddy.transform);
-                roofRoom.transform.parent.GetComponent<Floor>().AddFollower(newBuild);
-                currentFloor.transform.parent.GetComponent<Floor>().AddFollower(newBuild);
-                newBuild.GetComponent<SpriteRenderer>().flipX = true;
-                newBuild.GetComponent<SpriteRenderer>().color = currentFloor.GetComponentInChildren<SpriteRenderer>().color;
-                addedFrills.Add(newBuild);
-            }
-        }
-        else if (canPlace && nextToRightWall)
-        {
-            newTriangle = newTriangle + new Vector3(1 + firstFloorOffsetX, 0, 3);
-            if (!AlreadyThere(newTriangle))
-            {
-                GameObject newBuild = Instantiate(woodenTriangle, newTriangle, Quaternion.identity, buildDaddy.transform);
-                roofRoom.transform.parent.GetComponent<Floor>().AddFollower(newBuild);
-                currentFloor.transform.parent.GetComponent<Floor>().AddFollower(newBuild);
-                newBuild.GetComponent<SpriteRenderer>().color = currentFloor.GetComponentInChildren<SpriteRenderer>().color;
-                addedFrills.Add(newBuild);
-            }
-        }
-
-    }
-
-    public T[] CopyToArray<T>(List<T> genList) 
-    {
-        return (T[])genList.ToArray().Clone();
-
-    }
-
-    private bool AlreadyThere(Vector3 pos)
-    {
-        foreach (GameObject frills in addedFrills)
-        {
-            if (frills != null && pos.x == frills.transform.position.x && pos.y == frills.transform.position.y)
+            if (up.GetCurrentFloor() != null && left.GetCurrentFloor() != null)
             {
                 return true;
             }
         }
         return false;
+    }
+    private bool LeftTriangle(GridSpace cell)
+    {
+        if (cell.GetCurrentFloor() != null) { return false; }
+        if (cell.GetFrill("bridge") != null) { return false; }
+
+        GridSpace up = gridManager.GetCellNeighbor(cell, 0);
+        GridSpace right = gridManager.GetCellNeighbor(cell, 2);
+        if (up != null && right != null)
+        {
+            if (up.GetCurrentFloor() != null && right.GetCurrentFloor() != null)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    private bool RoomDoor(GridSpace cell)
+    {
+        GridSpace right = gridManager.GetCellNeighbor(cell, 2);
+        if (cell.GetCurrentFloor() == null || right == null) { return false; }
+        if (right != null)
+        {
+            if (right.GetCurrentFloor() == null) { return false; }
+            if (right.GetCurrentFloor().transform.parent == cell.GetCurrentFloor().transform.parent) { return false; }
+        }
+        return true;
+    }
+    private bool RoofExtensions(GridSpace cell)
+    {
+        GridSpace right = gridManager.GetCellNeighbor(cell, 2);
+        GridSpace up = gridManager.GetCellNeighbor(cell, 0);
+        GridSpace topRight = gridManager.GetCornerCells(cell, 1);
+
+        if (cell.GetCurrentFloor() == null || right == null) { return false; }
+        if (right != null)
+        {
+            if (right.GetCurrentFloor() == null) { return false; }
+        }
+        if (topRight != null)
+        {
+            if (topRight.GetCurrentFloor() != null) { return false; }
+        }
+        if (up != null)
+        {
+            if (up.GetCurrentFloor() != null) { return false; }
+        }
+
+        return true;
+    }
+
+    private bool Bridge(GridSpace cell)
+    {
+        Vector2Int index = cell.GetIndex();
+        GridSpace left = gridManager.GetCellNeighbor(cell, 1);
+        GridSpace right = gridManager.GetCellNeighbor(cell, 2);
+        if (cell.GetCurrentFloor() != null) { return false; }//cant place a bridge on a preexisting floor
+        if (right == null) { return false; } //space to the right must exist
+        if (left == null) { return false; } //space to the left must exist
+
+        bool doesBridgeHaveStart = false;
+        bool doesBridgeHaveEnd = false;
+        for (int i = index.x + 1; i < gridManager.GetGridSize().x; i++)
+        {
+            if (gridManager.GetGridSpace(i, index.y).GetCurrentFloor() != null)
+            {
+                doesBridgeHaveEnd = true;
+            }
+        }
+        for (int i = index.x - 1; i >= 0; i--)
+        {
+            if (gridManager.GetGridSpace(i, index.y).GetCurrentFloor() != null)
+            {
+                doesBridgeHaveStart = true;
+            }
+        }
+
+        if (doesBridgeHaveStart && doesBridgeHaveEnd) { return true; }
+        return false;
+    }
+
+
+    private void MakeFrill(GameObject type, string name, GridSpace targetCell, Vector3 offset, bool flip, bool smokeEffect = false)
+    {
+        Vector3 spawnPos = new Vector3(targetCell.GetPos().x + offset.x, targetCell.GetPos().y + offset.y, zValue + offset.z);
+        GameObject newFrill = Instantiate(type, spawnPos, Quaternion.identity);
+        newFrill.name = name;
+        if (flip) { newFrill.GetComponent<SpriteRenderer>().flipX = true; }
+        targetCell.AddNewFrill(newFrill);
+        addedFrills.Add(newFrill);
+
+        if (smokeEffect)
+        {
+            Vector3 smokeSpawnPos = new Vector3(spawnPos.x, spawnPos.y, spawnPos.z - 20);
+            GameObject smoke = Instantiate(this.smokeEffect, smokeSpawnPos, Quaternion.identity);
+            StartCoroutine(CleanupSmoke(smoke));
+        }
+    }
+    private void DestroyFrill(GameObject frill, GridSpace cell)
+    {
+        addedFrills.Remove(frill);
+        cell.RemoveFrill(frill);
+        Destroy(frill);
+    }
+
+    private IEnumerator CleanupSmoke(GameObject smoke)
+    {
+        yield return new WaitForSeconds(5f);
+        Destroy(smoke);
     }
 }

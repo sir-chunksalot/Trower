@@ -30,7 +30,7 @@ public class Wave : MonoBehaviour
                 return null;
         }
     }
-     
+
     public void SetHeroSprite(string name, Sprite sprite)
     {
         switch (name)

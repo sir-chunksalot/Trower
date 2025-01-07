@@ -228,13 +228,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f26140c356110e419a16d65c290d835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trapSize:
+    gridSize: {x: 3, y: 3}
+    cellSize: {x: 16, y: 16}
+    cells:
+    - row: 000000
+    - row: 000101
+    - row: 000000
   damageAmount: 5
   offset: {x: 0, y: -0.8, z: -10}
   hasAbility: 0
-  isLarge: 0
   isWallTrap: 0
   cooldown: 3
-  spaceEffect: {fileID: 4362310127818900515}
   active: 1
   canUse: 0
   pressSpace: {fileID: 21300000, guid: cf32926594332ab4992a23fe53b78832, type: 3}
@@ -242,6 +247,7 @@ MonoBehaviour:
   armedSprite: {fileID: 2740415336116777232}
   trapObj: {fileID: 213214100124239639}
   trapSprite: {fileID: 6240179410333894957}
+  anim: {fileID: 1492517812860431221}
 --- !u!61 &7669276248928525541
 BoxCollider2D:
   m_ObjectHideFlags: 0

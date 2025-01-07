@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,8 +16,10 @@ public class WallCollision : MonoBehaviour
     EnemyWallCollision enemyWallCollision;
     Floor floor;
     bool hasBeenEnabled;
+    public bool visibleWall;
     private void Awake()
     {
+        visibleWall = true;
         col = gameObject.GetComponent<BoxCollider2D>();
         if (enemyWall != null)
         {
@@ -66,7 +67,7 @@ public class WallCollision : MonoBehaviour
 
                 if (strength <= otherCol.strength)
                 {
-                    if(!otherCol.isBridge && raycastWall != null)
+                    if (!otherCol.isBridge && raycastWall != null)
                     {
                         raycastWall.SetActive(false);
                     }
@@ -79,6 +80,7 @@ public class WallCollision : MonoBehaviour
                     {
                         sprite.enabled = false;
                     }
+                    visibleWall = false;
                     colCount++;
                 }
 
@@ -86,12 +88,17 @@ public class WallCollision : MonoBehaviour
         }
     }
 
+    public bool GetIsWallVisible()
+    {
+        return visibleWall;
+    }
+
     private void OnCollisionExit2D(Collision2D collision)
     {
         if ((collision.transform.tag == "Wall" && gameObject.tag == "Wall") || (collision.transform.tag == "Floor" && gameObject.tag == "Floor") || (collision.transform.tag == "Extension" && gameObject.tag == "Extension") || (collision.transform.tag == "FloorMurderer" && gameObject.tag == "Floor"))
         {
             Debug.Log("Collision exit: " + collision.transform.tag + "real");
-            if (gameObject != null) 
+            if (gameObject != null)
             {
                 WallCollision otherCol = collision.gameObject.GetComponent<WallCollision>();
                 if (strength <= otherCol.strength)
@@ -120,6 +127,7 @@ public class WallCollision : MonoBehaviour
             {
                 sprite.enabled = true;
             }
+            visibleWall = true;
         }
         if (raycastWall != null)
         {

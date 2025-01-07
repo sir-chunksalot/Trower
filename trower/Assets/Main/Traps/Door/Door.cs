@@ -26,10 +26,6 @@ public class Door : MonoBehaviour
         canOpen = true;
         trap = dad.GetComponent<Trap>();
         parentID = gameObject.transform.parent.gameObject.GetInstanceID();
-        trap.onActivate += StartCharge;
-        trap.onDeactivate += Smack;
-        trap.onMouseLeave += Smack;
-        trap.onCooldownOver += CloseDoor;
 
         chargeUI.gameObject.transform.parent.GetComponent<Canvas>().worldCamera = Camera.main;
         chargeSpawnSpot = new Vector3(transform.position.x, transform.position.y + 3, transform.position.z);
@@ -43,7 +39,7 @@ public class Door : MonoBehaviour
         Debug.Log("open door");
         if ((int)sender != parentID) { return; }
         if (!canOpen) { return; }
-        if(!gameObject.activeInHierarchy) { return; }
+        if (!gameObject.activeInHierarchy) { return; }
         chargeTransform.transform.position = chargeSpawnSpot;
         chargeUI.color = chargeColor;
         StartCoroutine(Charge());
@@ -129,35 +125,34 @@ public class Door : MonoBehaviour
         yield return new WaitForSeconds(.4f);
         smacking = false;
         chargeUI.fillAmount = 0;
-        trap.CooldownOn();
     }
 
 
 
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.gameObject.layer == 6 && smacking) //hero  layer
-        {
-            Hero hero = collision.GetComponent<Hero>();
-            if (hero == null) return;
+    //private void OnTriggerStay2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.layer == 6 && smacking) //hero  layer
+    //    {
+    //        Hero hero = collision.GetComponent<Hero>();
+    //        if (hero == null) return;
 
-            if (chargeCount >= 1)
-            {
-                hero.StartSuperFall(chargeCount * 3, true);
-            }
-            else if (chargeCount > .50)
-            {
-                hero.StartSuperFall(chargeCount * 2, false);
-            }
-            else if (chargeCount > .10)
-            {
-                hero.StartSuperFall(-1, false);
-            }
-            else
-            {
-                hero.Stun(chargeCount * 2);
-            }
+    //        if (chargeCount >= 1)
+    //        {
+    //            hero.StartSuperFall(chargeCount * 3, true);
+    //        }
+    //        else if (chargeCount > .50)
+    //        {
+    //            hero.StartSuperFall(chargeCount * 2, false);
+    //        }
+    //        else if (chargeCount > .10)
+    //        {
+    //            hero.StartSuperFall(-1, false);
+    //        }
+    //        else
+    //        {
+    //            hero.Stun(chargeCount * 2);
+    //        }
 
-        }
-    }
+    //    }
+    //}
 }

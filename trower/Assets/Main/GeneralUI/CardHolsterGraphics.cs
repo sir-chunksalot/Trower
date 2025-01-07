@@ -184,7 +184,7 @@ public class CardHolsterGraphics : MonoBehaviour, IPointerClickHandler
             place.Play();
             if (isTrap)
             {
-                if(count >= 1)
+                if (count >= 1)
                 {
                     UpdateCount(-1);
                 }

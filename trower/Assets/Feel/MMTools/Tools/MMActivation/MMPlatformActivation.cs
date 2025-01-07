@@ -163,7 +163,7 @@ namespace MoreMountains.Tools
             // CONSOLE ----------------------------------------------------------------------------------
 
 #if UNITY_WEBGL
-                DisableIfNeeded(UNITY_WEBGL, "WebGL");
+            DisableIfNeeded(UNITY_WEBGL, "WebGL");
 #endif
 
 #if UNITY_LUMIN

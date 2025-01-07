@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -59,18 +58,18 @@ public class DoorManager : MonoBehaviour
         PotentialDoors();
     }
 
-    public void TransferDoor(object sender, EventArgs e)
+    public void TransferDoor(object sender, EventArgs e) //fix later
     {
         if (!canMoveDoor) return;
         GameObject[] doors = (GameObject[])potentialDoors.ToArray().Clone();
         foreach (GameObject door in doors)
         {
-            if(door.GetComponent<Trap>().GetSpaceEffect().activeInHierarchy)
-            {
-                int index = potentialDoors.IndexOf(door);
-                MoveDoor(potentialDoorsPos[index]);
-                PotentialDoors();
-            }
+            //if(door.GetComponent<Trap>().GetSpaceEffect().activeInHierarchy)
+            //{
+            //    int index = potentialDoors.IndexOf(door);
+            //    MoveDoor(potentialDoorsPos[index]);
+            //    PotentialDoors();
+            //}
         }
     }
 
@@ -92,7 +91,7 @@ public class DoorManager : MonoBehaviour
         {
             PotentialDoors();
         }
-        
+
     }
 
     private void ClearPotDoors()
@@ -112,9 +111,10 @@ public class DoorManager : MonoBehaviour
     {
         if (!gameManager.GetCurrentLevelDetails().canMoveDoor) return;
         ClearPotDoors();
-        foreach(Vector2 floor in highestFloors)
+        foreach (Vector2 floor in highestFloors)
         {
-            if (!potentialDoorsPos.Contains(floor) && (Vector2)door.transform.position != floor) {
+            if (!potentialDoorsPos.Contains(floor) && (Vector2)door.transform.position != floor)
+            {
                 GameObject newPotDoor = Instantiate(potentialDoor, new Vector3(floor.x, floor.y, doorZ), Quaternion.identity);
                 potentialDoors.Add(newPotDoor);
                 potentialDoorsPos.Add(floor);
@@ -135,9 +135,9 @@ public class DoorManager : MonoBehaviour
 
         }
         Vector2 closestToZero = new Vector2(999, 999);
-        foreach(Vector2 floor in highestFloors)
+        foreach (Vector2 floor in highestFloors)
         {
-            if(Mathf.Abs(floor.x) < closestToZero.x)
+            if (Mathf.Abs(floor.x) < closestToZero.x)
             {
                 closestToZero = floor;
             }

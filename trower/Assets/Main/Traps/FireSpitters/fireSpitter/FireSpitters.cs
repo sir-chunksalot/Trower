@@ -16,9 +16,9 @@ public class FireSpitters : MonoBehaviour
     private void Start()
     {
         trap = dad.GetComponent<Trap>();
-        trap.onActivate += OpenMouth;
-        trap.onMouseLeave += CloseMouth;
-        trap.onDeactivate += CloseMouth;
+        //trap.onActivate += OpenMouth;
+        //trap.onMouseLeave += CloseMouth;
+        //trap.onDeactivate += CloseMouth;
         parentID = dad.GetInstanceID();
 
         if (myFire == null)

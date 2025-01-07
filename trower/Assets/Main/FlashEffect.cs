@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FlashEffect : MonoBehaviour
@@ -77,6 +76,6 @@ public class FlashEffect : MonoBehaviour
         flashRoutine = null;
     }
 
- 
+
     #endregion
 }

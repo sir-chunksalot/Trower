@@ -32,7 +32,7 @@ public class GenerateViableFloors : MonoBehaviour
         walls.Clear();
         safetyCount = 0;
         upRooms.Clear();
-        ViableFloors();
+        //ViableFloors();
     }
     private List<RaycastHit2D> ShootRaycasts(Vector3 startPos)
     {
@@ -48,7 +48,7 @@ public class GenerateViableFloors : MonoBehaviour
         {
             if (hit.collider.gameObject.tag == "RaycastWall")
             {
-                if(!foundWall)
+                if (!foundWall)
                 {
                     //Debug.Log("right hit collision" + hit.collider.gameObject + " " + hit.collider.gameObject.tag + " " + hit.collider.gameObject.transform.parent.gameObject.transform.parent.transform.parent.name);
                     hits.Add(hit);
@@ -56,7 +56,7 @@ public class GenerateViableFloors : MonoBehaviour
                     foundWall = true;
                 }
             }
-            else if(hit.collider.gameObject.tag == "Wall" && !foundWall)
+            else if (hit.collider.gameObject.tag == "Wall" && !foundWall)
             {
                 hits.Add(hit);
             }
@@ -152,7 +152,7 @@ public class GenerateViableFloors : MonoBehaviour
                 {
                     totalRooms.Add(room);
                 }
-                
+
 
                 Debug.Log(hit.transform.position.x + "hit here" + transform.TransformDirection(Vector3.right) * Mathf.Sign(hit.transform.position.x - startPos.x) * hit.distance);
                 Debug.DrawRay(startPos, transform.TransformDirection(Vector3.right) * Mathf.Sign(hit.transform.position.x - startPos.x) * hit.distance, color, 2);
@@ -211,7 +211,7 @@ public class GenerateViableFloors : MonoBehaviour
     public bool IsFloorAccessible(Vector2 pos)
     {
         Debug.Log("japan lol real" + pos);
-        foreach(GameObject floor in GetInaccessibleFloors())
+        foreach (GameObject floor in GetInaccessibleFloors())
         {
             Debug.Log("japan lol real check" + floor.transform.position);
             if (new Vector2(floor.transform.position.x, floor.transform.position.y) == pos)

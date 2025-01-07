@@ -17,13 +17,13 @@ public class Crossbow : MonoBehaviour
     {
         spawnPos = new Vector3(gameObject.transform.position.x, 2.5f + gameObject.transform.position.y, gameObject.transform.position.z);
         trap = dad.GetComponent<Trap>();
-        trap.onActivate += Shoot;
-        trap.onCooldownOver += Rearm;
+        //trap.onActivate += Shoot;
+        //trap.onCooldownOver += Rearm;
         parentID = dad.GetInstanceID();
         reset = true;
     }
 
-    public void Shoot(object sender, EventArgs e) 
+    public void Shoot(object sender, EventArgs e)
     {
         if ((int)sender != parentID) { return; }
         if (!reset) { return; }
@@ -31,7 +31,7 @@ public class Crossbow : MonoBehaviour
         StartCoroutine(ShootDelay());
         anim.SetBool("TrapActivated", true);
         reset = false;
-        
+
     }
     public void Rearm(object sender, EventArgs e)
     {
@@ -45,10 +45,10 @@ public class Crossbow : MonoBehaviour
         yield return new WaitForSeconds(1.25f);
 
         float yRot = 0;
-        if(transform.rotation.y != 1) { yRot = 180; }
+        if (transform.rotation.y != 1) { yRot = 180; }
 
         Instantiate(arrow, spawnPos, Quaternion.Euler(0, yRot, 0), transform.parent.transform);
-        trap.CooldownOn();
+        //trap.CooldownOn();
     }
 
 }

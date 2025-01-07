@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
 
     private bool first;
     private bool endScene;
+    private GridSpace closestGridSpaceToMouse;
+    private Vector2 mousePos;
 
     //STAT SHEET
 
@@ -68,7 +70,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("LevelDetails" + levelDetails);
 
 
-        if(levelDetails.isEndScene)
+        if (levelDetails.isEndScene)
         {
             EndManager endManager = GameObject.FindGameObjectWithTag("EndManager").GetComponent<EndManager>();
             endManager.DisplayStats(statsheet);
@@ -103,6 +105,8 @@ public class GameManager : MonoBehaviour
         return levelDetails;
     }
 
+
+
     public GameObject GetTrapDaddy()
     {
         return levelDetails.trapDaddy;
@@ -122,7 +126,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if(gridManager.GetIsGridUpdated())
+        if (gridManager.GetIsGridUpdated())
         {
             if (!levelDetails.fixedCamera)
             {
@@ -131,6 +135,22 @@ public class GameManager : MonoBehaviour
             }
             gridManager.SetIsGridUpdated(false);
         }
+
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        GridSpace gridSpace = gridManager.GetClosestGridSpace(mousePos, false);
+        if (gridSpace == null) { return; }
+
+        closestGridSpaceToMouse = gridSpace;
+    }
+
+    public GridSpace GetClosestGridSpace()
+    {
+        return closestGridSpaceToMouse;
+    }
+
+    public Vector2 GetMousePos()
+    {
+        return mousePos;
     }
 
 }

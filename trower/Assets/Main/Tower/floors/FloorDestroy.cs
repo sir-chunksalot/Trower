@@ -18,7 +18,7 @@ public class FloorDestroy : MonoBehaviour
     }
     public void DestroyFloor()
     {
-        if(instaKill)
+        if (instaKill)
         {
             Destroy(gameObject);
         }
@@ -28,12 +28,12 @@ public class FloorDestroy : MonoBehaviour
         }
 
 
-        if(heroes != null)
+        if (heroes != null)
         {
             foreach (Hero hero in heroes)
             {
                 Debug.Log("floor made hero super fall wacum");
-                hero.GetComponent<Hero>().StartSuperFall(-1, false);
+                //hero.GetComponent<Hero>().StartSuperFall(-1, false);
             }
 
         }

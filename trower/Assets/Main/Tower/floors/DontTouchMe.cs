@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DontTouchMe : MonoBehaviour
@@ -10,7 +9,7 @@ public class DontTouchMe : MonoBehaviour
     {
         DontTouchMe otherObj = collision.transform.GetComponent<DontTouchMe>();
         if (otherObj == null) return;
-        if(otherObj.strength < this.strength)
+        if (otherObj.strength < this.strength)
         {
             otherObj.Kill();
         }
@@ -18,7 +17,7 @@ public class DontTouchMe : MonoBehaviour
 
     public void Kill()
     {
-        if(target != null)
+        if (target != null)
         {
             Debug.Log("Dont touch me i died");
             StartCoroutine(ShadowRealm(target));

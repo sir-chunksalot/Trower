@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DoorEntry : MonoBehaviour
@@ -70,21 +69,21 @@ public class DoorEntry : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
-        if(collision.gameObject.layer == 6)
+        if (collision.gameObject.layer == 6)
         {
-            if(endLevel)
+            if (endLevel)
             {
                 Hero hero = collision.gameObject.GetComponent<Hero>();
                 if (hero != null)
                 {
                     hero.KillMe();
                 }
-                
+
             }
-            else if(heroesCanEnter)
+            else if (heroesCanEnter)
             {
                 //fail level
             }
-        } 
+        }
     }
 }

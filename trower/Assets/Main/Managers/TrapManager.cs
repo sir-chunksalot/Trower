@@ -1,91 +1,85 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class TrapManager : MonoBehaviour
 {
-    [SerializeField] GameObject trapCooldown;
+    [SerializeField] GameObject spaceEffect;
+    [SerializeField] Sprite pressedSpace;
+    [SerializeField] Sprite releasedSpace;
+
     public event EventHandler onSpacePressed;
     public event EventHandler onSpaceReleased;
     public event EventHandler onSelectedTrapChange;
-    private List<GameObject> traps;
     private List<Trap> trapScripts;
     private GameObject selectedTrap;
     Trap trapScript;
-    WaveManager waveManager;
-    Image trapCooldownUI;
+    TurnManager turnManager;
+    GameManager gameManager;
+    SpriteRenderer spaceEffectSprite;
+
+    GridSpace targetCell;
+    List<Trap> targetTraps;
+
     private void Awake()
     {
-        waveManager = gameObject.GetComponent<WaveManager>();
-        waveManager.OnAttackPhaseStart += FindSelectedTrap;
-        traps = new List<GameObject>();
+        turnManager = gameObject.GetComponent<TurnManager>();
+        gameManager = gameObject.GetComponent<GameManager>();
+        turnManager.OnEnemiesEvaluated += UseTraps;
+        spaceEffectSprite = spaceEffect.GetComponent<SpriteRenderer>();
         trapScripts = new List<Trap>();
-        if (trapCooldown != null)
+        targetTraps = new List<Trap>();
+    }
+
+    private void UseTraps(object sender, EventArgs e)
+    {
+        Debug.Log("traps used");
+
+        foreach (Trap trap in targetTraps)
         {
-            trapCooldownUI = trapCooldown.GetComponent<Image>();
+            trap.UseTrap();
+            trap.Disarm();
         }
+        targetTraps.Clear();
+        turnManager.TrapsEvaluated();
     }
-
-    private void FindSelectedTrap(object sender, EventArgs e)
+    private void Update()
     {
-        StartCoroutine(CheckForSelect());
-    }
+        Vector2 mousePos = gameManager.GetMousePos();
+        GridSpace gridSpace = gameManager.GetClosestGridSpace();
+        if (gridSpace == null) { targetCell = null; return; }
 
-    private IEnumerator CheckForSelect()
-    {
-        yield return new WaitForSeconds(.5f);
-
-        if (selectedTrap == null)
+        if (Vector2.Distance(gridSpace.GetPos(), mousePos) < 5)
         {
-            foreach (Trap trap in trapScripts)
+            targetCell = gridSpace;
+            Trap trap = targetCell.GetCurrentTrap();
+            if (trap != null)
             {
-                Debug.Log("FARTPPselect trap loop" + trap);
-                if (trap.GetCanAttack())
-                {
-                    Debug.Log("select trap found" + trap);
-                    SelectNewTrap(trap);
-                    break;
-                }
+                spaceEffect.SetActive(true);
+                spaceEffect.transform.position = trap.transform.position;
+            }
+            else
+            {
+                spaceEffect.SetActive(false);
             }
         }
-
-    }
-
-    public GameObject GetCooldownTimer()
-    {
-        return trapCooldown;
-    }
-
-    private void FixedUpdate()
-    {
-        if (selectedTrap != null)
+        else
         {
-            Debug.Log("selectedd trap:" + selectedTrap);
-            float currentCooldown = trapScript.GetCurrentCooldown();
-            float totalCooldown = trapScript.GetTotalCooldown();
-            UpdateTrapCooldownUI(currentCooldown / totalCooldown);
+            targetCell = null;
         }
     }
 
-
-    public void AddTrapToList(GameObject trap, Trap trapScript)
+    public void AddTrapToList(Trap trapScript)
     {
-        Debug.Log("selectballs" + trap + "scrypt" + trapScript);
-        traps.Add(trap);
+        Debug.Log("scrypt" + trapScript);
         trapScripts.Add(trapScript);
-        Debug.Log("selectBalls2" + traps[0] + "scrpyt" + trapScripts[0]);
+        Debug.Log("scrpyt" + trapScripts[0]);
     }
-    public void RemoveTrapFromList(GameObject trap, Trap trapScript)
+    public void RemoveTrapFromList(Trap trapScript)
     {
-        Debug.Log("selectpenis" + trap + "scrypt" + trapScript);
-        if (traps == null || trapScripts == null) { return; }
-        if (traps.Contains(trap))
-        {
-            traps.Remove(trap);
-        }
+        Debug.Log("scrypt" + trapScript);
+        if (trapScripts == null) { return; }
         if (trapScripts.Contains(trapScript))
         {
             trapScripts.Remove(trapScript);
@@ -97,57 +91,50 @@ public class TrapManager : MonoBehaviour
         return selectedTrap;
     }
 
-
-    public List<GameObject> GetAllTraps()
-    {
-        return traps;
-    }
     public List<Trap> GetAllTrapScripts()
     {
         return trapScripts;
     }
 
-    private void UpdateTrapCooldownUI(float fillAmount)
-    {
-        if (trapCooldownUI == null)
-        {
-            return;
-        }
-        trapCooldownUI.fillAmount = fillAmount;
-    }
-
-
-    public void SelectNewTrap(Trap trap)
+    public void SelectNewTrap(Trap trap) //called by individual trap scripts
     {
         Debug.Log("select new trap");
         selectedTrap = trap.gameObject;
         trapScript = trap;
         float currentCooldown = trapScript.GetCurrentCooldown();
         float totalCooldown = trapScript.GetTotalCooldown();
-        UpdateTrapCooldownUI(currentCooldown / totalCooldown);
         onSelectedTrapChange?.Invoke(gameObject, EventArgs.Empty);
     }
 
-    public void DeselectTrap(GameObject trap)
+    public void DeselectTrap(GameObject trap) //called by individual trap scripts
     {
         if (selectedTrap == trap)
         {
             selectedTrap = null;
-            UpdateTrapCooldownUI(0);
             onSelectedTrapChange?.Invoke(gameObject, EventArgs.Empty);
         }
     }
 
-    public void ActivateTraps(InputAction.CallbackContext context)
+    public void ActivateTraps(InputAction.CallbackContext context) //called on space press
     {
         Debug.Log("sanja first");
+        if (!turnManager.CanArmTraps()) { return; }
         if (context.performed)
         {
-            onSpacePressed?.Invoke(gameObject, EventArgs.Empty);
+            spaceEffectSprite.sprite = pressedSpace;
+            if (targetCell != null)
+            {
+                Trap trap = targetCell.GetCurrentTrap();
+                if (trap == null) { return; }
+                targetTraps.Add(trap);
+                trap.Arm();
+            }
+            //onSpacePressed?.Invoke(gameObject, EventArgs.Empty);
         }
         if (context.canceled)
         {
-            onSpaceReleased?.Invoke(gameObject, EventArgs.Empty);
+            spaceEffectSprite.sprite = releasedSpace;
+            //onSpaceReleased?.Invoke(gameObject, EventArgs.Empty);
         }
     }
 

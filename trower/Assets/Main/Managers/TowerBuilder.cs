@@ -39,14 +39,11 @@ public class TowerBuilder : MonoBehaviour
     private List<GameObject> debugFloors = new List<GameObject>();
     private List<GameObject> debugFloorPos = new List<GameObject>();
     //private List<GameObject> trapTypes = new List<GameObject>();
-    private List<GameObject> potentialFloors = new List<GameObject>();//potential spots a floor could spawn (saved as instantiated gameobjects in valid spots, i did this for debugging) ||CLEARED EVERY TOWER PLACE
-    private List<Vector3> mapPotentialFloors = new List<Vector3>();//potential spots a floor could spawn (saved as instantiated gameobjects in valid spots, i did this for debugging) ||CLEARED ON LEVEL COMPLETION
     private List<GameObject> ladders = new List<GameObject>();
     List<Vector3> floorSpawnSpots = new List<Vector3>();
     Vector3 nextFloorPos;
     float highestPoint;
     float floorSpawnZ;
-    Vector2 mousePos;
 
     private bool goingUp;
     private bool canUndo;
@@ -84,8 +81,6 @@ public class TowerBuilder : MonoBehaviour
     {
         placedFloorsPos.Clear();
         floorPapas.Clear();
-        potentialFloors.Clear();
-        mapPotentialFloors.Clear();
         buildDaddy = gameManager.GetCurrentLevelDetails().GetBuildDaddy();
         levelDetails = gameManager.GetCurrentLevelDetails();
         foreach (GameObject floor in placedFloors)
@@ -93,7 +88,6 @@ public class TowerBuilder : MonoBehaviour
             Destroy(floor);
         }
         placedFloors.Clear();
-        GenerateMapSpawns();
         SpawnExistingFloors();
         onTowerStart?.Invoke(gameObject, EventArgs.Empty);
     }
@@ -105,37 +99,51 @@ public class TowerBuilder : MonoBehaviour
         {
             for (int x = 0; x < levelDetails.gridSize.x; x++)
             {
-                //Debug.Log(levelDetails.existingFloors.rows[y].row[x] + "INDEX:" + x + "," + y);
                 GridSpace cell = gridManager.GetGridSpace(x, y);
-                Debug.Log("france" + gridManager.GetGridSize());
-                Debug.Log("achilles " + cell);
-                if(levelDetails.existingFloors.rows[y].row[x]) { MakeFloor(cell.GetPos()); Debug.Log("Spawning Starting Floor"); }
+                if (levelDetails.existingFloors.rows[y].row[x]) { MakeFloor(cell.GetPos()); Debug.Log("Spawning Starting Floor"); }
             }
         }
     }
 
-    private void MakeFloor(Vector2 pos)
+    private void MakeFloor(Vector2Int pos)
     {
         MakeFloor(floors[0], pos);
     }
-    private void MakeFloor(GameObject build, Vector3 spawnPos)
+    private void MakeFloor(GameObject build, Vector2Int spawnPos)
     {
         floorPapas.Add(build);
-        Debug.Log("HELLOW BABY");
         uiManager.UseCard(build.name, true);
-        spawnPos = new Vector3(spawnPos.x, spawnPos.y, 10);
-        build = Instantiate(build, spawnPos, Quaternion.identity, buildDaddy.transform);
+        Vector3 finalSpawnPos = new Vector3(spawnPos.x, spawnPos.y, 10);
+        build = Instantiate(build, finalSpawnPos, Quaternion.identity, buildDaddy.transform);
         build.GetComponent<Floor>().PlaceFloor();
 
         SetAlpha(build, 1);
         foreach (Transform floor in build.transform)
         {
             AddPlacedFloor(floor.gameObject);
-            Debug.Log("owen klanke is sleepy" + floor);
             floor.gameObject.name = floor.gameObject.name + "#" + UnityEngine.Random.Range(0, 10000);
 
             floor.transform.position = new Vector3(Mathf.Round(floor.transform.position.x), Mathf.Round(floor.transform.position.y), floor.transform.position.z);
-            gridManager.GetGridSpace(floor.transform.position).SetCurrentFloor(floor.gameObject);
+            GridSpace gridSpace = gridManager.GetGridSpace(floor.transform.position);
+            gridSpace.SetCurrentFloor(floor.gameObject);
+            foreach (WallCollision wall in floor.GetComponentsInChildren<WallCollision>())
+            {
+                gridSpace.SetWall(wall);
+            }
+            foreach (Transform kid in floor)
+            {
+                Debug.Log("kid.tag" + kid.tag);
+                if (kid.tag == "Ladder")
+                {
+                    gridSpace.SetCurrentLadder(kid.gameObject);
+                    Debug.Log("LADDER SET!" + floor.gameObject.name);
+                    break;
+                }
+            }
+
+
+
+            onTowerPlace?.Invoke(floor, EventArgs.Empty);
         }
         Vector3 particleSpawnPos = build.transform.position;
 
@@ -150,40 +158,42 @@ public class TowerBuilder : MonoBehaviour
         {
             if (placingFloor)
             {
-                PlaceBuild(currentFloor);
+                GameObject newBuild = currentFloor;
+                List<GridSpace> cells = new List<GridSpace>();
+                List<Vector2> posList = new List<Vector2>();
+                foreach (Transform floor in newBuild.transform)
+                {
+                    GridSpace gridSpace = gridManager.GetClosestGridSpace(floor.transform.position, true);
+                    cells.Add(gridSpace);
+                    posList.Add(floor.transform.position);
+                }
+
+                GridSpace currentGridSpace = gridManager.GetClosestGridSpace(currentFloor.transform.position, true);
+                if (gridManager.DoCellsHaveNeighbors(cells) && gridManager.AreCellsValid(posList, true))
+                {
+                    MakeFloor(newBuild, currentGridSpace.GetPos());
+                }
+                else
+                {
+                    uiManager.UseCard(newBuild.name, false);
+                    Debug.Log("Mission Failed. We'll get em' next time (failed to build structure)");
+                }
+                Destroy(currentFloor);
+                Cleanup();
+                StartCoroutine(PlaceDelay());
             }
             placingFloor = false;
         }
 
     }
-    public void PlaceBuild(GameObject build)
-    {
-        GameObject newBuild = build;
-        GridSpace currentGridSpace = gridManager.GetClosestGridSpace(currentFloor.transform.position, true, false);
-        nextFloorPos = currentGridSpace.GetPos();
-        Debug.Log("CUMSLURP" + (gridManager.GetAdjacentCells(currentGridSpace)[1].GetCurrentFloor() == null) );
-        if (gridManager.DoesCellHaveNeighbor(currentGridSpace))
-        {
-            MakeFloor(newBuild, currentGridSpace.GetPos());
-        }
-        else
-        {
-            uiManager.UseCard(newBuild.name, false);
-            Destroy(currentFloor);
-            Debug.Log("Mission Failed. We'll get em' next time (failed to build structure)");
-        }
 
-        Cleanup(newBuild);
-        StartCoroutine(PlaceDelay());
-    }
 
     public void CurrentFloor(string floorName) //CALLED FIRST BY THE BUILD SELECT SCRIPT
     {
-        if(currentFloor != null) { Destroy(currentFloor); }
+        if (currentFloor != null) { Destroy(currentFloor); }
         if (!canPlace) return;
-        NewPotentialFloors();
         placingFloor = true;
-
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         GameObject activeFloor = floors[0];
 
         foreach (GameObject floor in floors)
@@ -194,7 +204,6 @@ public class TowerBuilder : MonoBehaviour
             }
         }
         string newName = floorName.Substring(0, floorName.Length - 7);
-        if (currentFloor != null) { currentFloor.SetActive(false); }
 
         currentFloor = activeFloor;
         currentFloor.name = newName;
@@ -219,111 +228,16 @@ public class TowerBuilder : MonoBehaviour
 
     public void EndPlacement()
     {
-        if(placingFloor)
+        if (placingFloor)
         {
             placingFloor = false;
-            Cleanup(null);
+            Cleanup();
         }
-    }
-
-    public Vector3 ClosestTo(Vector3 target, GameObject[] objPos, bool validCheck)
-    {
-        List<Vector3> pos = new List<Vector3>();
-        foreach (GameObject p in objPos)
-        {
-            pos.Add(p.transform.position);
-        }
-        return ClosestTo(target, pos, validCheck);
-    }
-
-    public Vector3 ClosestTo(Vector3 target, List<Vector3> pos, bool validCheck)
-    {
-        bool valid = true;
-        Vector3 closest = new Vector3(100, 100, 100);
-        foreach (Vector3 p in pos)
-        {
-            if ((target - p).magnitude < (target - closest).magnitude)
-            {
-                if (validCheck)
-                {
-                    valid = ValidFloorSpawn(p);
-                }
-                if (valid)
-                {
-                    closest = p;
-                }
-            }
-        }
-        return closest;
-    }
-
-    public Vector3 ClosestTo(Vector2 target, List<Vector2> pos, bool validCheck)
-    {
-        bool valid = true;
-        Vector2 closest = new Vector3(100, 100);
-        foreach (Vector2 p in pos)
-        {
-            if ((target - p).magnitude < (target - closest).magnitude)
-            {
-                if (validCheck)
-                {
-                    valid = ValidFloorSpawn(p);
-                }
-                if (valid)
-                {
-                    closest = p;
-                }
-            }
-        }
-        return closest;
-    }
-
-    private bool ValidFloorSpawn(Vector3 floorSpawn)
-    {
-        Vector3 spawnSpot = new Vector3(floorSpawn.x, floorSpawn.y, 0);
-        //Debug.Log((ClosestTo(currentFloor.transform.position, placedFloors.ToArray(), false) - currentFloor.transform.position).magnitude + "helldivers");
-        //if ((ClosestTo(currentFloor.transform.position, placedFloors.ToArray(), false) - currentFloor.transform.position).magnitude > 12)
-        //{
-        //    return false;
-        //}
-
-        bool hasConnection = false;
-        foreach (Vector3 floor in floorSpawnSpots)
-        {
-            if (GetPlacedFloorsPos().Contains(floor + spawnSpot)) //makes sure that rooms dont try and spawn on top of eachother
-            {
-                return false;
-            }
-            if (floor.x + spawnSpot.x > (GetRoomBounds().x * sideMapBounds) / 2 || floor.x + spawnSpot.x < (GetRoomBounds().x * sideMapBounds * -1) / 2) //checks to see if any room is trying to spawn outside of map bounds
-            {
-                return false;
-            }
-            foreach (Vector3 placedFloor in GetPlacedFloorsPos())
-            {
-                if ((placedFloor.x == (floor.x + spawnSpot.x) - GetRoomBounds().x || placedFloor.x == (floor.x + spawnSpot.x) + GetRoomBounds().x) && floor.y + spawnSpot.y == placedFloor.y)
-                {
-                    //Debug.Log(placedFloor + " X FLOOR POS CONNECTION" + floor + spawnSpot);
-                    hasConnection = true;
-                }
-                if ((placedFloor.y == (floor.y + spawnSpot.y) - GetRoomBounds().y || placedFloor.y == (floor.y + spawnSpot.y) + GetRoomBounds().y) && floor.x + spawnSpot.x == placedFloor.x)
-                {
-                    //Debug.Log(placedFloor + " Y FLOOR POS CONNECTION" + floor + spawnSpot);
-                    hasConnection = true;
-                }
-            }
-        }
-
-        if (!hasConnection)
-        {
-            return false;
-        }
-
-        return true;
     }
 
     public void Undo()
     {
-        if(canUndo)
+        if (canUndo)
         {
             GameObject floor = placedFloors[placedFloors.Count - 1];
             DestroyFloor(floor);
@@ -332,7 +246,8 @@ public class TowerBuilder : MonoBehaviour
 
     }
 
-    private IEnumerator UndoDelay() {
+    private IEnumerator UndoDelay()
+    {
 
         canUndo = false;
         yield return new WaitForSeconds(.5f);
@@ -358,9 +273,9 @@ public class TowerBuilder : MonoBehaviour
             floorDad.GetComponent<Floor>().DestroyFloor();
 
             float highestFloor = 0;
-            foreach(Vector3 floorPos in placedFloorsPos)
+            foreach (Vector3 floorPos in placedFloorsPos)
             {
-                if(floorPos.y > highestFloor)
+                if (floorPos.y > highestFloor)
                 {
                     highestFloor = floorPos.y;
                 }
@@ -373,8 +288,7 @@ public class TowerBuilder : MonoBehaviour
         }
 
         onTowerSell?.Invoke(floor, EventArgs.Empty);
-        Cleanup(floor);
-        DestroyPotentialFloors();
+        Cleanup();
     }
 
     private IEnumerator DestroyExplosionEffect(GameObject explosion)
@@ -383,193 +297,35 @@ public class TowerBuilder : MonoBehaviour
         Destroy(explosion);
     }
 
-    private void DestroyPotentialFloors()
-    {
-        foreach (GameObject e in potentialFloors)
-        {
-            Destroy(e);
-        }
-        potentialFloors.Clear();
-    }
-    private void NewPotentialFloors()
-    {
-        if(mapPotentialFloors.Count <= 0) { return; }
-        DestroyPotentialFloors();
-       
-        foreach(Vector3 mapSpawn in mapPotentialFloors)
-        {
-            if(!placedFloorsPos.Contains(mapSpawn) && mapSpawn.y <= highestPoint)
-            {
-                potentialFloors.Add(Instantiate(potentialFloor, new Vector3(mapSpawn.x, mapSpawn.y, 1), Quaternion.identity));
-            }
-        }
-    }
-
     public float GetHighestPoint()
     {
         return highestPoint;
     }
 
-    private void GenerateMapSpawns()
-    {
-        Vector3 right = new Vector3(GetRoomBounds().x, 0, 0);
-        Vector3 up = new Vector3(0, GetRoomBounds().y, 0);
-        Vector3 spawnPos = new Vector3(-((sideMapBounds * right.x) / 2), -up.y, floorSpawnZ);
-        for (int i = 0; i < topMapBounds; i++)
-        {
-            spawnPos = spawnPos + up;
-            for (int j = 0; j < sideMapBounds + 1; j++)
-            {
-                mapPotentialFloors.Add(spawnPos);
-                spawnPos = spawnPos + right;
-            }
-            spawnPos = spawnPos - (right * sideMapBounds) - right;
-        }
-    }
     private void FixedUpdate()
     {
-        Debug.Log("france" + gridManager.GetGridSize());
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Debug.Log(gridManager);
-        GridSpace gridSpace = gridManager.GetClosestGridSpace(mousePos, true, false);
-        Vector2 closestGridSpace;
-        if (gridSpace != null)
+        GridSpace closestGridSpace = gameManager.GetClosestGridSpace();
+        if (closestGridSpace == null) { return; }
+        Vector2 closestGridSpacePos = closestGridSpace.GetPos();
+        if (placingFloor)
         {
-            closestGridSpace = gridSpace.GetPos();
-
-            
+            currentFloor.transform.position = new Vector3(closestGridSpacePos.x, closestGridSpacePos.y, 9);
         }
-        else { closestGridSpace = mousePos; }
-        
-        if (gridManager.DoesCellHaveNeighbor(gridSpace))
-        {
-            closestGridSpace.x = mousePos.x;
-            closestGridSpace.y = mousePos.y;
-        }
-
-
-        if (!placingFloor)
-        {
-            if (currentFloor != null)
-            {
-                currentFloor.SetActive(false);
-            }
-        }
-        else
-        {
-            if (currentFloor != null)
-            {
-                currentFloor.transform.position = new Vector3(closestGridSpace.x, closestGridSpace.y, 9);
-            }
-        }
-
-        if (placingBomb)
-        {
-            sellBombObject.transform.position = new Vector3(mousePos.x, mousePos.y, 9);
-            Vector3 floorBombIsNearest = ClosestTo(sellBombObject.transform.position, (GameObject[])placedFloors.ToArray().Clone(), false);
-
-            Transform closestPapa = FindClosestFloorToMe(sellBombObject).transform.parent;
-            Debug.Log(Vector2.Distance(sellBombObject.transform.position, floorBombIsNearest));
-
-            if (Vector2.Distance(sellBombObject.transform.position, floorBombIsNearest) > reqMouseDistanceToPlace)
-            {
-                closestPapa = gameObject.transform; //if the papa is too far away it defaults to the game manager game object, which means there are no valid floor, which means they all turn white
-            }
-
-            Debug.Log(closestPapa);
-            foreach (GameObject floor in placedFloors)
-            {
-                Transform parent = floor.transform;
-                if (floor.transform.parent != null)
-                {
-                    parent = floor.transform.parent;
-                }
-
-                if (parent == closestPapa)
-                {
-                    for (int i = 0; i < parent.childCount; i++)
-                    {
-                        parent.GetChild(i).GetComponent<SpriteRenderer>().color = Color.red;
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < parent.transform.childCount; i++)
-                    {
-                        parent.GetChild(i).GetComponent<SpriteRenderer>().color = Color.white;
-                    }
-                }
-            }
-
-        }
-
     }
 
     private void LateUpdate()
     {
-        if(cleanupLast)
+        if (cleanupLast)
         {
-            if(cleanupCount > 16 && cleanupLate) //WE LOVE 16!!!!
+            if (cleanupCount > 16 && cleanupLate) //WE LOVE 16!!!!
             {
                 Debug.Log("we gotta late update in here fellas");
                 onTowerPlaceLate?.Invoke(gameObject, EventArgs.Empty);
                 cleanupLate = false;
             }
-            if(cleanupCount > 32)
-            {
-                onTowerPlaceLast.Invoke(gameObject, EventArgs.Empty);
-                cleanupLast = false;
-                cleanupCount = 0;
-            }
             cleanupCount++;
 
         }
-    }
-
-
-
-    private GameObject FindClosestFloorToMe(GameObject me)
-    {
-        Vector3 closestFloor = ClosestTo(sellBombObject.transform.position, (GameObject[])placedFloors.ToArray().Clone(), false);
-        foreach (GameObject floor in placedFloors)
-        {
-            if (floor.transform.position == closestFloor)
-            {
-                return floor;
-            }
-        }
-
-        return null;
-    }
-
-    private void CheckForConnections()
-    {
-        GenerateViableFloors genViableFloors = this.gameObject.GetComponent<GenerateViableFloors>();
-        genViableFloors.Test();
-        //List<GameObject> invalidFloors = new List<GameObject>();
-        //bool validLadderFound = false;
-
-        //foreach (GameObject floor in placedFloors)
-        //{
-        //    foreach (Transform kid in floor.GetComponentsInChildren<Transform>())
-        //    {
-        //        if(genViableFloors.GetViableLadders().Contains(kid.gameObject)) {
-        //            Debug.Log("FoundViableLadder");
-        //            validLadderFound = true;
-        //        }
-        //    }
-        //    if(!validLadderFound) {
-        //        invalidFloors.Add(floor.transform.parent.gameObject);
-        //    }
-        //}
-
-        //invalidFloors.Add(gameObject);
-        //Debug.Log("Brealk;");
-        //foreach(GameObject f in invalidFloors)
-        //{
-        //    Debug.Log("Invalid Floor" + f);
-        //}
-
     }
 
     public void EquipBomb()
@@ -634,7 +390,7 @@ public class TowerBuilder : MonoBehaviour
 
     public GameObject GetPlacedFloor(Vector3 floorPos)
     {
-        if(placedFloorsPos.Contains(floorPos))
+        if (placedFloorsPos.Contains(floorPos))
         {
             int index = placedFloorsPos.IndexOf(floorPos);
             return placedFloors[index];
@@ -645,28 +401,6 @@ public class TowerBuilder : MonoBehaviour
     public List<Vector3> GetPlacedFloorsPos()
     {
         return placedFloorsPos;
-    }
-
-    public void DebugPotentialFloorLocations()
-    {
-        foreach(Vector3 placedFloor in placedFloorsPos)
-        {
-            Debug.Log("-DEV- placedFloor pos" + placedFloor);
-        }
-        foreach (Vector3 mapSpawn in mapPotentialFloors)
-        {
-            Debug.Log("-DEV- mapSpawn pos" + mapSpawn);
-        }
-
-        Debug.Log("-DEV- potential floor locations. floor count: " + GetPotentialFloorsPos().Count);
-        if (potentialFloors.Count >= 1)
-        {
-            DestroyPotentialFloors();
-        }
-        else
-        {
-            NewPotentialFloors();
-        }
     }
 
     public void DebugPlacedFloorLocations()
@@ -682,7 +416,7 @@ public class TowerBuilder : MonoBehaviour
         }
         else
         {
-            foreach(GameObject floor in placedFloors)
+            foreach (GameObject floor in placedFloors)
             {
                 GameObject debugFloor = Instantiate(debugThing, new Vector3(floor.transform.position.x, floor.transform.position.y, Camera.main.transform.position.z + 1), Quaternion.identity);
                 debugFloors.Add(debugFloor);
@@ -711,24 +445,14 @@ public class TowerBuilder : MonoBehaviour
         }
     }
 
-    public List<Vector3> GetPotentialFloorsPos()
-    {
-        List<Vector3> potentialFloorsPos = new List<Vector3>();
-        foreach (GameObject floor in potentialFloors)
-        {
-            potentialFloorsPos.Add(floor.transform.position);
-        }
-        return potentialFloorsPos;
-    }
-
     public Vector3 GetInitialFloorPos()
     {
         return placedFloors[0].transform.position;
     }
 
-    public Vector2 GetRoomBounds()
+    public Vector2Int GetRoomBounds()
     {
-        return new Vector2(10, 5);
+        return new Vector2Int(10, 5); //MUST BE INTS FOREVER AND ALWAYS
     }
 
     public bool GetIsPlacingFloor()
@@ -736,7 +460,7 @@ public class TowerBuilder : MonoBehaviour
         return placingFloor;
     }
 
-    public void AddPlacedFloor(GameObject floor) //used by other scripts whenever a floor is spawned in the gameworld without this scripts permission. its added to the list so other scripts can see it 
+    public void AddPlacedFloor(GameObject floor)
     {
         placedFloors.Add(floor);
         placedFloorsPos.Add(new Vector3(Mathf.Round(floor.transform.position.x), Mathf.Round(floor.transform.position.y), Mathf.Round(floor.transform.position.z)));
@@ -746,11 +470,8 @@ public class TowerBuilder : MonoBehaviour
         }
     }
 
-    private void Cleanup(GameObject floor)
+    private void Cleanup()
     {
-        DestroyPotentialFloors();
-
-        onTowerPlace?.Invoke(floor, EventArgs.Empty);
         cleanupLast = true;
         cleanupLate = true;
     }

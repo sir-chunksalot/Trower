@@ -1,16 +1,16 @@
-    using System;
-using System.Collections;
+using Array2DEditor;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Trap : MonoBehaviour
 {
+    [SerializeField] Array2DBool trapSize;
     [SerializeField] float damageAmount;
     [SerializeField] Vector3 offset; //trap builder uses this
     [SerializeField] bool hasAbility;
-    [SerializeField] bool isLarge;
     [SerializeField] bool isWallTrap;
     [SerializeField] float cooldown;
-    [SerializeField] GameObject spaceEffect;
     [SerializeField] bool active;
     [SerializeField] bool canUse;
     [SerializeField] Sprite pressSpace;
@@ -18,107 +18,62 @@ public class Trap : MonoBehaviour
     [SerializeField] GameObject armedSprite;
     [SerializeField] GameObject trapObj;
     [SerializeField] GameObject trapSprite;
+    [SerializeField] Animator anim;
 
     RectTransform cooldownTimerTransform;
     TrapManager trapManager;
     WaveManager waveManager;
     StatusEffect statusEffect;
-    public event EventHandler onActivate;
-    public event EventHandler onDeactivate;
-    public event EventHandler onMouseLeave;
-    public event EventHandler onCooldownOver;
-    bool canAttack;
-    bool defensePhase;
-    bool attackPhase;
-    bool armed;
+
     float cooldownCount;
     int objectID;
     Vector3 cooldownPos;
 
+    Tuple<int, int>[] trapSizeTuple;
+
+
     private void Start()
     {
-        spaceEffect.SetActive(false);
-        GameObject gameManager = GameObject.FindGameObjectWithTag("GameManager");
-        trapManager = gameManager.GetComponent<TrapManager>();
-        trapManager.onSpacePressed += TrapActivated;
-        trapManager.onSpaceReleased += TrapDeactivated;
-        trapManager.AddTrapToList(gameObject, this);
-
-        waveManager = gameManager.GetComponent<WaveManager>();
-        waveManager.OnAttackPhaseStart += AttackPhase;
-        waveManager.OnDefensePhaseStart += DefensePhase;
-        defensePhase = waveManager.GetIsDefensePhase();
-        attackPhase = waveManager.GetIsAttackPhase();
-
         statusEffect = gameObject.GetComponent<StatusEffect>();
-
         objectID = gameObject.GetInstanceID();
         Debug.Log("gameObject parent " + gameObject + "id" + objectID);
-    }
 
-    private void DefensePhase(object sender, EventArgs e)
-    {
-        defensePhase = true;
-        attackPhase = false;
-        StopAllCoroutines();
-    }
-    private void AttackPhase(object sender, EventArgs e)
-    {
-        defensePhase = false;
-        attackPhase = true;
+        int xBounds = trapSize.GridSize.x;
+        int yBounds = trapSize.GridSize.y;
 
-        if (cooldownCount > 0)
-        {
-            StartCoroutine(Cooldown());
-        }
-        if (armed)
-        {
-            onActivate?.Invoke(objectID, EventArgs.Empty);
-            armed = false;
-            armedSprite.SetActive(false);
-        }
-    }
 
-    public void ManualTrapActivate()
-    {
-        armedSprite.SetActive(false);
-        armed = false;
-        onActivate?.Invoke(objectID, EventArgs.Empty);
-    }
+        //sets trap size
+        bool[,] trapBounds = trapSize.GetCells();
+        if (xBounds % 2 == 0 || yBounds % 2 == 0)
+        { //even number, if there is no center then we ignore the given parameters. i aint messin with all that
+            trapBounds = new bool[3, 3];
+            trapBounds[1, 1] = true;
 
-    private void TrapActivated(object sender, EventArgs e)
-    {
-        Debug.Log("Trap activated!");
-        spaceEffect.GetComponent<SpriteRenderer>().sprite = pressedSpace;
-        if (!canAttack || !active || (!attackPhase && !defensePhase))
-        {
-            Debug.Log("trap activation cancelled" + canAttack + active + attackPhase + defensePhase);
-            return;
         }
 
-        if (defensePhase && cooldownCount <= 0)
+        List<Tuple<int, int>> takenCells = new List<Tuple<int, int>>();
+
+        for (int y = yBounds - 1; y >= 0; y--)
         {
-            armed = !armed;
-            armedSprite.SetActive(armed);
-        }
-        else
-        {
-            onActivate?.Invoke(objectID, EventArgs.Empty);
-        }
-    }
-    private void TrapDeactivated(object sender, EventArgs e)
-    {
-        spaceEffect.GetComponent<SpriteRenderer>().sprite = pressSpace;
-        if (active)
-        {
-            Debug.Log("can attack CRIMINAL");
-            if (canAttack)
+
+            for (int x = 0; x < xBounds; x++)
             {
-                onDeactivate?.Invoke(objectID, EventArgs.Empty);
+                if (trapBounds[x, y]) { takenCells.Add(new Tuple<int, int>(x - 1, y - 1)); }
             }
-
         }
 
+        trapSizeTuple = takenCells.ToArray();
+    }
+
+    public Tuple<int, int>[] GetTrapSize()
+    {
+        return trapSizeTuple;
+    }
+
+    public void UseTrap()
+    {
+        Debug.Log("used trap!");
+        anim.SetBool("TrapActivated", true);
     }
 
     public void TryDamage(GameObject target)
@@ -132,37 +87,7 @@ public class Trap : MonoBehaviour
             }
             damage.Damage(damageAmount);
         }
-
-
     }
-
-    public void CooldownOn() //called by specific trap script, tells this script wether or not the trap is on or off 
-    {
-        if (cooldownCount <= 0)
-        {
-            canAttack = false;
-            cooldownCount = cooldown;
-            StartCoroutine(Cooldown());
-        }
-    }
-
-    private IEnumerator Cooldown()
-    {
-        if (defensePhase) { yield break; }
-        yield return new WaitForSeconds(.01f);
-        cooldownCount -= .01f;
-        Debug.Log(cooldownCount + "COOLDOWN");
-        if (cooldownCount <= 0)
-        {
-            onCooldownOver?.Invoke(objectID, EventArgs.Empty);
-        }
-        else
-        {
-            StartCoroutine(Cooldown());
-        }
-
-    }
-
     public Vector3 GetOffset()
     {
         return offset;
@@ -197,7 +122,7 @@ public class Trap : MonoBehaviour
 
     public void Rotate(bool left)
     {
-        if(left)
+        if (left)
         {
             trapObj.transform.localRotation = new Quaternion(0, 180, 0, 0);
             trapSprite.transform.localRotation = new Quaternion(0, 180, 0, 0);
@@ -211,107 +136,21 @@ public class Trap : MonoBehaviour
         Debug.Log("fartfartafrt");
     }
 
+    public void Arm()
+    {
+        armedSprite.SetActive(true);
+    }
+    public void Disarm()
+    {
+        armedSprite.SetActive(false);
+    }
+
     public Vector3 GetRotation()
     {
         return new Vector3(trapObj.transform.localEulerAngles.x, trapObj.transform.localEulerAngles.y, trapObj.transform.localEulerAngles.z);
-    }
-    public bool GetTrapSize()
-    {
-        return isLarge;
     }
     public bool GetIsWallTrap()
     {
         return isWallTrap;
     }
-
-
-    public bool GetIsArmed()
-    {
-        return armed;
-    }
-
-    public bool GetCanAttack()
-    {
-        return canAttack;
-    }
-
-    public GameObject GetSpaceEffect()
-    {
-        return spaceEffect;
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.tag == "Mouse")
-        {
-            Debug.Log("MOUSECOLLIDED");
-            spaceEffect.SetActive(true);
-            if (active)
-            {
-                canAttack = true;
-            }
-        }
-
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision) //assigns this trap as the active trap so the cooldown element can move posisitons 
-    {
-        if (collision.tag == "Mouse" && active)
-        {
-            trapManager.SelectNewTrap(this);
-        }
-        if (collision.tag == "Bolt")
-        {
-            if (!active || (!attackPhase && !defensePhase))
-            {
-                Debug.Log("trap activation cancelled" + active + attackPhase + defensePhase);
-                return;
-            }
-            if (defensePhase && cooldownCount <= 0)
-            {
-                armed = !armed;
-                armedSprite.SetActive(armed);
-            }
-            else
-            {
-                onActivate?.Invoke(objectID, EventArgs.Empty);
-            }
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.tag == "Mouse")
-        {
-            if (active)
-            {
-                trapManager.DeselectTrap(this.gameObject);
-                canAttack = false;
-                onMouseLeave?.Invoke(objectID, EventArgs.Empty);
-            }
-            spaceEffect.SetActive(false);
-            Debug.Log("MOUSE LEFT");
-
-        }
-        if (collision.tag == "Bolt")
-        {
-            if (active)
-            {
-                onDeactivate?.Invoke(objectID, EventArgs.Empty);
-            }
-        }
-    }
-
-    private void OnDestroy()
-    {
-        Debug.Log("BEW BYE!");
-        if (trapManager == null) { return; }
-        trapManager.onSpacePressed -= TrapActivated;
-        trapManager.onSpaceReleased -= TrapDeactivated;
-        waveManager.OnAttackPhaseStart -= AttackPhase;
-        waveManager.OnDefensePhaseStart -= DefensePhase;
-        Debug.Log("fartBalls" + gameObject + this);
-        trapManager.RemoveTrapFromList(gameObject, this);
-
-    }
-
 }

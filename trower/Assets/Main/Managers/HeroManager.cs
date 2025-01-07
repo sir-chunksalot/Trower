@@ -16,16 +16,17 @@ public class HeroManager : MonoBehaviour
     [SerializeField] GameObject bloodDaddy;
 
     GameManager gameManagerScript;
+    TurnManager turnManager;
 
     Transform[] spawnSpots;
     GameObject heroDaddy;
 
-    WaveManager waveManager;
     DoorManager doorManager;
+    GridManager gridManager;
     public event EventHandler OnHeroDeath;
 
     List<AudioSource> bloodSounds;
-    List<GameObject> heroes;
+    List<Hero> currentHeroes;
     List<GameObject> spawnableHeroes;
     List<GameObject> blood;
     List<Vector2> spawnrate;
@@ -36,18 +37,22 @@ public class HeroManager : MonoBehaviour
     bool finalWave;
     int heroCount;
     int killCount;
+    bool moveHeroes;
+    int movedHeroCount;
 
     private void Awake()
     {
         gameManagerScript = gameObject.GetComponent<GameManager>();
         gameManagerScript.OnSceneLoaded += OnSceneLoad;
-        waveManager = gameObject.GetComponent<WaveManager>();
+        turnManager = gameObject.GetComponent<TurnManager>();
+        turnManager.OnEnemyTurn += OnNewEnemyTurn;
         doorManager = gameObject.GetComponent<DoorManager>();
-        waveManager.OnDefensePhaseStart += StopSpawning;
-        waveManager.OnNewWave += StartSpawning;
+        gridManager = gameObject.GetComponent<GridManager>();
+        //waveManager.OnDefensePhaseStart += StopSpawning;
+        //waveManager.OnNewWave += StartSpawning;
         bloodSounds = new List<AudioSource>();
         blood = new List<GameObject>();
-        heroes = new List<GameObject>();
+        currentHeroes = new List<Hero>();
         spawnableHeroes = new List<GameObject>();
         spawnrate = new List<Vector2>();
         cooldown = new List<Vector2>();
@@ -106,7 +111,7 @@ public class HeroManager : MonoBehaviour
         blood.transform.localScale = blood.transform.localScale * bloodSize;
         StartCoroutine(BloodAnim(blood, spawnPos, bloodFadeTime));
         StartCoroutine(DestroyObjectAfterTime(hero));
-        heroes.Remove(hero);
+        currentHeroes.Remove(hero.GetComponent<Hero>());
         killCount++;
         OnHeroDeath?.Invoke(gameObject, EventArgs.Empty);
 
@@ -155,9 +160,9 @@ public class HeroManager : MonoBehaviour
         return bloodEffects[randomNum];
     }
 
-    public void AddHeroToList(GameObject hero)
+    public void AddHeroToList(Hero hero)
     {
-        heroes.Add(hero);
+        currentHeroes.Add(hero);
     }
 
     public int GetKillCount()
@@ -182,20 +187,20 @@ public class HeroManager : MonoBehaviour
         delay.Clear();
     }
 
-    public void StopSpawning(object sender, EventArgs e) //called when build phase starts
-    {
-        Debug.Log("STOP IT ALL ADAM 12!!");
-        ClearWaveData();
-        CancelInvoke("Spawner");
-        StopAllCoroutines();
-    }
+    //public void StopSpawning(object sender, EventArgs e) //called when build phase starts
+    //{
+    //    Debug.Log("STOP IT ALL ADAM 12!!");
+    //    ClearWaveData();
+    //    CancelInvoke("Spawner");
+    //    StopAllCoroutines();
+    //}
 
     public GameObject GetHero(string heroName)
     {
-        foreach(GameObject hero in heroTypes)
+        foreach (GameObject hero in heroTypes)
         {
             Debug.Log(heroName + "   |   " + hero.name);
-            if(hero.name == heroName)
+            if (hero.name == heroName)
             {
                 return hero;
             }
@@ -208,126 +213,132 @@ public class HeroManager : MonoBehaviour
         return heroTypes.ToArray();
     }
 
-    public void StartSpawning(object sender, EventArgs e) //called when a wave starts
+    public void SpawnHero(GameObject hero, int distanceFromGrid)
     {
-        if (waveManager.GetCurrentWave() == null) return;
-        StopSpawning(gameObject, EventArgs.Empty);
-        if (waveManager.GetIsDefensePhase())
-        {
-            return;
-        }
-        if (waveManager.GetCurrentWave().finalWave)
-        {
-            Debug.Log("hero maanger donezo");
-            return;
-        }
-        foreach (GameObject hero in heroTypes)
-        {
-            if (waveManager.GetCurrentWave().GetHero(hero.tag) != null)
-            {
-                Wave.Hero heroData = waveManager.GetCurrentWave().GetHero(hero.tag);
-                if (!heroData.canSpawn)
-                {
-                    continue;
-                }
-                spawnrate.Add(heroData.spawnRate);
-                cooldown.Add(heroData.cooldown);
-                cooldownTracker.Add(false);
-                groupsize.Add(heroData.groupSize);
-                delay.Add(heroData.delay);
-                spawnableHeroes.Add(hero);
-            }
-        }
-        InvokeRepeating("Spawner", 0, 1f);
-    }
+        Vector2 startOfMap = gridManager.GetGridSpace(0, 0).GetPos();
+        if (distanceFromGrid > 0) { startOfMap = gridManager.GetGridSpace(gridManager.GetGridSize().x - 1, 0).GetPos(); }
 
-    private void Spawner()
-    {
-        Debug.Log("adam12 SPAWNER STARTED!");
-        int count = 0;
-        foreach (GameObject hero in spawnableHeroes)
-        {
+        Vector2 spawnPos = new Vector2((distanceFromGrid * gridManager.GetCellSize().x) + startOfMap.x, 0);
 
-            if (cooldownTracker[count])
-            {
-                continue;
-            }
-            float spawnRate = UnityEngine.Random.Range(spawnrate[count].x, spawnrate[count].y);
-            float value = UnityEngine.Random.Range(0.0f, 1.0f);
-            if (spawnRate < value)
-            {
-                continue;
-            }
-            float delay = UnityEngine.Random.Range(this.delay[count].x, this.delay[count].y);
-            int groupSize = UnityEngine.Random.Range(groupsize[count].x, groupsize[count].y + 1);
-            StartCoroutine(SpawnHero(hero, this.delay[count].x, this.delay[count].y, groupSize));
-
-            float cooldown = UnityEngine.Random.Range(this.cooldown[count].x, this.cooldown[count].y);
-
-            Debug.Log("adam12 spawnrate" + spawnRate + "delay" + delay + "group size" + groupSize + "cooldown" + cooldown);
-
-            StartCoroutine(Cooldown(cooldown, count));
-
-            count++;
-        }
-    }
-
-    private IEnumerator SpawnHero(GameObject hero, float minDelay, float maxDelay, int groupSize)
-    {
-        float delay = UnityEngine.Random.Range(minDelay, maxDelay);
-        yield return new WaitForSeconds(delay);
-        Debug.Log("adam12 SPAWNING HERO!");
-
-        if (spawnSpots == null || spawnSpots.Length == 0)
-        {
-            Debug.Log("HeroManager tried to spawn but there was no valid spawn spots.");
-            yield break;
-        }
-
-        int spawnDoor = UnityEngine.Random.Range(0, spawnSpots.Length);
-        Vector3 spawnpos = spawnSpots[spawnDoor].transform.position;
-
-        GameObject newHero = Instantiate(hero, spawnpos, Quaternion.identity, heroDaddy.transform);
-        newHero.GetComponent<SpriteRenderer>().sortingOrder = heroCount;
-
-        SpawnSpot spawnSpot = spawnSpots[spawnDoor].GetComponent<SpawnSpot>();
+        GameObject newHero = Instantiate(hero, spawnPos, Quaternion.identity, heroDaddy.transform);
         Hero heroScript = newHero.GetComponent<Hero>();
-        if (spawnSpot.faceRight && spawnSpot.faceLeft)
+        heroScript.SetDistFromGrid(distanceFromGrid);
+        AddHeroToList(heroScript);
+    }
+
+    public void OnNewEnemyTurn(object sender, EventArgs e)
+    {
+        foreach (Hero hero in currentHeroes.ToArray())
         {
-            int randInt = UnityEngine.Random.Range(0, 2);
-            if (randInt == 0)
+            hero.Restore();
+        }
+
+        movedHeroCount = 0;
+        moveHeroes = true;
+    }
+
+    private void Update()
+    {
+        MoveHeroes();
+    }
+
+    public void MoveHeroes()
+    {
+        if (!moveHeroes) { return; } //dont move heroes if you're not supposed to
+
+
+        if (movedHeroCount >= currentHeroes.Count)
+        {
+            if (currentHeroes.Count == 0) { moveHeroes = false; turnManager.EnemiesEvaluated(); return; }
+
+            Hero lastHero = currentHeroes[movedHeroCount - 1];
+            if (!lastHero.moving)
             {
-                heroScript.FlipRight();
+                moveHeroes = false;
+                turnManager.EnemiesEvaluated();
             }
         }
-        else if (spawnSpot.faceRight)
+        else
         {
-            Debug.Log("tried to flip hero right");
-            heroScript.FlipRight();
-        }
-
-        newHero.GetComponent<Hero>().AttackPhase();
-        int newGroupSize = groupSize - 1;
-        if (groupSize >= 1)
-        {
-            SpawnHero(hero, minDelay, maxDelay, newGroupSize);
-        }
-        heroCount++;
-
-    }
-
-    public void SpawnHero(GameObject hero, int amount)
-    {
-        for(int i = 0; i < amount; i++)
-        {
-            StartCoroutine(SpawnHero(hero, 0, 0, amount));
+            Debug.Log("movedHeroCount" + movedHeroCount);
+            Hero currentHero = currentHeroes[movedHeroCount];
+            if (currentHero.GetCurrentStamina() > 0 && !currentHero.moving)
+            { //if hero can move, move it.
+                if (currentHero.GetDistanceFromGrid() != 0) { currentHero.GetCloserToGrid(); }
+                Vector2 targetMove = GetTargetMove(currentHero);
+                currentHero.Move(targetMove);
+                currentHero.SetCurrentCell(gridManager.GetGridSpace(targetMove));
+                Debug.Log("this was my target move!" + targetMove);
+            }
+            else
+            { //otherwise, move on to the next hero.
+                movedHeroCount++;
+            }
         }
     }
 
-    private IEnumerator Cooldown(float cooldown, int index)
+    private Vector2 GetTargetMove(Hero hero)
     {
-        cooldownTracker[index] = true;
-        yield return new WaitForSeconds(cooldown);
-        cooldownTracker[index] = false;
+        if (hero.GetDistanceFromGrid() != 0)
+        {
+            Vector2 startOfMap = gridManager.GetGridSpace(0, 0).GetPos();
+            if (hero.GetDistanceFromGrid() > 0) { startOfMap = gridManager.GetGridSpace(gridManager.GetGridSize().x - 1, 0).GetPos(); }
+            Vector2 targetMove = new Vector2((hero.GetDistanceFromGrid() * gridManager.GetCellSize().x) + startOfMap.x, 0);
+            return targetMove;
+        }
+        Debug.Log("I can see the grid!");
+        GridSpace currentCell = gridManager.GetClosestGridSpace(hero.transform.position, false);
+        if (currentCell != hero.GetCurrentCell()) { return currentCell.GetPos(); }
+        Debug.Log("I made it to the grid!");
+
+
+
+        if (currentCell.GetCurrentLadder() != null)
+        {
+            return gridManager.GetGridSpace(currentCell.GetIndex().x, currentCell.GetIndex().y + 1).GetPos();
+        }
+
+        GridSpace targetCell = currentCell;
+        for (int i = 0; i < gridManager.GetGridSize().x; i++)
+        {
+            GridSpace newCell = gridManager.GetGridSpace(i, currentCell.GetIndex().y);
+            Debug.Log(newCell + " NEW CELL");
+            if (newCell.GetCurrentLadder() != null)
+            {
+                Debug.Log("NEW CELL FOUND LADDER");
+                targetCell = gridManager.GetGridSpace(i, currentCell.GetIndex().y);
+            }
+            if (newCell.GetHasDoor())
+            {
+                Debug.Log("NEW CELL FOUND DOOR");
+                targetCell = newCell;
+                break;
+            }
+        }
+
+        GridSpace[] adjacentCells = gridManager.GetAdjacentCells(currentCell);
+        Vector2 leftMove = currentCell.GetPos();
+        Vector2 rightMove = currentCell.GetPos();
+        bool onGround = false;
+        if (currentCell.GetPos().y == 0) { onGround = true; }
+        if (adjacentCells[1] != null && (adjacentCells[1].GetCurrentFloor() != null || onGround)) { leftMove = adjacentCells[1].GetPos(); Debug.Log("this was my left option" + leftMove); }
+        if (adjacentCells[2] != null && (adjacentCells[2].GetCurrentFloor() != null || onGround)) { rightMove = adjacentCells[2].GetPos(); Debug.Log("this was my right option" + rightMove); }
+
+
+        float distLeft = Vector2.Distance(leftMove, targetCell.GetPos());
+        Debug.Log("this was my left dist" + distLeft);
+        float distRight = Vector2.Distance(rightMove, targetCell.GetPos());
+        Debug.Log("this was my right dist" + distRight);
+
+
+        if (distLeft < distRight)
+        {
+            return leftMove;
+        }
+        else
+        {
+            return rightMove;
+        }
+
     }
 }

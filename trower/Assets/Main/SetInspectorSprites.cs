@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SetInspectorSprites : MonoBehaviour
@@ -15,7 +13,7 @@ public class SetInspectorSprites : MonoBehaviour
         GameObject[] wavesObj = GameObject.FindGameObjectsWithTag("Wave");
         Wave[] waves = new Wave[wavesObj.Length];
         int count = 0;
-        foreach(GameObject wave in wavesObj)
+        foreach (GameObject wave in wavesObj)
         {
             waves[count] = wave.GetComponent<Wave>();
             count++;
@@ -25,14 +23,14 @@ public class SetInspectorSprites : MonoBehaviour
     }
     private void SetWaveHeroSprites(GameObject[] heroes, Wave[] waves)
     {
-        foreach(Wave wave in waves)
+        foreach (Wave wave in waves)
         {
             foreach (GameObject hero in heroes)
             {
                 wave.SetHeroSprite(hero.tag, hero.GetComponent<SpriteRenderer>().sprite);
             }
         }
-        
+
     }
 #endif
 }

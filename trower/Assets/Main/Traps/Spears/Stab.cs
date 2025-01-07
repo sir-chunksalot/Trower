@@ -19,8 +19,8 @@ public class Stab : MonoBehaviour
     private void Start()
     {
         trap = dad.GetComponent<Trap>();
-        trap.onActivate += SpearUp;
-        trap.onCooldownOver += SpearDown;
+        //trap.onActivate += SpearUp;
+        //trap.onCooldownOver += SpearDown;
         col = gameObject.GetComponent<BoxCollider2D>();
         col.enabled = false;
         parentID = dad.GetInstanceID();
@@ -69,7 +69,7 @@ public class Stab : MonoBehaviour
             }
             else
             {
-                Debug.Log("sunfloewr miss"); 
+                Debug.Log("sunfloewr miss");
                 trap.TryDamage(hero.gameObject);
             }
         }
@@ -85,6 +85,6 @@ public class Stab : MonoBehaviour
     {
         yield return new WaitForSeconds(.2f);
         up = true;
-        trap.CooldownOn();
+        //trap.CooldownOn();
     }
 }

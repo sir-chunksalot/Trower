@@ -41,14 +41,14 @@ public class CashManager : MonoBehaviour
     public void CoinTracker(object sender, EventArgs e)
     {
         string coinChange = (string)sender;
-        if(coinChange.ToCharArray()[0] == '+')
+        if (coinChange.ToCharArray()[0] == '+')
         {
             int newCash = 0;
             Int32.TryParse(coinChange.Substring(1, coinChange.Length - 2), out newCash);
 
             cashEarned += newCash;
         }
-        else if(coinChange.ToCharArray()[0] == '-')
+        else if (coinChange.ToCharArray()[0] == '-')
         {
             int newCash = 0;
             Int32.TryParse(coinChange.Substring(1, coinChange.Length - 2), out newCash);

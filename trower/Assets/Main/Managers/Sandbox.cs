@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Sandbox : MonoBehaviour
@@ -15,20 +13,20 @@ public class Sandbox : MonoBehaviour
 
     public void ChangeActiveWave(string enemyType)
     {
-        switch(enemyType)
+        switch (enemyType)
         {
             case "PrisonGuard":
                 wave.prisonGuard.SetCanSpawn(!wave.prisonGuard.GetCanSpawn());
                 break;
         }
 
-        waveManager.ManuallySetWave(wave);    
+        waveManager.ManuallySetWave(wave);
     }
 
     public void SpawnEnemy(string enemyType)
     {
         HeroManager heroManager = gameManager.GetComponent<HeroManager>();
         GameObject hero = heroManager.GetHero(enemyType);
-        heroManager.SpawnHero(hero,1);
+        heroManager.SpawnHero(hero, 2);
     }
 }

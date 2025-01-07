@@ -58,12 +58,6 @@ public class LevelDetails : MonoBehaviour
     {
         existingFloors.xBounds = gridSize.x;
         existingFloors.yBounds = gridSize.y;
-
-        Test();
-    }
-    void Test()
-    {
-        
     }
 
 #endif

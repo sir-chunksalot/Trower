@@ -19,7 +19,9 @@ public class Floor : MonoBehaviour
         {
             floorDestroyables.Add(floorDestroyable);
         }
+
     }
+
     public void DestroyFloor()
     {
         floorDestroyed = true;
@@ -28,7 +30,7 @@ public class Floor : MonoBehaviour
             floorDestroyable.DestroyFloor();
         }
 
-        foreach(GameObject follower in followers)
+        foreach (GameObject follower in followers)
         {
             Debug.Log("follower list!" + follower);
             Destroy(follower);
@@ -40,7 +42,7 @@ public class Floor : MonoBehaviour
     public void PlaceFloor()
     {
         isPlaced = true;
-        foreach(BoxCollider2D thing in activateMe)
+        foreach (BoxCollider2D thing in activateMe)
         {
             thing.enabled = true;
         }
@@ -52,9 +54,4 @@ public class Floor : MonoBehaviour
         yield return new WaitForSeconds(5);
         Destroy(gameObject);
     }
-    public void AddFollower(GameObject follower)
-    {
-        followers.Add(follower);
-    }
-
 }

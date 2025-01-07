@@ -520,7 +520,6 @@ public class Level1_1 : MonoBehaviour
     public void InstructDefensePhase(object sender, EventArgs e)
     {
         camController.ActivateCamera(MainView2);
-        uiManager.EnableCooldownTimer(false);
         arrowBuild.SetActive(true);
         StartCoroutine(WaitForInstruction());
     }
@@ -528,7 +527,6 @@ public class Level1_1 : MonoBehaviour
     private IEnumerator WaitForInstruction()
     {
         yield return new WaitForSeconds(2.5f);
-        uiManager.EnableCooldownTimer(true);
         dialogueTriggerTabSwitch.GetComponentInChildren<DialogueBox>().ManualReadMessage();
         defensePhase = true;
         uiManager.SetDenySwitch(true);
@@ -546,8 +544,8 @@ public class Level1_1 : MonoBehaviour
                 dialogueTriggerHigh5.SetActive(false);
                 dialogueTriggerHoverOverEnemy.SetActive(false);
                 beenThereDoneThat = true;
-                firstTrap.GetComponent<Trap>().ManualTrapActivate();
-                secondEnemy.GetComponent<Hero>().AttackPhase();
+                //firstTrap.GetComponent<Trap>().ManualTrapActivate();
+                //secondEnemy.GetComponent<Hero>().AttackPhase();
                 StartCoroutine(MakeHeroStop());
                 StartCoroutine(WaitForJoke());
                 //firstTrap.GetComponent<Trap>().DisableTrap();
@@ -565,13 +563,13 @@ public class Level1_1 : MonoBehaviour
                 //StartCoroutine(DelayBeforeCam());
             }
         }
-        if (secondTrapPlaced && !beenThereDoneThat2 && trapDaddy.GetComponentsInChildren<Trap>()[1].GetSpaceEffect().activeInHierarchy)
-        {
-            trapDaddy.GetComponentsInChildren<Trap>()[1].ManualTrapActivate();
-            beenThereDoneThat2 = true;
-            StartCoroutine(CheckForSecondDeath());
+        //if (secondTrapPlaced && !beenThereDoneThat2 && trapDaddy.GetComponentsInChildren<Trap>()[1].GetSpaceEffect().activeInHierarchy)
+        //{
+        //    trapDaddy.GetComponentsInChildren<Trap>()[1].ManualTrapActivate();
+        //    beenThereDoneThat2 = true;
+        //    StartCoroutine(CheckForSecondDeath());
 
-        }
+        //}
     }
 
     private IEnumerator CheckForSecondDeath()
@@ -584,7 +582,6 @@ public class Level1_1 : MonoBehaviour
             dialogueTriggerkillThatGuyToo.SetActive(false);
             arrowSpear2.SetActive(false);
             camController.ActivateCamera(VCAMPanRight, 5);
-            uiManager.EnableCooldownTimer(false);
             StartCoroutine(WaitForCam());
         }
         else
@@ -596,7 +593,7 @@ public class Level1_1 : MonoBehaviour
     private IEnumerator MakeHeroStop()
     {
         yield return new WaitForSeconds(4f);
-        secondEnemy.GetComponent<Hero>().DefensePhase();
+        //secondEnemy.GetComponent<Hero>().DefensePhase();
         secondEnemy.GetComponent<Animator>().enabled = false;
         secondEnemy.GetComponent<SpriteRenderer>().sprite = goofyHeroFace;
     }
@@ -661,7 +658,6 @@ public class Level1_1 : MonoBehaviour
     private IEnumerator WaitForCam()
     {
         yield return new WaitForSeconds(7);
-        uiManager.EnableCooldownTimer(true);
         waveManager.SwitchAttackPhase(true);
         StartCoroutine(WaitABit());
         StartCoroutine(RunForestRun());

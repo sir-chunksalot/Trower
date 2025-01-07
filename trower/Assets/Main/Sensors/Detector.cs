@@ -38,7 +38,7 @@ public class Detector : MonoBehaviour
 
     public void Rotate(bool left)
     {
-        if(left)
+        if (left)
         {
             detectorContainer.transform.localRotation = new Quaternion(0, 180, 0, 0);
         }

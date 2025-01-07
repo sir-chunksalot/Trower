@@ -38,11 +38,11 @@ public class Arrow : MonoBehaviour
         if (collision.gameObject.layer == 6)
         {
             Hero hero = collision.gameObject.GetComponent<Hero>();
-            if(hero != null)
+            if (hero != null)
             {
                 trap.TryDamage(hero.gameObject);
-            } 
-            
+            }
+
         }
         else if (collision.gameObject.tag == "EnemyWall")
         {

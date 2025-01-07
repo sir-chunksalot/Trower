@@ -19,7 +19,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject progressBarHolder;
     [SerializeField] GameObject buildTabObj;
     [SerializeField] GameObject towerTab;
-    [SerializeField] GameObject cooldownTimer;
     [SerializeField] Sprite chainedBuildTab;
     [SerializeField] Sprite buildTab;
     [SerializeField] AudioSource denySound;
@@ -51,11 +50,6 @@ public class UIManager : MonoBehaviour
         waveManager.OnAttackPhaseStart += AttackPhase;
         Debug.Log("WAVE MANAGER ASSIGNED TO UI MANAGER");
         trapManager.onSelectedTrapChange += SelectedTrapChange;
-        GameObject cooldownTimer = trapManager.GetCooldownTimer();
-        if (cooldownTimer != null)
-        {
-            cooldownTimerTransform = cooldownTimer.GetComponent<RectTransform>();
-        }
         if (buildCards != null)
         {
             buildCardsTransform = buildCards.GetComponent<RectTransform>();
@@ -119,12 +113,6 @@ public class UIManager : MonoBehaviour
         }
 
     }
-    public void EnableCooldownTimer(bool activeStatus)
-    {
-        Debug.Log("Cooldown timer is set to :" + activeStatus);
-        cooldownTimer.GetComponent<Image>().enabled = activeStatus;
-    }
-
     public GameObject GetCard(int index)
     {
         int count = 0;
@@ -267,7 +255,7 @@ public class UIManager : MonoBehaviour
     private void MoveCooldownTimer()
     {
         if (cooldownTimerTransform == null) { return; }
-        if(Camera.main == null) { return; }
+        if (Camera.main == null) { return; }
 
         GameObject trap = trapManager.GetSelectedTrap();
         Vector3 spawnPos = new Vector3(10000, 10000);
