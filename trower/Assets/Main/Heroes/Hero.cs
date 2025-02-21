@@ -13,9 +13,7 @@ public class Hero : MonoBehaviour, IDamageable, IBurnable
     [SerializeField] float maxHealth;
 
     FlashEffect flash;
-    WaveManager waveManager;
     HeroManager heroManager;
-    Rigidbody2D rb;
     HeroFeet heroFeet;
 
     Animator anim;
@@ -27,13 +25,16 @@ public class Hero : MonoBehaviour, IDamageable, IBurnable
     int currentStamina;
     int distFromGrid;
     int dir;
+    int canMove;
     public bool moving;
     private bool walking;
     private bool climbing;
 
     GridSpace currentCell;
+    Trap currentTrap;
 
     Vector2 targetSpace;
+    Vector2 velocity;
     private void Awake()
     {
         currentHealth = maxHealth;
@@ -43,6 +44,12 @@ public class Hero : MonoBehaviour, IDamageable, IBurnable
         transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + zOffset);
         targetSpace = transform.position;
         currentStamina = maxStamina;
+        canMove = 1;
+    }
+
+    public void Birth(HeroManager heroManager) //called by heromanager when it spawns a new hero
+    {
+        this.heroManager = heroManager; 
     }
 
     public void FlipRight()
@@ -81,16 +88,26 @@ public class Hero : MonoBehaviour, IDamageable, IBurnable
         if (walking)
         {
             anim.SetBool("Moving", true);
-            transform.Translate(Vector2.right * speed * dir * Time.deltaTime);
+            velocity = (Vector2.right * speed * dir * canMove * Time.deltaTime);
+            transform.Translate(velocity);
         }
         if (climbing)
         {
             anim.SetBool("Climbing", true);
-            transform.Translate(Vector2.up * speed * dir * Time.deltaTime);
+            velocity = (Vector2.up * speed * dir * canMove * Time.deltaTime);
+            transform.Translate(velocity);
+        }
+        if(canMove != 1)
+        {
+            if(currentTrap == null || currentTrap.TrapEffects(this))
+            {
+                Debug.Log("fartfart");
+                canMove = 1;
+            }
         }
 
 
-        if (Mathf.Abs((currentPos - targetSpace).magnitude) <= .2f)
+        if (Mathf.Abs((currentPos - targetSpace).magnitude) <= .2f) //finish moving
         {
             gameObject.transform.position = targetSpace;
             anim.SetBool("Moving", false);
@@ -100,6 +117,8 @@ public class Hero : MonoBehaviour, IDamageable, IBurnable
             climbing = false;
             currentStamina--;
         }
+
+        TryChangeCurrentCell(heroManager.GetClosestGridSpaceToHero(this));  
     }
 
     public bool GetIsMoving()
@@ -162,10 +181,42 @@ public class Hero : MonoBehaviour, IDamageable, IBurnable
     }
 
 
-    public void SetCurrentCell(GridSpace gridSpace)
+    private void TryChangeCurrentCell(GridSpace gridSpace) //gridspace is the closest cell to the hero
     {
-        currentCell = gridSpace;
-        //set grid enemy here
+        if(currentCell == gridSpace) { return; }
+
+        string entryType = "";
+        string exitType = "";
+
+        //sets direction
+        if(velocity.y > 0) { entryType = "enter_bottom"; exitType = "exit_top"; }
+        else if(velocity.y < 0) { entryType = "enter_top"; exitType = "exit_bottom"; }
+        else if(velocity.x > 0) { entryType = "enter_left"; exitType = "exit_right"; }
+        else if(velocity.x < 0) { entryType = "enter_right"; exitType = "exit_left"; }
+
+        foreach (TrapTrigger sensor in gridSpace.GetSensor()) //new cell (entering)
+        {
+            if (sensor.TriggerSensor(entryType))
+            {
+                currentTrap = sensor.GetTrapDaddy();
+                canMove = 0;
+            }
+        }
+
+        if(currentCell != null)
+        {
+            foreach (TrapTrigger sensor in currentCell.GetSensor()) //original cell (exiting)
+            {
+                if(sensor.TriggerSensor(exitType))
+                {
+                    currentTrap = sensor.GetTrapDaddy();
+                    canMove = 0;
+                }
+            }
+        }
+
+        currentCell = gridSpace; //sets new cell
+        currentCell.ad
     }
 
     public GridSpace GetCurrentCell()

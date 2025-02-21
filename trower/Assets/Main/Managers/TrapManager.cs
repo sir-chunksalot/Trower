@@ -101,8 +101,6 @@ public class TrapManager : MonoBehaviour
         Debug.Log("select new trap");
         selectedTrap = trap.gameObject;
         trapScript = trap;
-        float currentCooldown = trapScript.GetCurrentCooldown();
-        float totalCooldown = trapScript.GetTotalCooldown();
         onSelectedTrapChange?.Invoke(gameObject, EventArgs.Empty);
     }
 

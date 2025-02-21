@@ -33,19 +33,19 @@ public class DetectionBolt : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag == "TrapRoom")
-        {
-            if (collision.GetComponent<Trap>().GetCurrentCooldown() <= 0)
-            {
-                rb.velocity = Vector2.zero;
-                transform.position = new Vector3(transform.position.x + 3, transform.position.y, transform.position.z);
-                sprite.enabled = false;
-                deathParticle.Play();
-                DieAfterTime(4);
-            }
-        }
-    }
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.tag == "TrapRoom")
+    //    {
+    //        if (collision.GetComponent<Trap>().GetCurrentCooldown() <= 0)
+    //        {
+    //            rb.velocity = Vector2.zero;
+    //            transform.position = new Vector3(transform.position.x + 3, transform.position.y, transform.position.z);
+    //            sprite.enabled = false;
+    //            deathParticle.Play();
+    //            DieAfterTime(4);
+    //        }
+    //    }
+    //}
 
 }

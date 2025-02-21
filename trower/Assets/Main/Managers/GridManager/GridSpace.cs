@@ -12,6 +12,8 @@ public class GridSpace
     bool hasDoor;
     WallCollision[] walls = new WallCollision[4];
     List<GameObject> frills = new List<GameObject>();
+    List<TrapTrigger> sensors = new List<TrapTrigger>();
+    List<Hero> heroes = new List<Hero>();
     int wallCount = 0;
     public GridSpace(Vector2Int pos, Vector2Int index)
     {
@@ -84,6 +86,16 @@ public class GridSpace
         currentTrap = newTrap;
     }
 
+    public void AddSensor(TrapTrigger sensor)
+    {
+        sensors.Add(sensor);
+    }
+
+    public List<TrapTrigger> GetSensor()
+    {
+        return sensors;
+    }
+
     public GameObject GetCurrentFloor()
     {
         return currentFloor;
@@ -110,6 +122,24 @@ public class GridSpace
     public void SetHasDoor(bool hasDoor)
     {
         this.hasDoor = hasDoor;
+    }
+
+    public void AddNewHero(Hero hero)
+    {
+        heroes.Add(hero);
+    }
+
+    public void RemoveHero(Hero hero)
+    {
+        if(heroes.Contains(hero))
+        {
+            heroes.Remove(hero);
+        }
+    }
+
+    public Hero[] GetHeroes()
+    {
+        return heroes.ToArray();
     }
 
     public GameObject GetFrill(string frillName)

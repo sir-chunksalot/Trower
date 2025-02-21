@@ -84,13 +84,6 @@ public class HeroManager : MonoBehaviour
             Destroy(obj);
         }
         blood.Clear();
-
-
-    }
-
-    public Vector3 GetDoorPos()
-    {
-        return doorManager.GetDoorPos();
     }
     public void KillHero(GameObject hero, float bloodSize = 1, float bloodFadeTime = 0)
     {
@@ -213,6 +206,12 @@ public class HeroManager : MonoBehaviour
         return heroTypes.ToArray();
     }
 
+    public GridSpace GetClosestGridSpaceToHero(Hero hero)
+    {
+        GridSpace gridSpace = gridManager.GetClosestGridSpace(hero.transform.position, false);
+        return gridSpace;
+    }
+
     public void SpawnHero(GameObject hero, int distanceFromGrid)
     {
         Vector2 startOfMap = gridManager.GetGridSpace(0, 0).GetPos();
@@ -222,6 +221,7 @@ public class HeroManager : MonoBehaviour
 
         GameObject newHero = Instantiate(hero, spawnPos, Quaternion.identity, heroDaddy.transform);
         Hero heroScript = newHero.GetComponent<Hero>();
+        heroScript.Birth(this);
         heroScript.SetDistFromGrid(distanceFromGrid);
         AddHeroToList(heroScript);
     }
@@ -267,7 +267,6 @@ public class HeroManager : MonoBehaviour
                 if (currentHero.GetDistanceFromGrid() != 0) { currentHero.GetCloserToGrid(); }
                 Vector2 targetMove = GetTargetMove(currentHero);
                 currentHero.Move(targetMove);
-                currentHero.SetCurrentCell(gridManager.GetGridSpace(targetMove));
                 Debug.Log("this was my target move!" + targetMove);
             }
             else
@@ -279,6 +278,7 @@ public class HeroManager : MonoBehaviour
 
     private Vector2 GetTargetMove(Hero hero)
     {
+        //get to map
         if (hero.GetDistanceFromGrid() != 0)
         {
             Vector2 startOfMap = gridManager.GetGridSpace(0, 0).GetPos();
@@ -292,12 +292,13 @@ public class HeroManager : MonoBehaviour
         Debug.Log("I made it to the grid!");
 
 
-
+        //climb ladder
         if (currentCell.GetCurrentLadder() != null)
         {
             return gridManager.GetGridSpace(currentCell.GetIndex().x, currentCell.GetIndex().y + 1).GetPos();
         }
 
+        //find target
         GridSpace targetCell = currentCell;
         for (int i = 0; i < gridManager.GetGridSize().x; i++)
         {
@@ -316,6 +317,7 @@ public class HeroManager : MonoBehaviour
             }
         }
 
+        //find paths to target
         GridSpace[] adjacentCells = gridManager.GetAdjacentCells(currentCell);
         Vector2 leftMove = currentCell.GetPos();
         Vector2 rightMove = currentCell.GetPos();
@@ -324,7 +326,7 @@ public class HeroManager : MonoBehaviour
         if (adjacentCells[1] != null && (adjacentCells[1].GetCurrentFloor() != null || onGround)) { leftMove = adjacentCells[1].GetPos(); Debug.Log("this was my left option" + leftMove); }
         if (adjacentCells[2] != null && (adjacentCells[2].GetCurrentFloor() != null || onGround)) { rightMove = adjacentCells[2].GetPos(); Debug.Log("this was my right option" + rightMove); }
 
-
+        //determine best path to target
         float distLeft = Vector2.Distance(leftMove, targetCell.GetPos());
         Debug.Log("this was my left dist" + distLeft);
         float distRight = Vector2.Distance(rightMove, targetCell.GetPos());

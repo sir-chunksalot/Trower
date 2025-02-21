@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -32,7 +33,7 @@ public class TrapBuilder : MonoBehaviour
     private float frontZ;
     private Vector3 offSet;
 
-    Tuple<int, int>[] trapSize;
+    Vector2Int[] trapSize;
     GameObject[] redExes = new GameObject[9];
 
     GridSpace gridSpace;
@@ -53,7 +54,7 @@ public class TrapBuilder : MonoBehaviour
     public void OnSceneLoad(object sender, EventArgs e)
     {
         trapDaddy = gameManager.GetCurrentLevelDetails().GetTrapDaddy();
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < redExes.Length; i++)
         {
             redExes[i] = Instantiate(redX, new Vector3(9999, 9999, frontZ), Quaternion.identity, trapDaddy.transform);
         }
@@ -73,10 +74,14 @@ public class TrapBuilder : MonoBehaviour
 
             if(redExes[0] == null) { return; }
             int count = 0;
-            foreach (Tuple<int, int> pos in trapSize)
+            foreach (Vector2Int pos in trapSize)
             {
-                int xIndex = gridSpace.GetIndex().x + pos.Item1;
-                int yIndex = gridSpace.GetIndex().y + pos.Item2;
+                int xIndex = 0;
+                if (rotateTrap) { xIndex = gridSpace.GetIndex().x + (pos.x * -1); }
+                else { xIndex = gridSpace.GetIndex().x + pos.x; }
+                
+                
+                int yIndex = gridSpace.GetIndex().y + pos.y;
 
                 GridSpace cell = gridManager.GetGridSpace(xIndex, yIndex);
                 if (cell == null || cell.GetCurrentFloor() == null)
@@ -135,7 +140,7 @@ public class TrapBuilder : MonoBehaviour
         }
         for (int i = 0; i < 9; i++)
         {
-            if (redExes[i].transform.position.x > 9000)//invalid trap spawn if trap size conflicts with the placement (the red x thing)
+            if (redExes[i].transform.position.x < 9000)//invalid trap spawn if trap size conflicts with the placement (the red x thing)
             {
                 uiManager.UseCard(trapName, false);
                 EndPlacement();
@@ -162,6 +167,15 @@ public class TrapBuilder : MonoBehaviour
             trap.EnableTrap();
             targetGridSpace.SetCurrentTrap(trap);
             if (rotateTrap) { trap.Rotate(true); }
+
+            //trap spawns
+            Vector2Int currentGridIndex = targetGridSpace.GetIndex();
+            foreach (KeyValuePair<Vector2Int, TrapTrigger> spawn in trap.GetTrapContents())
+            {
+                Vector2Int newIndex = spawn.Key + currentGridIndex;
+                GridSpace newGridSpace = gridManager.GetGridSpace(newIndex.x, newIndex.y);
+                if (newGridSpace != null && spawn.Value != null) { newGridSpace.AddSensor(spawn.Value); }
+            }
 
             //finishing with flare
             towerBuilder.SetAlpha(newBuild, 1);
@@ -224,7 +238,7 @@ public class TrapBuilder : MonoBehaviour
     public void EndPlacement()
     {
         if (currentTrap == null) { return; }
-        for(int i = 0; i < 9; i++)
+        for(int i = 0; i < redExes.Length; i++)
         {
             redExes[i].transform.position = new Vector3(9999, 9999, 9999);
         }
